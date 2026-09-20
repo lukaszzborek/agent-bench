@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""One benchmark trial: fresh sbx sandbox -> repo snapshot -> optional treatment -> agent run -> artifacts -> grade -> rm.
+
+Driven by `bench run`. Results: <run_dir>/<arm>-r<rep>/
+"""
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+import yaml
+
+HERE = Path(__file__).resolve().parent
+SBX_HOME = "/home/agent"
+
+
+def sh(*cmd, check=True, input=None, timeout=None, capture=True):
+    r = subprocess.run(cmd, input=input, text=True, timeout=timeout,
+                       stdout=subprocess.PIPE if capture else None,
+                       stderr=subprocess.PIPE if capture else None)
+    if check and r.returncode != 0:
+        sys.exit(f"FAILED ({r.returncode}): {' '.join(cmd)}\n{r.stderr}")
+    return r
+
+
+def sbx_exec(name, *cmd, workdir=None, input=None, timeout=None, check=True):
+    args = ["sbx", "exec"]
+    if input is not None:
+        args.append("-i")
+    if workdir:
+        args += ["-w", workdir]
+    return sh(*args, name, *cmd, input=input, timeout=timeout, check=check)
+
+
+def make_snapshot(repo: str, commit: str, dest: Path, history: int = 0) -> str:
+    """Export tree at `commit` into a fresh repo so the agent cannot see later history.
+
+    `history` = number of real commits ending at `commit` to keep (shallow fetch); 0 = one synthetic commit.
+    The base is tagged `bench-base` so the patch can be taken against it.
+    """
+    sha = sh("git", "-C", repo, "rev-parse", "--verify", f"{commit}^{{commit}}").stdout.strip()
+    dest.mkdir(parents=True)
+    env = {**os.environ, "GIT_AUTHOR_NAME": "bench", "GIT_AUTHOR_EMAIL": "bench@local",
+           "GIT_COMMITTER_NAME": "bench", "GIT_COMMITTER_EMAIL": "bench@local"}
+    init = ["git", "init", "-q", "-b", "main"]
+    if history:
+        cmds = [init, ["git", "fetch", "-q", "--depth", str(history), str(Path(repo).resolve()), sha],
+                ["git", "reset", "-q", "--hard", "FETCH_HEAD"]]
+    else:
+        tar = subprocess.Popen(["git", "-C", repo, "archive", sha], stdout=subprocess.PIPE)
+        subprocess.run(["tar", "-x", "-C", str(dest)], stdin=tar.stdout, check=True)
+        tar.wait()
+        cmds = [init, ["git", "add", "-A"], ["git", "commit", "-q", "-m", f"task base (source {sha[:12]})"]]
+    for c in (*cmds, ["git", "tag", "bench-base"]):
+        subprocess.run(c, cwd=dest, env=env, check=True, stdout=subprocess.DEVNULL)
+    return sha
+
+
+def agent_cmd(agent: str, task: dict) -> list[str]:
+    if agent == "claude":
+        return ["claude", "-p", "--output-format", "stream-json", "--verbose",
+                "--dangerously-skip-permissions", "--model", task["model"], "--effort", task["effort"]]
+    if agent == "codex":
+        return ["codex", "exec", "--json", "--dangerously-bypass-approvals-and-sandbox",
+                "-m", task["model"], "-c", f'model_reasoning_effort="{task["effort"]}"',
+                "-o", f"{SBX_HOME}/last_message.txt", "-"]
+    sys.exit(f"unknown agent {agent}")
+
+
+def install_tools(name: str, agent: str, tools: list[str]) -> dict:
+    """Copy tools/<tool> into the sandbox and run its setup.sh as root. Returns per-tool logs."""
+    logs = {}
+    if tools:
+        sh("sbx", "exec", "-u", "root", name, "mkdir", "-p", "/opt/bench-tools")
+    for tool in tools:
+        src = HERE / "tools" / tool
+        if not (src / "setup.sh").exists():
+            sys.exit(f"no setup.sh for tool {tool} in {src}")
+        sh("sbx", "cp", str(src), f"{name}:/opt/bench-tools/{tool}")
+        r = sh("sbx", "exec", "-u", "root", name, "bash", f"/opt/bench-tools/{tool}/setup.sh", agent)
+        logs[tool] = r.stdout + r.stderr
+    return logs
+
+
+def summarize(agent: str, jsonl: Path) -> dict:
+    """Pull final usage from the agent's own structured output."""
+    last = None
+    for line in jsonl.read_text(errors="replace").splitlines():
+        try:
+            ev = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if agent == "claude" and ev.get("type") == "result":
+            last = {k: ev.get(k) for k in ("session_id", "num_turns", "duration_ms", "duration_api_ms",
+                                            "total_cost_usd", "usage", "modelUsage", "is_error", "subtype")}
+        elif agent == "codex" and isinstance(ev.get("usage"), dict):
+            last = {"usage": ev["usage"], "thread_id": ev.get("thread_id")}
+        elif agent == "codex" and ev.get("type") == "thread.started":
+            last = {**(last or {}), "thread_id": ev.get("thread_id")}
+    return last or {}
+
+
+def session_tags(meta: dict) -> list[str]:
+    """Tags ai-sessions puts on the trial's sessions (it reads only this key of meta.json)."""
+    tags = [f"task:{meta['task']['id']}", f"arm:{meta['arm']}", f"rep:{meta['rep']}"]
+    if meta.get("error"):
+        tags.append("error")
+    elif "grade_exit" in meta:
+        tags.append("grade:pass" if meta["grade_exit"] == 0 else "grade:fail")
+    if meta.get("agent_exit") == "timeout":
+        tags.append("timeout")
+    return tags + [f"trial:{meta['trial']}"]
+
+
+def load_tasks(ref: str) -> list[dict]:
+    """Tasks for a ref: a yaml path, a dataset (subdir of tasks/), or a task file name anywhere under tasks/."""
+    tasks = HERE / "tasks"
+    if Path(ref).is_file():
+        paths = [Path(ref)]
+    elif (tasks / ref).is_dir():
+        paths = sorted((tasks / ref).glob("*.yaml"))
+    else:
+        paths = sorted(tasks.rglob(f"{ref}.yaml"))
+    if not paths:
+        names = sorted({p.stem for p in tasks.rglob("*.yaml")} | {p.name for p in tasks.iterdir() if p.is_dir()})
+        sys.exit(f"no task or dataset {ref!r}; available: {', '.join(names)}")
+    return [yaml.safe_load(p.read_text()) for p in paths]
+
+
+def resolve_repo(repo: str, commit: str) -> str:
+    """Local path for a task's `repo`: git URLs are mirrored once into ~/.cache/bench/repos and reused."""
+    if "://" not in repo and not repo.startswith("git@"):
+        return repo
+    dest = Path.home() / ".cache/bench/repos" / Path(repo).name.removesuffix(".git")
+    if not dest.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        print(f"clone {repo} -> {dest}")
+        sh("git", "clone", "-q", "--mirror", repo, str(dest), capture=False)
+    elif sh("git", "-C", str(dest), "rev-parse", "-q", "--verify", f"{commit}^{{commit}}", check=False).returncode:
+        sh("git", "-C", str(dest), "fetch", "-q")
+    return str(dest)
+
+
+def run_trial(task: dict, arm: str, rep: int, run_dir: Path, template_tag: str, keep: bool):
+    agent = task["agent"]
+    tools = task["arms"][arm] or []
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    trial = f"{task['id']}-{agent}-{arm}-r{rep}-{ts}".lower()
+    out = run_dir / f"{arm}-r{rep}"
+    out.mkdir(parents=True)
+    work = f"{SBX_HOME}/workspace/{Path(task['repo_path']).name}"
+    meta = {"trial": trial, "task": task, "arm": arm, "tools": tools, "rep": rep, "started": ts,
+            "template": f"bench/{agent}:{template_tag}"}
+    try:
+        run_in_sandbox(task, arm, trial, out, work, meta, keep)
+    except (SystemExit, subprocess.SubprocessError) as e:
+        # keep the failed trial in the report instead of silently dropping it and aborting the remaining reps
+        meta["error"] = str(e)
+        print(f"[{trial}] ERROR {e}", file=sys.stderr)
+
+    jsonl = out / "agent.jsonl"
+    meta["summary"] = summarize(agent, jsonl) if jsonl.exists() else {}
+    meta["tags"] = session_tags(meta)
+    (out / "meta.json").write_text(json.dumps(meta, indent=2, default=str))
+    s = meta["summary"]
+    print(f"[{trial}] done exit={meta.get('agent_exit')} grade={meta.get('grade_exit')} wall={meta.get('wall_s')}s "
+          f"cost={s.get('total_cost_usd')} turns={s.get('num_turns')} -> {out}")
+
+
+def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta: dict, keep: bool):
+    agent, tools = task["agent"], meta["tools"]
+    meta["sbx_version"] = sh("sbx", "version").stdout.strip()
+    with tempfile.TemporaryDirectory() as tmp:
+        snap = Path(tmp) / "repo"
+        meta["source_sha"] = make_snapshot(task["repo_path"], task["commit"], snap, task.get("history", 0))
+
+        env_args = []
+        tel = HERE / "telemetry.env"
+        if tel.exists():
+            env_args += ["--env-file", str(tel)]
+        for key, value in (task.get("env") or {}).items():
+            env_args += ["-e", f"{key}={value}"]
+        env_args += ["-e", f"OTEL_RESOURCE_ATTRIBUTES=trial.id={trial},arm={arm},task={task['id']},agent={agent}"]
+        if agent == "claude" and os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+            env_args += ["-e", "CLAUDE_CODE_OAUTH_TOKEN"]  # subscription auth fallback, taken from host env
+
+        print(f"[{trial}] create sandbox")
+        sh("sbx", "create", "-q", "--name", trial, "-t", meta["template"],
+           "--cpus", str(task.get("cpus", 2)), "--memory", str(task.get("memory", "4g")), *env_args, agent)
+        try:
+            sh("sbx", "cp", str(snap), f"{trial}:{work}")
+            t0 = time.monotonic()
+            if task.get("setup"):
+                print(f"[{trial}] setup")
+                r = sbx_exec(trial, "bash", "-lc", task["setup"], workdir=work, check=False, timeout=1800)
+                (out / "setup.log").write_text(r.stdout + r.stderr)
+                if r.returncode != 0:
+                    sys.exit(f"[{trial}] setup failed ({r.returncode}), see {out / 'setup.log'}")
+            meta["tool_logs"] = install_tools(trial, agent, tools)
+            meta["setup_s"] = round(time.monotonic() - t0, 1)
+            # after setup/tools (they download from GitHub), so the agent cannot fetch upstream history or fixes;
+            # sandbox-scoped rules are dropped by `sbx rm`
+            sh("sbx", "policy", "deny", "network", "--sandbox", trial,
+               "github.com,*.github.com,githubusercontent.com,*.githubusercontent.com")
+            (out / "prompt.md").write_text(task["prompt"])
+
+            print(f"[{trial}] run {agent}")
+            t0 = time.monotonic()
+            cmd = agent_cmd(agent, task)
+            try:
+                r = sbx_exec(trial, *cmd, workdir=work, input=task["prompt"],
+                             timeout=task.get("timeout_min", 30) * 60, check=False)
+                meta["agent_exit"] = r.returncode
+                (out / "agent.jsonl").write_text(r.stdout)
+                (out / "agent.stderr").write_text(r.stderr)
+            except subprocess.TimeoutExpired as e:
+                meta["agent_exit"] = "timeout"
+                (out / "agent.jsonl").write_text((e.stdout or b"").decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or ""))
+            meta["wall_s"] = round(time.monotonic() - t0, 1)
+
+            print(f"[{trial}] collect artifacts")
+            # diff against the base tag, not HEAD, so work the agent committed is still captured
+            patch = sbx_exec(trial, "bash", "-c", "git add -A && git diff --cached bench-base",
+                             workdir=work, check=False).stdout
+            (out / "patch.diff").write_text(patch)
+            meta["patch_lines"] = len(patch.splitlines())
+            for src, dst in {
+                "claude": [(f"{SBX_HOME}/.claude/projects", "claude-projects"), (f"{SBX_HOME}/.claude/settings.json", "claude-settings.json")],
+                "codex": [(f"{SBX_HOME}/.codex/sessions", "codex-sessions"), (f"{SBX_HOME}/.codex", "codex-home")],
+            }[agent] + [(f"{SBX_HOME}/.local/share/rtk", "rtk-data")]:
+                sh("sbx", "cp", f"{trial}:{src}", str(out / dst), check=False)
+            if "rtk" in tools:
+                (out / "rtk-gain.txt").write_text(sbx_exec(trial, "rtk", "gain", "--history", check=False).stdout)
+
+            if task.get("grade"):
+                print(f"[{trial}] grade")
+                g = sbx_exec(trial, "bash", "-lc", task["grade"], workdir=work, check=False, timeout=600)
+                meta["grade_exit"] = g.returncode
+                (out / "grade.log").write_text(g.stdout + g.stderr)
+        finally:
+            if keep:
+                print(f"[{trial}] kept sandbox (sbx rm --force {trial})")
+            else:
+                sh("sbx", "rm", "--force", trial, check=False)

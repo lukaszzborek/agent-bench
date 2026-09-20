@@ -1,0 +1,31 @@
+# Read-only git task: pickaxe (`git log -S`) plus per-file history. Scoped to commits after #3800 so the shallow
+# boundary of the 200-commit snapshot is never part of the answer.
+id: iggy-git-pickaxe-csharp
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+history: 200
+prompt: |
+  Use git history only; do not build anything and do not modify tracked files.
+
+  1. Which PR first introduced the identifier `HeartbeatInterval` anywhere under `foreign/csharp`?
+  2. Considering the commit whose subject ends with `(#3800)` and every commit after it up to HEAD, which PRs
+     changed `foreign/csharp/Iggy_SDK/Mappers/BinaryMapper.cs`?
+
+  PR number = the number in the trailing `(#NNNN)` of the commit subject. Write `ANSWER.txt` at the repo root
+  with exactly two lines: `heartbeat=<number>` and `binarymapper=<numbers ascending, comma-separated>`.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  a="$(tr -d ' \r' < ANSWER.txt)"
+  echo "$a" | grep -qx 'heartbeat=3894'
+  echo "$a" | grep -qx 'binarymapper=3800,3858,3880,3904,4027'
+arms:
+  control: []
+  rtk: [rtk]
+timeout_min: 10
+cpus: 2
+memory: 4g

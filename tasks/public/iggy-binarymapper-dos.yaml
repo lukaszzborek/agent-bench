@@ -1,0 +1,87 @@
+# Source: iggy session ca26f23a (2026-09-01). Pin = #3933. Only foreign/csharp is touched; no cargo build.
+# Test projects multi-target net8.0;net10.0 and the image has SDK 10 only, hence -f net10.0 everywhere.
+# The existing test class is itself named `BinaryMapper`, so the grade test lives in its own namespace and
+# uses the global:: name of the mapper.
+id: iggy-binarymapper-dos
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet
+repo: https://github.com/apache/iggy.git
+commit: dc1cdf23209c91fd703b59ceb47bdb9b4c662480
+env:
+  # Keep restores of this historical snapshot independent of new vulnerability advisories.
+  NuGetAudit: "false"
+setup: |
+  cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
+prompt: |
+  Work only in the C# SDK under `foreign/csharp`. Build and test with `-f net10.0` only (the image has no .NET 8
+  runtime), e.g. `dotnet test --project Iggy_SDK_Tests -f net10.0`.
+
+  The SDK can be driven into an infinite loop with 100% CPU and unbounded memory growth by a single malformed
+  21-byte TCP response to GET_CONSUMER_GROUP. In `Iggy_SDK/Mappers/BinaryMapper.cs`, `MapConsumerGroup` loops
+  `while (position < payload.Length)` calling `MapToMember`, which reads the server-supplied `partitionsCount` as a
+  signed `Int32` and returns `readBytes = 8 + partitionsCount * 4`. A hostile server sending
+  `partitionsCount = 0xFFFFFFFE` yields `readBytes = 0`, so `position` never advances and the member list grows
+  forever.
+
+  Harden `MapConsumerGroup`, `MapToMember` and `MapToConsumerGroup` so any payload that is too short, or declares
+  a count that cannot fit in the remaining bytes, is rejected with an exception instead of looping or reading out
+  of bounds. Look at how the Rust client bounds these reads. Add unit tests in `Iggy_SDK_Tests/MapperTests`.
+  Keep the existing unit suite green and `dotnet format --verify-no-changes` clean.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd foreign/csharp
+  mkdir -p Iggy_SDK_Tests/BenchGrade
+  cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
+  using System;
+  using System.Threading.Tasks;
+  using Xunit;
+  namespace Apache.Iggy.Tests.BenchGrade;
+  public class BenchGradeTests
+  {
+      private static byte[] Payload(uint memberPartitionsCount, int trailing)
+      {
+          // group header: id, partitions_count, members_count, name_len = 0; then one member: id, partitions_count
+          var bytes = new byte[13 + 8 + trailing];
+          BitConverter.GetBytes(1u).CopyTo(bytes, 0);
+          BitConverter.GetBytes(1u).CopyTo(bytes, 4);
+          BitConverter.GetBytes(1u).CopyTo(bytes, 8);
+          BitConverter.GetBytes(1u).CopyTo(bytes, 13);
+          BitConverter.GetBytes(memberPartitionsCount).CopyTo(bytes, 17);
+          return bytes;
+      }
+
+      private static async Task AssertRejected(byte[] payload)
+      {
+          var task = Task.Run(() => global::Apache.Iggy.Mappers.BinaryMapper.MapConsumerGroup(payload));
+          var done = await Task.WhenAny(task, Task.Delay(TimeSpan.FromSeconds(5)));
+          Assert.Same(task, done);
+          Assert.True(task.IsFaulted);
+      }
+
+      [Fact]
+      public Task NegativePartitionsCount_IsRejected() => AssertRejected(Payload(0xFFFFFFFE, 0));
+
+      [Fact]
+      public Task PartitionsCountBeyondPayload_IsRejected() => AssertRejected(Payload(1000, 4));
+
+      [Fact]
+      public void WellFormedGroup_StillMaps()
+      {
+          var payload = Payload(1, 4);
+          BitConverter.GetBytes(7).CopyTo(payload, 21);
+          var group = global::Apache.Iggy.Mappers.BinaryMapper.MapConsumerGroup(payload);
+          Assert.Single(group.Members);
+          Assert.Equal(7, group.Members[0].Partitions[0]);
+      }
+  }
+  EOT
+  timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+arms:
+  control: []
+  rtk: [rtk]
+timeout_min: 30
+cpus: 2
+memory: 6g

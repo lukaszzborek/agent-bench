@@ -1,0 +1,59 @@
+# Source: iggy session c14e29a9 (2026-09-04). Pin = commit before upstream fix 7b78014c9. Only foreign/csharp is touched;
+# no cargo build. Test projects multi-target net8.0;net10.0 and the image has SDK 10 only, hence -f net10.0 everywhere.
+id: iggy-utf8-identifier
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+env:
+  # Keep restores of this historical snapshot independent of new vulnerability advisories.
+  NuGetAudit: "false"
+setup: |
+  cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
+prompt: |
+  Work only in the C# SDK under `foreign/csharp`. Build and test with `-f net10.0` only (the image has no .NET 8
+  runtime), e.g. `dotnet test --project Iggy_SDK_Tests -f net10.0`.
+
+  String identifiers are encoded with the wrong length. `Identifier.String(value)` in `Iggy_SDK/Identifier.cs` sets
+  `Length = value.Length` (UTF-16 code units) while `Value = Encoding.UTF8.GetBytes(value)` (UTF-8 bytes), and the
+  size guard `value.Length is 0 or > 255` also counts code units. The server expects a 1-255 byte UTF-8 name
+  (see `WireName` in `core/binary_protocol/src/primitives/identifier.rs`). Callers in
+  `Iggy_SDK/Contracts/Tcp/TcpContracts.cs` size their buffers from `Length`, so a non-ASCII id is truncated, throws
+  "Destination is too short", or overruns into the next field (e.g. `UpdateStream` with `"naïve-café"` sends
+  `"naïve-caf"`).
+
+  Fix `Identifier`, `Kinds/Partitioning`, `Headers/HeaderKey`, `Headers/HeaderValue`, and every
+  `Encoding.UTF8.GetBytes(...)` / length-prefix pair in `TcpContracts.cs` so they measure UTF-8 byte counts and
+  validate 1..255 bytes. Throw `ArgumentException` when the byte length is out of range. Add unit tests in
+  `Iggy_SDK_Tests`. Keep the existing unit suite green and `dotnet format --verify-no-changes` clean.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd foreign/csharp
+  cat > Iggy_SDK_Tests/UtilityTests/BenchGradeTests.cs <<'EOT'
+  using System;
+  using Apache.Iggy;
+  using Xunit;
+  namespace Apache.Iggy.Tests.UtilityTests;
+  public class BenchGradeTests
+  {
+      [Fact]
+      public void StringIdentifier_UsesUtf8ByteLength()
+      {
+          var id = Identifier.String("日本語");
+          Assert.Equal(9, id.Length);
+          Assert.Equal(9, id.Value.Length);
+          Assert.Equal(5, Identifier.String("café").Length);
+          Assert.Throws<ArgumentException>(() => Identifier.String(new string('ä', 200)));
+      }
+  }
+  EOT
+  dotnet test --project Iggy_SDK_Tests -f net10.0
+arms:
+  control: []
+  rtk: [rtk]
+timeout_min: 40
+cpus: 2
+memory: 6g

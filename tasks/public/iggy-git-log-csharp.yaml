@@ -1,0 +1,29 @@
+# Read-only git task: pure `git log` output, no toolchain. `history` keeps 200 real commits ending at the pin;
+# the question is scoped to commits after #3800 so the shallow boundary (which looks like it adds every file)
+# is never part of the answer.
+id: iggy-git-log-csharp
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+history: 200
+prompt: |
+  Use git history only; do not build anything and do not modify tracked files.
+
+  Find the commit whose subject ends with `(#3800)`. Considering that commit and every commit after it up to
+  HEAD, find the commits that touch anything under `foreign/csharp/Iggy_SDK/` and whose conventional-commit type
+  is `feat` or `fix` (any scope, with or without `!`).
+
+  Write their PR numbers (the number in the trailing `(#NNNN)`) to `ANSWER.txt` at the repo root, one per line,
+  ascending, digits only. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  test "$(tr -d ' \r' < ANSWER.txt | grep -v '^$' | tr '\n' ' ')" = "3800 3872 3880 3894 3944 3958 3987 4013 "
+arms:
+  control: []
+  rtk: [rtk]
+timeout_min: 10
+cpus: 2
+memory: 4g

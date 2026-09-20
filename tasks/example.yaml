@@ -1,0 +1,26 @@
+# One benchmark task. Repo snapshot is taken at `commit` with all later history stripped.
+id: example-readme-count
+agent: claude              # claude | codex
+model: claude-sonnet-5     # pinned; codex e.g. gpt-5.3-codex
+effort: medium             # claude: low|medium|high ; codex: minimal|low|medium|high|xhigh
+template_tag: v1           # bench/<agent>:<tag> built by build-templates.sh (override: --template-tag / TAG)
+repo: https://github.com/apache/iggy.git   # git URL (cloned once into ~/.cache/bench/repos), or local path
+commit: be2265c9e
+# Optional: keep the last N real commits ending at `commit` (for git log/diff tasks). Default: one synthetic commit.
+# history: 200
+prompt: |
+  Count the lines in README.md and in every file under foreign/csharp/Iggy_SDK using shell commands.
+  Then append a line "Line count checked." to the end of README.md. Do not do anything else.
+# Optional: shell run in the repo dir (as agent user) after snapshot, before tools/agent. Same for every arm,
+# not counted in agent wall time. E.g. `dotnet restore` / `npm ci` so the agent starts from a warm cache.
+# setup: |
+#   dotnet restore
+grade: |
+  test "$(tail -n1 README.md)" = "Line count checked."
+# Each arm = list of tools from tools/<name>/setup.sh, installed+activated after snapshot copy.
+arms:
+  control: []
+  rtk: [rtk]
+timeout_min: 10
+cpus: 2
+memory: 4g

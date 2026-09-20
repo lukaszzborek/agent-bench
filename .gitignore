@@ -1,0 +1,6 @@
+__pycache__/
+*:Zone.Identifier
+results/
+.serena/
+telemetry.env
+tasks/private/
