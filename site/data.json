@@ -1,0 +1,1012 @@
+{
+ "updated": "2026-10-12T22:12:40+00:00",
+ "trials": [
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-rtk-r1-20261012t211946z",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T211946Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 24.0,
+   "setup_s": 3.8,
+   "turns": 6,
+   "cost": 0.1483,
+   "in": 12,
+   "cache_read": 191660,
+   "cache_write": 27005,
+   "out": 2112,
+   "tokens": 220789,
+   "patch_lines": 37,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-r1-1bc6ce00",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T211946Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 34.6,
+   "setup_s": 58.9,
+   "turns": 6,
+   "cost": 0.1641,
+   "in": 12,
+   "cache_read": 200459,
+   "cache_write": 29173,
+   "out": 2732,
+   "tokens": 232376,
+   "patch_lines": 45,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-r1-60da9432",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T211946Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 18.2,
+   "setup_s": 142.2,
+   "turns": 4,
+   "cost": 0.1153,
+   "in": 8,
+   "cache_read": 117336,
+   "cache_write": 23670,
+   "out": 885,
+   "tokens": 141899,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-upfr-c951e9f2",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212147Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 101.2,
+   "setup_s": 114.9,
+   "turns": 10,
+   "cost": 0.2092,
+   "in": 20,
+   "cache_read": 580976,
+   "cache_write": 28753,
+   "out": 3607,
+   "tokens": 613356,
+   "patch_lines": 122,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 9
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-upfront-d775441e",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212312Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 22.3,
+   "setup_s": 146.2,
+   "turns": 5,
+   "cost": 0.1358,
+   "in": 10,
+   "cache_read": 280217,
+   "cache_write": 24224,
+   "out": 1089,
+   "tokens": 305540,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-rtk-r1-cb6ca0d2",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212559Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 189.9,
+   "setup_s": 20.1,
+   "turns": 9,
+   "cost": 0.406,
+   "in": 18,
+   "cache_read": 473603,
+   "cache_write": 60299,
+   "out": 11738,
+   "tokens": 545658,
+   "patch_lines": 984,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-control-r1-c7ea87fa",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212604Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 25.8,
+   "setup_s": 0.0,
+   "turns": 7,
+   "cost": 0.1481,
+   "in": 14,
+   "cache_read": 216137,
+   "cache_write": 25771,
+   "out": 2338,
+   "tokens": 244260,
+   "patch_lines": 37,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-control-r1-141bf7c0",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212634Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 17.7,
+   "setup_s": 0.0,
+   "turns": 5,
+   "cost": 0.1193,
+   "in": 10,
+   "cache_read": 147948,
+   "cache_write": 22709,
+   "out": 1366,
+   "tokens": 172033,
+   "patch_lines": 8,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-control-r1-1d604947",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212713Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 12.3,
+   "setup_s": 0.0,
+   "turns": 4,
+   "cost": 0.1104,
+   "in": 8,
+   "cache_read": 112442,
+   "cache_write": 22634,
+   "out": 856,
+   "tokens": 135940,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-r1-18320f8f",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212743Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.8,
+   "setup_s": 61.6,
+   "turns": 3,
+   "cost": 0.1044,
+   "in": 6,
+   "cache_read": 82160,
+   "cache_write": 22399,
+   "out": 661,
+   "tokens": 105226,
+   "patch_lines": 16,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-control-r1-67d71187",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212924Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 154.8,
+   "setup_s": 15.8,
+   "turns": 12,
+   "cost": 0.39,
+   "in": 20,
+   "cache_read": 504222,
+   "cache_write": 55477,
+   "out": 11762,
+   "tokens": 571481,
+   "patch_lines": 987,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 9,
+    "Write": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-r1-f59c31e3",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T212926Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 198.2,
+   "setup_s": 49.3,
+   "turns": 11,
+   "cost": 0.342,
+   "in": 22,
+   "cache_read": 557869,
+   "cache_write": 52880,
+   "out": 7464,
+   "tokens": 618235,
+   "patch_lines": 490,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-rtk-r1-20261012t213127z",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213127Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 124.6,
+   "setup_s": 18.1,
+   "turns": 16,
+   "cost": 0.3803,
+   "in": 26,
+   "cache_read": 681927,
+   "cache_write": 57787,
+   "out": 8095,
+   "tokens": 747835,
+   "patch_lines": 386,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 11,
+    "Read": 4
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-upfront-45deacad",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213416Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 107.3,
+   "setup_s": 54.6,
+   "turns": 9,
+   "cost": 0.3423,
+   "in": 16,
+   "cache_read": 590187,
+   "cache_write": 53747,
+   "out": 6823,
+   "tokens": 650773,
+   "patch_lines": 374,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "mcp__serena__initial_instructions": 1,
+    "Bash": 7
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-upfro-50b19367",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213520Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.4,
+   "setup_s": 50.8,
+   "turns": 3,
+   "cost": 0.1109,
+   "in": 6,
+   "cache_read": 157807,
+   "cache_write": 21796,
+   "out": 790,
+   "tokens": 180399,
+   "patch_lines": 16,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-upfront-r-7ebc8e4c",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213654Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 27.2,
+   "setup_s": 50.1,
+   "turns": 7,
+   "cost": 0.1791,
+   "in": 14,
+   "cache_read": 411347,
+   "cache_write": 27791,
+   "out": 2673,
+   "tokens": 441825,
+   "patch_lines": 45,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-control-r1-68a1ff6b",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213711Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 105.0,
+   "setup_s": 15.7,
+   "turns": 9,
+   "cost": 0.3022,
+   "in": 18,
+   "cache_read": 420816,
+   "cache_write": 49444,
+   "out": 6231,
+   "tokens": 476509,
+   "patch_lines": 364,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-rtk-r1-9b7ae3e8",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213751Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 60.6,
+   "setup_s": 72.8,
+   "turns": 8,
+   "cost": 0.17,
+   "in": 16,
+   "cache_read": 245401,
+   "cache_write": 27532,
+   "out": 3529,
+   "tokens": 276478,
+   "patch_lines": 141,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-control-r1-0799082f",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213842Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 49.2,
+   "setup_s": 66.2,
+   "turns": 6,
+   "cost": 0.1574,
+   "in": 12,
+   "cache_read": 180624,
+   "cache_write": 26749,
+   "out": 3228,
+   "tokens": 210613,
+   "patch_lines": 163,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-rtk-r1-54e73191",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T213958Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 10.8,
+   "setup_s": 3.2,
+   "turns": 3,
+   "cost": 0.1049,
+   "in": 6,
+   "cache_read": 78384,
+   "cache_write": 22388,
+   "out": 751,
+   "tokens": 101529,
+   "patch_lines": 8,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-rtk-r1-20261012t214036z",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T214036Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 13.6,
+   "setup_s": 2.8,
+   "turns": 4,
+   "cost": 0.1136,
+   "in": 8,
+   "cache_read": 116602,
+   "cache_write": 23207,
+   "out": 909,
+   "tokens": 140726,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-r1-ee6d8c19",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261012t211946z",
+   "started": "20261012T214109Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 85.3,
+   "setup_s": 80.1,
+   "turns": 9,
+   "cost": 0.1716,
+   "in": 18,
+   "cache_read": 283194,
+   "cache_write": 26897,
+   "out": 3566,
+   "tokens": 313675,
+   "patch_lines": 156,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-serena-r1-c13025cb",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261012t215223z",
+   "started": "20261012T215223Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 257.8,
+   "setup_s": 171.6,
+   "turns": 17,
+   "cost": 0.5082,
+   "in": 28,
+   "cache_read": 860569,
+   "cache_write": 68595,
+   "out": 14770,
+   "tokens": 943962,
+   "patch_lines": 1011,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 13,
+    "Read": 1,
+    "Write": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-serena-upfr-9cd8951d",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261012t215223z",
+   "started": "20261012T215223Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 242.9,
+   "setup_s": 173.3,
+   "turns": 10,
+   "cost": 0.5918,
+   "in": 18,
+   "cache_read": 689402,
+   "cache_write": 99493,
+   "out": 12487,
+   "tokens": 801400,
+   "patch_lines": 1001,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 9
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-rtk-r1-20261012t220530z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261012t220530z",
+   "started": "20261012T220530Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 47.1,
+   "setup_s": 38.8,
+   "turns": 3,
+   "cost": 0.1207,
+   "in": 6,
+   "cache_read": 66837,
+   "cache_write": 19643,
+   "out": 3545,
+   "tokens": 90031,
+   "patch_lines": 156,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-serena-r1-20261012t220530z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261012t220530z",
+   "started": "20261012T220530Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 92.8,
+   "setup_s": 60.7,
+   "turns": 5,
+   "cost": 0.1394,
+   "in": 10,
+   "cache_read": 137637,
+   "cache_write": 21835,
+   "out": 3827,
+   "tokens": 163309,
+   "patch_lines": 173,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-control-r1-20261012t220618z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261012t220530z",
+   "started": "20261012T220618Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 93.5,
+   "setup_s": 22.6,
+   "turns": 6,
+   "cost": 0.1445,
+   "in": 10,
+   "cache_read": 136289,
+   "cache_write": 21136,
+   "out": 4630,
+   "tokens": 162065,
+   "patch_lines": 188,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 4
+   },
+   "sbx": "v0.47.0"
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-serena-upfront-r1-56e92f67",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261012t220942z",
+   "started": "20261012T220942Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena-upfront",
+   "tools": [
+    "serena",
+    "upfront"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 47.6,
+   "setup_s": 42.2,
+   "turns": 3,
+   "cost": 0.1232,
+   "in": 6,
+   "cache_read": 146339,
+   "cache_write": 18951,
+   "out": 3279,
+   "tokens": 168575,
+   "patch_lines": 158,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0",
+    "upfront": null
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "sbx": "v0.47.0"
+  }
+ ]
+}

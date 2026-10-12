@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Bench Results</title>
+<link rel="icon" href="data:,">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10); --wash: rgba(11,11,11,0.04);
+  --good: #006300; --bad: #d03b3b;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --wash: rgba(255,255,255,0.05);
+    --good: #0ca30c; --bad: #e66767;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1440px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 16px; margin: 32px 0 4px; }
+.sub, .note { color: var(--ink-2); margin: 0 0 12px; }
+.note { font-size: 13px; }
+.filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
+.filters label, .filters .field { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--ink-2); }
+.filters .check { flex-direction: row; align-items: center; gap: 6px; font-size: 14px; color: var(--ink); padding: 6px 0; }
+select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; min-width: 150px; max-width: 100%; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+[data-mode] { display: none !important; }
+body[data-compare="arms"] [data-mode="arms"], body[data-compare="models"] [data-mode="models"] { display: flex !important; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+.tile .arm { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tile .big { font-size: 26px; font-weight: 600; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+.tile table { margin-top: 8px; }
+.tile th, .tile td { padding: 3px 0 3px 8px; border: 0; position: static; }
+.tile td:first-child { color: var(--ink-2); padding-left: 0; }
+.swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.seg button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--ink-2); padding: 5px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--wash); color: var(--ink); font-weight: 600; }
+#chart svg { display: block; width: 100%; }
+#chart text { fill: var(--ink-2); font-size: 12px; }
+#chart .tick { fill: var(--muted); font-size: 11px; }
+.scroll { overflow-x: auto; }
+/* no top padding in scroll cards: the sticky header must sit at the scroll edge, or rows show through above it */
+.card.scroll { padding-top: 0; }
+.card.scroll th { padding-top: 14px; }
+.wrap { white-space: normal; min-width: 110px; max-width: 170px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child, .txt { text-align: left; }
+th { color: var(--ink-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+th.sort { cursor: pointer; user-select: none; }
+th.sort:hover { color: var(--ink); }
+tbody tr:hover { background: var(--wash); }
+.up { color: var(--bad); } .down { color: var(--good); }
+.st-pass { color: var(--good); } .st-fail { color: var(--bad); } .st-error { color: var(--muted); }
+.dim { color: var(--muted); }
+#tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.15); display: none; z-index: 10; max-width: 280px; }
+#tip b { display: block; margin-bottom: 2px; }
+.empty { color: var(--ink-2); padding: 24px 0; text-align: center; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Agent Bench Results</h1>
+  <p class="sub">Coding agents in fresh sandboxes. Compare arms (same model, arms differ only in installed tools) or models (same arm and task). <span id="updated"></span></p>
+
+  <div class="filters">
+    <div class="field">Compare <div class="seg" id="compare"><button data-k="arms">Arms</button><button data-k="models">Models</button></div></div>
+    <label>Dataset <select id="f-dataset"></select></label>
+    <label data-mode="arms">Agent · model · effort <select id="f-model"></select></label>
+    <label data-mode="models">Arm <select id="f-arm"></select></label>
+    <label data-mode="models">Baseline model <select id="f-base"></select></label>
+    <label>Run day <select id="f-day"></select></label>
+    <label class="check"><input type="checkbox" id="f-passed"> Passed only</label>
+  </div>
+
+  <h2 id="h-tiles"></h2>
+  <p class="note">Per task: median over valid trials (not errored, some tokens used; with “Passed only”, passed trials only). Pass rate always counts every valid trial. Σ and Δ use only tasks that have both the series and the baseline. Negative Δ = cheaper than the baseline.</p>
+  <div id="tiles" class="tiles"></div>
+
+  <h2 id="h-chart"></h2>
+  <div class="card">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:8px">
+      <div class="legend" id="legend"></div>
+      <div class="seg" id="metric"></div>
+    </div>
+    <div id="chart"></div>
+  </div>
+
+  <h2>Task matrix</h2>
+  <p class="note">pass k/n · median of the selected metric · Δ vs the baseline.</p>
+  <div class="card scroll"><table id="matrix"></table></div>
+
+  <h2>Trials</h2>
+  <p class="note">Error = infrastructure failure before grading. Error and zero-token trials (agent never ran) are excluded from n, pass rate and medians.</p>
+  <div class="card scroll" style="max-height:560px"><table id="trials"></table></div>
+</main>
+<div id="tip"></div>
+<script>
+const METRICS = {
+  tokens: { label: "Tokens", fmt: v => fmtInt(v) },
+  cost: { label: "Cost", fmt: v => v == null ? "—" : "$" + v.toFixed(3) },
+  turns: { label: "Turns", fmt: v => v == null ? "—" : Math.round(v) },
+  wall_s: { label: "Wall", fmt: v => v == null ? "—" : Math.round(v) + "s" },
+};
+// compare "arms": one model, arms vs control. compare "models": one arm, models vs a baseline model.
+const state = { compare: "", dataset: "", model: "", arm: "", base: "", day: "", passed: false, metric: "tokens", sort: "started", desc: true };
+let all = [], color = {};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+function fmtInt(v) {
+  if (v == null) return "—";
+  if (v >= 1e6) return (v / 1e6).toFixed(2) + "M";
+  if (v >= 1e3) return (v / 1e3).toFixed(0) + "k";
+  return String(Math.round(v));
+}
+const fmtPct = d => d == null ? "—" : (d > 0 ? "+" : d < 0 ? "−" : "") + Math.abs(d * 100).toFixed(0) + "%";
+const deltaHtml = d => d == null ? '<span class="dim">—</span>'
+  : `<span class="${d > 0.005 ? "up" : d < -0.005 ? "down" : ""}">${d > 0.005 ? "▲ " : d < -0.005 ? "▼ " : ""}${fmtPct(d)}</span>`;
+const median = xs => {
+  const v = xs.filter(x => x != null).sort((a, b) => a - b);
+  if (!v.length) return null;
+  const m = v.length >> 1;
+  return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+};
+// zero tokens = the agent never ran (auth/startup failure that still reached grading): says nothing about the arm
+const valid = r => r.status !== "error" && r.tokens > 0;
+const modelKey = r => `${r.agent} · ${r.model} · ${r.effort}`;
+const short = k => k.replace(" · claude-", " · ");
+const mostCommon = counts => Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+
+async function init() {
+  const data = await fetch("data.json", { cache: "no-store" }).then(r => r.json());
+  all = data.trials;
+  $("updated").textContent = `Updated ${data.updated.slice(0, 10)} · ${all.length} trials.`;
+  const models = count(all.map(modelKey)), arms = count(all.map(r => r.arm));
+  // colour follows the arm / model across every filter state: assigned once from the full data set
+  for (const names of [Object.keys(arms).filter(a => a !== "control"), Object.keys(models)])
+    names.sort().forEach((a, i) => color[a] = i < 8 ? `var(--s${i + 1})` : "var(--muted)");
+
+  state.model = state.base = mostCommon(models);
+  state.arm = arms.control ? "control" : mostCommon(arms);
+  // open on whatever this data set can actually compare
+  state.compare = Object.keys(arms).length > 1 ? "arms" : "models";
+  fillSelect("f-dataset", [["", "all datasets"], ...Object.keys(count(all.map(r => r.dataset))).sort().map(d => [d, d])], "dataset");
+  fillSelect("f-model", Object.keys(models).sort().map(m => [m, `${short(m)} (${models[m]})`]), "model");
+  fillSelect("f-arm", Object.keys(arms).sort().map(a => [a, `${a} (${arms[a]})`]), "arm");
+  fillSelect("f-base", Object.keys(models).sort().map(m => [m, short(m)]), "base");
+  $("compare").onclick = e => { if (e.target.dataset.k) { state.compare = e.target.dataset.k; render(); } };
+  fillSelect("f-day", [["", "all days"], ...[...new Set(all.map(r => (r.started || "").slice(0, 8)))].sort().reverse()
+    .map(d => [d, `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`])], "day");
+  $("f-passed").onchange = e => { state.passed = e.target.checked; render(); };
+  $("metric").innerHTML = Object.entries(METRICS).map(([k, m]) => `<button data-k="${k}">${m.label}</button>`).join("");
+  $("metric").onclick = e => { if (e.target.dataset.k) { state.metric = e.target.dataset.k; render(); } };
+  window.addEventListener("resize", () => drawChart(current()));
+  render();
+}
+function count(xs) { return xs.reduce((o, x) => (o[x] = (o[x] || 0) + 1, o), {}); }
+function fillSelect(id, opts, key) {
+  const el = $(id);
+  el.innerHTML = opts.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("");
+  el.value = state[key];
+  el.onchange = () => { state[key] = el.value; render(); };
+}
+
+function current() {
+  const byModel = state.compare === "models";
+  const key = byModel ? modelKey : r => r.arm, base = byModel ? state.base : "control";
+  const rows = all.filter(r => (!state.dataset || r.dataset === state.dataset)
+    && (byModel ? r.arm === state.arm : modelKey(r) === state.model)
+    && (!state.day || (r.started || "").startsWith(state.day)));
+  const series = [...new Set(rows.map(key))].sort((a, b) => (a !== base) - (b !== base) || a.localeCompare(b));
+  const tasks = [...new Set(rows.map(r => r.task))].sort();
+  const cells = {};
+  for (const t of tasks) for (const a of series) {
+    const trials = rows.filter(r => r.task === t && key(r) === a);
+    if (!trials.length) continue;
+    const done = trials.filter(valid);
+    const used = done.filter(r => !state.passed || r.status === "pass");
+    // k = trials behind the medians; with "Passed only" a cell can have a pass rate but no medians
+    const c = { n: done.length, pass: done.filter(r => r.status === "pass").length, err: trials.length - done.length, k: used.length };
+    for (const m in METRICS) c[m] = median(used.map(r => r[m]));
+    cells[t + "\u0000" + a] = c;
+  }
+  const cell = (t, a) => cells[t + "\u0000" + a];
+  const delta = (t, a, m) => {
+    const x = cell(t, a)?.[m], c = cell(t, base)?.[m];
+    return x == null || !c ? null : (x - c) / c;
+  };
+  return { rows: state.passed ? rows.filter(r => r.status === "pass") : rows, series, base, tasks, cell, delta };
+}
+
+function render() {
+  document.body.dataset.compare = state.compare;
+  document.querySelectorAll("#metric button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === state.metric));
+  document.querySelectorAll("#compare button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === state.compare));
+  const v = current(), base = short(v.base);
+  $("h-tiles").textContent = state.compare === "models" ? `Models vs ${base} (arm: ${state.arm})` : "Arms vs control";
+  $("h-chart").textContent = `Per-task change vs ${base}`;
+  drawTiles(v); drawChart(v); drawMatrix(v); drawTrials(v);
+}
+
+function drawTiles({ series, base, tasks, cell, delta }) {
+  if (!series.length) { $("tiles").innerHTML = '<p class="empty">No trials for this filter.</p>'; return; }
+  $("tiles").innerHTML = series.map(a => {
+    const own = tasks.filter(t => cell(t, a)?.n);
+    const n = own.reduce((s, t) => s + cell(t, a).n, 0), pass = own.reduce((s, t) => s + cell(t, a).pass, 0);
+    const paired = own.filter(t => cell(t, a).k && cell(t, base)?.k);
+    const sum = (s, m) => { const v = paired.reduce((acc, t) => acc + (cell(t, s)[m] ?? NaN), 0); return isNaN(v) ? null : v; };
+    const isBase = a === base;
+    const head = `<tr><th></th><th title="sum of per-task medians">Σ</th>${isBase ? "" : "<th>Δ total</th><th title='median of per-task deltas'>Δ task med</th>"}</tr>`;
+    const rows = head + Object.keys(METRICS).map(m => {
+      const tot = sum(a, m), ref = sum(base, m);
+      const cols = isBase ? "" : `<td>${deltaHtml(tot == null || !ref ? null : (tot - ref) / ref)}</td><td>${deltaHtml(median(paired.map(t => delta(t, a, m))))}</td>`;
+      return `<tr><td>${METRICS[m].label}</td><td>${METRICS[m].fmt(tot)}</td>${cols}</tr>`;
+    }).join("");
+    const sw = isBase ? "" : `<span class="swatch" style="background:${color[a]}"></span>`;
+    return `<div class="card tile"><div class="arm">${sw}${esc(short(a))}${isBase ? ' <span class="dim" style="font-weight:400">baseline</span>' : ""}</div>
+      <div class="big">${n ? Math.round(100 * pass / n) + "%" : "—"} <span class="dim" style="font-size:14px;font-weight:400">pass ${pass}/${n}</span></div>
+      <div class="dim" style="font-size:12px">${own.length} tasks${isBase ? "" : `, ${paired.length} paired with baseline`}</div>
+      <table>${rows}</table></div>`;
+  }).join("");
+}
+
+function drawChart({ series, base, tasks, cell, delta }) {
+  const m = state.metric, treat = series.filter(a => a !== base);
+  const bars = tasks.map(t => ({ t, items: treat.map(a => ({ a, d: delta(t, a, m) })).filter(x => x.d != null) }))
+    .filter(g => g.items.length);
+  const shown = treat.filter(a => bars.some(g => g.items.some(x => x.a === a)));
+  $("legend").innerHTML = shown.map(a => `<span><span class="swatch" style="background:${color[a]}"></span>${esc(short(a))}</span>`).join("");
+  if (!bars.length) { $("chart").innerHTML = `<p class="empty">Needs the baseline and at least one other ${state.compare === "models" ? "model" : "arm"} on the same task.</p>`; return; }
+
+  const W = $("chart").clientWidth, narrow = W < 560;
+  if (!W) return;  // not laid out yet; the resize handler redraws
+  const labelW = narrow ? 0 : Math.min(260, W * 0.3), barH = 12, gap = 2, groupGap = narrow ? 30 : 14, top = 22;
+  const raw = Math.max(...bars.flatMap(g => g.items.map(x => Math.abs(x.d))));
+  const step = raw <= 1 ? 0.1 : 0.5, maxAbs = Math.max(step, Math.ceil(raw / step) * step);
+  const x0 = labelW + 20, x1 = W - 20, mid = (x0 + x1) / 2, sx = d => mid + d / maxAbs * (x1 - x0) / 2;
+  let y = top, out = [];
+  const ticks = [-1, -0.5, 0, 0.5, 1].map(f => f * maxAbs);
+  for (const d of ticks) {
+    out.push(`<line x1="${sx(d)}" x2="${sx(d)}" y1="${top - 4}" y2="__H__" stroke="var(${d ? "--grid" : "--axis"})" stroke-width="1"/>`);
+    out.push(`<text class="tick" x="${sx(d)}" y="12" text-anchor="middle">${d ? fmtPct(d) : "0"}</text>`);
+  }
+  for (const g of bars) {
+    const h = g.items.length * (barH + gap) - gap;
+    if (narrow) { out.push(`<text x="${x0}" y="${y + 4}">${esc(g.t)}</text>`); y += 10; }
+    else out.push(`<text x="${labelW}" y="${y + h / 2 + 4}" text-anchor="end">${esc(g.t)}</text>`);
+    for (const { a, d } of g.items) {
+      const xa = Math.min(sx(0), sx(d)), w = Math.max(1, Math.abs(sx(d) - sx(0)));
+      const r = Math.min(4, w / 2);
+      // flat edge on the zero line, rounded data end
+      const path = d >= 0
+        ? `M${xa},${y}h${w - r}a${r},${r} 0 0 1 ${r},${r}v${barH - 2 * r}a${r},${r} 0 0 1 -${r},${r}h-${w - r}z`
+        : `M${xa + w},${y}h-${w - r}a${r},${r} 0 0 0 -${r},${r}v${barH - 2 * r}a${r},${r} 0 0 0 ${r},${r}h${w - r}z`;
+      const c = cell(g.t, a), ref = cell(g.t, base);
+      const tip = `<b>${esc(g.t)}</b>${esc(short(a))}: ${METRICS[m].fmt(c[m])} vs ${esc(short(base))} ${METRICS[m].fmt(ref[m])}<br>Δ ${fmtPct(d)} · pass ${c.pass}/${c.n} vs ${ref.pass}/${ref.n}`;
+      out.push(`<path d="${path}" fill="${color[a]}"/>`);
+      out.push(`<rect x="${x0}" y="${y - 1}" width="${x1 - x0}" height="${barH + 2}" fill="transparent" data-tip="${esc(tip)}"/>`);
+      y += barH + gap;
+    }
+    y += groupGap - gap;
+  }
+  const H = y + 4;
+  $("chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Per-task ${METRICS[m].label} change vs ${esc(short(base))}">${out.join("").replaceAll("__H__", H - 6)}</svg>`;
+}
+
+function drawMatrix({ series, base, tasks, cell, delta }) {
+  const m = state.metric;
+  if (!tasks.length) { $("matrix").innerHTML = ""; return; }
+  const head = `<thead><tr><th>task</th>${series.map(a => `<th>${esc(short(a))}</th>`).join("")}</tr></thead>`;
+  const body = tasks.map(t => `<tr><td>${esc(t)}</td>${series.map(a => {
+    const c = cell(t, a);
+    if (!c) return '<td class="dim">—</td>';
+    const err = c.err ? ` <span class="dim" title="errored or zero-token trials, not counted">excl ${c.err}</span>` : "";
+    const d = a === base ? "" : ` · ${deltaHtml(delta(t, a, m))}`;
+    return `<td><span class="${c.n && c.pass === c.n ? "st-pass" : c.pass ? "" : "st-fail"}">${c.pass}/${c.n}</span>${err} · ${METRICS[m].fmt(c[m])}${d}</td>`;
+  }).join("")}</tr>`).join("");
+  $("matrix").innerHTML = head + `<tbody>${body}</tbody>`;
+}
+
+const TXT = ["task", "model", "arm", "status", "tool_calls", "versions"];
+// mcp__<server>__<tool> collapses to the server, so an arm's tool shows as one number next to Bash/Read/...
+function toolCalls(calls) {
+  const by = {};
+  for (const [k, v] of Object.entries(calls || {})) { const s = k.split("__")[1] ?? k; by[s] = (by[s] || 0) + v; }
+  const txt = Object.entries(by).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ");
+  const all = Object.entries(calls || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join("\n");
+  return txt ? `<span title="${esc(all)}">${esc(txt)}</span>` : '<span class="dim">—</span>';
+}
+function drawTrials({ rows }) {
+  const cols = [["started", "started"], ["task", "task"], ["model", "model"], ["arm", "arm"], ["rep", "rep"], ["status", "status"],
+    ["cost", "cost"], ["tokens", "tokens"], ["out", "output"], ["turns", "turns"], ["wall_s", "wall"], ["patch_lines", "patch"],
+    ["tool_calls", "tool calls"], ["versions", "versions"]];
+  const k = state.sort, dir = state.desc ? -1 : 1;
+  const sorted = [...rows].sort((a, b) => (a[k] ?? -Infinity) > (b[k] ?? -Infinity) ? dir : (a[k] ?? -Infinity) < (b[k] ?? -Infinity) ? -dir : 0);
+  const icon = { pass: "✓", fail: "✗", error: "!" };
+  const fmt = (c, r) => c === "cost" ? METRICS.cost.fmt(r.cost) : c === "wall_s" ? METRICS.wall_s.fmt(r.wall_s)
+    // the token split goes in a tooltip: four more numeric columns pushed the table past the page width
+    : c === "tokens" ? `<span title="input ${fmtInt(r.in)} · cache read ${fmtInt(r.cache_read)} · cache write ${fmtInt(r.cache_write)} · output ${fmtInt(r.out)}">${fmtInt(r.tokens)}</span>`
+    : c === "out" ? fmtInt(r.out)
+    : c === "status" ? `<span class="st-${valid(r) ? r.status : "error"}">${icon[r.status]} ${r.status}${r.timeout ? " (timeout)" : ""}${r.status !== "error" && !valid(r) ? " (no tokens)" : ""}</span>`
+    : c === "tool_calls" ? toolCalls(r.tool_calls)
+    : c === "model" ? esc(`${r.model.replace(/^claude-/, "")} · ${r.effort}`)
+    : c === "versions" ? `<span title="${esc(Object.values(r.versions || {}).filter(Boolean).join("\n"))}">${esc(Object.entries(r.versions || {}).filter(([, v]) => v)
+        .map(([k, v]) => `${k} ${v.match(/\d+(\.\d+)+/)?.[0] ?? v}`).join(" · ") || "—")}</span>`
+    : c === "started" ? esc((r.started || "").replace(/^(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d).*/, "$1-$2-$3 $4:$5"))
+    : esc(r[c] ?? "—");
+  $("trials").innerHTML = `<thead><tr>${cols.map(([c, l]) => `<th class="sort${TXT.includes(c) ? " txt" : ""}" data-k="${c}">${l}${c === k ? (state.desc ? " ↓" : " ↑") : ""}</th>`).join("")}</tr></thead>
+    <tbody>${sorted.map(r => `<tr title="${esc(r.trial)}">${cols.map(([c]) => `<td class="${TXT.includes(c) ? "txt" : ""}${["tool_calls", "versions"].includes(c) ? " wrap" : ""}">${fmt(c, r)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  $("trials").querySelector("thead").onclick = e => {
+    const c = e.target.closest("th")?.dataset.k;
+    if (!c) return;
+    state.desc = state.sort === c ? !state.desc : true;
+    state.sort = c;
+    drawTrials(current());
+  };
+}
+
+document.addEventListener("pointermove", e => {
+  const t = e.target.closest?.("[data-tip]"), tip = $("tip");
+  if (!t) { tip.style.display = "none"; return; }
+  tip.innerHTML = t.dataset.tip;
+  tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - w - 8) + "px";
+  tip.style.top = (e.clientY + 14 + h > innerHeight ? e.clientY - h - 10 : e.clientY + 14) + "px";
+});
+init().catch(e => { document.querySelector("main").insertAdjacentHTML("beforeend", `<p class="empty">Could not load data.json: ${esc(e.message)}</p>`); });
+</script>
+</body>
+</html>
