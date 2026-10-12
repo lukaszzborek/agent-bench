@@ -1,0 +1,111 @@
+# Source: apache/iggy 86bf41914 "feat(csharp): add mising metrics to StatsResponse" (#3221). Pin = its parent
+# c6a404aae, where the Rust wire format already carries threads_count/free_disk_space/total_disk_space but the C#
+# mapper stops after the cache metrics and never advances past a cache entry. Small task (2 SDK files).
+# Only foreign/csharp is touched; no cargo build. Test projects multi-target net8.0;net10.0 and the image has
+# SDK 10 only, hence -f net10.0 everywhere.
+id: iggy-stats-metrics
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet
+repo: https://github.com/apache/iggy.git
+commit: c6a404aaea7392a5983866eeaad3b378642b62e8
+env:
+  # Keep restores of this historical snapshot independent of new vulnerability advisories.
+  NuGetAudit: "false"
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
+setup: |
+  cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
+prompt: |
+  Work only in the C# SDK under `foreign/csharp`. Build and test with `-f net10.0` only (the image has no .NET 8
+  runtime), e.g. `dotnet test --project Iggy_SDK_Tests -f net10.0`.
+
+  `GetStatsAsync` over TCP is broken against the current server. With a server that has cache metrics for more
+  than one partition, `BinaryMapper.MapStats` (`Iggy_SDK/Mappers/BinaryMapper.cs`) throws
+  `ArgumentException: An item with the same key has already been added`, and with a single partition the
+  returned `CacheMetrics` entry does not match what the server reports. The response also lacks metrics the
+  server sends and the other SDKs expose: the thread count of the server process and the free and total disk
+  space of the data directory. The authoritative wire format is `StatsResponse` in
+  `core/binary_protocol/src/responses/system/get_stats.rs`.
+
+  Make the C# mapper decode the full GET_STATS response and expose the missing values on
+  `Apache.Iggy.Contracts.StatsResponse` as `uint ThreadsCount`, `ulong FreeDiskSpace` and `ulong TotalDiskSpace`
+  (serialized like the other byte-size properties for HTTP). Add unit tests in `Iggy_SDK_Tests`. Keep the
+  existing unit suite green and `dotnet format --verify-no-changes` clean.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd foreign/csharp
+  mkdir -p Iggy_SDK_Tests/BenchGrade
+  cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
+  using System.Buffers.Binary;
+  using System.Collections.Generic;
+  using System.Text;
+  using Apache.Iggy.Contracts;
+  using Xunit;
+  namespace Apache.Iggy.Tests.BenchGrade;
+  public class BenchGradeTests
+  {
+      private static byte[] StatsPayload((uint s, uint t, uint p, ulong hits, ulong misses, float ratio)[] cache)
+      {
+          var bytes = new List<byte>();
+          void U32(uint v) { var b = new byte[4]; BinaryPrimitives.WriteUInt32LittleEndian(b, v); bytes.AddRange(b); }
+          void U64(ulong v) { var b = new byte[8]; BinaryPrimitives.WriteUInt64LittleEndian(b, v); bytes.AddRange(b); }
+          void F32(float v) { var b = new byte[4]; BinaryPrimitives.WriteSingleLittleEndian(b, v); bytes.AddRange(b); }
+          void Str(string v) { var b = Encoding.UTF8.GetBytes(v); U32((uint)b.Length); bytes.AddRange(b); }
+          U32(4242); F32(1.5f); F32(2.5f);
+          U64(100); U64(200); U64(300); U64(400); U64(1_700_000_000_000_000); U64(500); U64(600); U64(700);
+          U32(3); U32(4); U32(5); U32(6); U64(800); U32(7); U32(8);
+          Str("bench-host"); Str("Linux"); Str("6.1"); Str("6.1.0-generic"); Str("0.8.0");
+          U32(8000);
+          U32((uint)cache.Length);
+          foreach (var c in cache)
+          {
+              U32(c.s); U32(c.t); U32(c.p); U64(c.hits); U64(c.misses); F32(c.ratio);
+          }
+          U32(16);
+          U64(107_374_182_400);
+          U64(214_748_364_800);
+          return bytes.ToArray();
+      }
+
+      [Fact]
+      public void MapStats_DecodesAllCacheEntriesAndTrailingMetrics()
+      {
+          var payload = StatsPayload([(1, 1, 1, 10, 2, 0.8f), (1, 2, 3, 30, 10, 0.75f)]);
+          var stats = global::Apache.Iggy.Mappers.BinaryMapper.MapStats(payload);
+
+          Assert.Equal(4242, stats.ProcessId);
+          Assert.Equal("0.8.0", stats.IggyServerVersion);
+          Assert.Equal(8000u, stats.IggyServerSemver);
+          Assert.Equal(2, stats.CacheMetrics.Count);
+          var first = stats.CacheMetrics[new CacheMetricsKey { StreamId = 1, TopicId = 1, PartitionId = 1 }];
+          Assert.Equal(10ul, first.Hits);
+          Assert.Equal(2ul, first.Misses);
+          Assert.Equal(0.8f, first.HitRatio);
+          var second = stats.CacheMetrics[new CacheMetricsKey { StreamId = 1, TopicId = 2, PartitionId = 3 }];
+          Assert.Equal(30ul, second.Hits);
+          Assert.Equal(10ul, second.Misses);
+          Assert.Equal(0.75f, second.HitRatio);
+          Assert.Equal(16u, stats.ThreadsCount);
+          Assert.Equal(107_374_182_400ul, stats.FreeDiskSpace);
+          Assert.Equal(214_748_364_800ul, stats.TotalDiskSpace);
+      }
+
+      [Fact]
+      public void MapStats_WithoutCacheMetrics_DecodesTrailingMetrics()
+      {
+          var stats = global::Apache.Iggy.Mappers.BinaryMapper.MapStats(StatsPayload([]));
+
+          Assert.Empty(stats.CacheMetrics);
+          Assert.Equal(16u, stats.ThreadsCount);
+          Assert.Equal(107_374_182_400ul, stats.FreeDiskSpace);
+          Assert.Equal(214_748_364_800ul, stats.TotalDiskSpace);
+      }
+  }
+  EOT
+  timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+timeout_min: 30
+cpus: 2
+memory: 6g

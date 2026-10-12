@@ -1,0 +1,30 @@
+# Read-only navigation task on a Python repo: find-references across modules for each of the 28 exception classes.
+# Pin = encode/httpx master 2026-02-23 (#3773). Ground truth (2026-09-29): (a) grep -w of each class outside
+# _exceptions.py/__init__.py plus reading every `raise` statement and HTTPCORE_EXC_MAP in _transports/default.py,
+# (b) an ast walk over httpx/ collecting `raise Name(...)` calls and the dict values in _load_httpcore_exceptions.
+# Both agree. Traps: NetworkError and TimeoutException are base classes but are mapped (so raised); HTTPError appears
+# only as a type annotation, RequestError only in an `except` in _main.py and a re-raise in request_context.
+id: httpx-unraised-exceptions
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/encode/httpx.git
+commit: b5addb64f0161ff6bfe94c124ef76f6a1fba5254
+prompt: |
+  Read the code only; do not build or run anything and do not modify tracked files.
+
+  `httpx/_exceptions.py` defines the exception classes of httpx. Find the ones that the httpx package itself (the
+  `httpx/` directory, not tests or docs) never raises. A class counts as raised when code under `httpx/` creates an
+  instance of it to raise: a `raise ClassName(...)` statement, or the class being a value of the httpcore-to-httpx
+  exception mapping in `httpx/_transports/default.py`. Re-raising a caught exception (`raise`, `raise exc`) does not
+  count, and neither does naming a class in an `except` clause, a type annotation or a base-class list.
+
+  Write `ANSWER.txt` at the repo root with the names of the never-raised classes, one per line, sorted.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  test "$(tr -d ' \r' < ANSWER.txt | grep -v '^$' | LC_ALL=C sort -u | tr '\n' ' ')" = "CloseError HTTPError RequestError StreamError TransportError "
+timeout_min: 10
+cpus: 2
+memory: 4g

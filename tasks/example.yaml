@@ -17,10 +17,11 @@ prompt: |
 #   dotnet restore
 grade: |
   test "$(tail -n1 README.md)" = "Line count checked."
-# Each arm = list of tools from tools/<name>/setup.sh, installed+activated after snapshot copy.
-arms:
-  control: []
-  rtk: [rtk]
+# Optional: own arms instead of the shared arms.yaml. Each arm = list of tools from tools/<name>/setup.sh,
+# installed+activated after snapshot copy.
+# arms:
+#   control: []
+#   rtk: [rtk]
 timeout_min: 10
 cpus: 2
 memory: 4g

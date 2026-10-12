@@ -1,0 +1,115 @@
+# Source: remeda/remeda PR #1049 (issue #1046), upstream commit 28f447a7805e8f67c7aaaba6c740065e34358bf2
+# "fix: Handling of strings that are `Object` instance method names (in `groupBy` and `countBy`)".
+# Pin = its parent. Pre-dates the upstream Claude Code harness (.claude/ hooks), so no project hooks run.
+# Hidden test = upstream countBy/groupBy cases plus data-last and other Object.prototype member names. groupBy avoids a
+# `constructor` key on purpose: vitest's toStrictEqual compares `.constructor`, which would be the (distinct) arrays.
+id: remeda-groupby-proto-keys
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/remeda/remeda.git
+commit: addddc1500b72fe43fbd578744c95d79e8b191cd
+setup: |
+  # the sandbox proxy resets connections under parallel load (ECONNRESET); npm ci starts clean, so a retry is safe
+  npm ci --no-audit --no-fund || { sleep 10; npm ci --no-audit --no-fund; } || { sleep 30; npm ci --no-audit --no-fund; }
+prompt: |
+  Bug in the `remeda` package (`packages/remeda`): `groupBy` and `countBy` misbehave when a key returned by the
+  callback happens to be the name of an `Object.prototype` member.
+
+      R.countBy(["toString", "toString", "valueOf"], R.identity());
+      // expected { toString: 2, valueOf: 1 }
+      // actual   { toString: "function toString() { [native code] }11", valueOf: "function valueOf() { [native code] }1" }
+
+      R.groupBy([{ a: "toString" }, { a: "valueOf" }], R.prop("a"));
+      // expected { toString: [{ a: "toString" }], valueOf: [{ a: "valueOf" }] }
+      // actual   TypeError: items.push is not a function
+
+  Any string key (`"constructor"`, `"hasOwnProperty"`, ...) must be treated like any other key, in both the
+  data-first and data-last (`pipe`) forms. The result must stay a plain object (same prototype as `{}`), so
+  existing `toStrictEqual` assertions keep passing. The implementations are in `src/groupBy.ts` and
+  `src/countBy.ts`.
+
+  Fix it and add regression tests. From `packages/remeda`: `npx vitest run` for runtime tests and
+  `npx tsc -p tsconfig.tests.json` to typecheck the tests. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd packages/remeda
+  cat > src/groupBy.bench-grade.test.ts <<'EOT'
+  import { countBy } from "./countBy";
+  import { groupBy } from "./groupBy";
+  import { identity } from "./identity";
+  import { pipe } from "./pipe";
+  import { prop } from "./prop";
+
+  const DATA = [
+    { a: "toString", b: "toString" },
+    { a: "toString", b: "valueOf" },
+    { a: "valueOf", b: "toString" },
+    { a: "toString", b: "__proto__" },
+  ];
+
+  describe("countBy", () => {
+    test("category is an object instance method name", () => {
+      expect(countBy(DATA, prop("a"))).toStrictEqual({ toString: 3, valueOf: 1 });
+    });
+
+    test("data last", () => {
+      expect(pipe(DATA, countBy(prop("a")))).toStrictEqual({
+        toString: 3,
+        valueOf: 1,
+      });
+    });
+
+    test("other prototype member names", () => {
+      expect(
+        countBy(
+          ["constructor", "hasOwnProperty", "constructor", "a"],
+          identity(),
+        ),
+      ).toStrictEqual({ constructor: 2, hasOwnProperty: 1, a: 1 });
+    });
+  });
+
+  describe("groupBy", () => {
+    test("key is an object instance method name", () => {
+      expect(groupBy(DATA, prop("a"))).toStrictEqual({
+        toString: [
+          { a: "toString", b: "toString" },
+          { a: "toString", b: "valueOf" },
+          { a: "toString", b: "__proto__" },
+        ],
+        valueOf: [{ a: "valueOf", b: "toString" }],
+      });
+    });
+
+    test("data last", () => {
+      expect(pipe(DATA, groupBy(prop("a")))).toStrictEqual({
+        toString: [
+          { a: "toString", b: "toString" },
+          { a: "toString", b: "valueOf" },
+          { a: "toString", b: "__proto__" },
+        ],
+        valueOf: [{ a: "valueOf", b: "toString" }],
+      });
+    });
+
+    test("other prototype member names", () => {
+      expect(
+        groupBy(
+          ["hasOwnProperty", "isPrototypeOf", "hasOwnProperty"],
+          identity(),
+        ),
+      ).toStrictEqual({
+        hasOwnProperty: ["hasOwnProperty", "hasOwnProperty"],
+        isPrototypeOf: ["isPrototypeOf"],
+      });
+    });
+  });
+  EOT
+  npx tsc -p tsconfig.tests.json
+  # Scoped to the touched modules: the full suite has real-timer funnel/debounce tests that flake on 2 cpus.
+  npx vitest run src/groupBy src/countBy
+timeout_min: 20
+cpus: 2
+memory: 4g

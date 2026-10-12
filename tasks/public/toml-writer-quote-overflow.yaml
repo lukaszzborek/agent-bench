@@ -1,0 +1,88 @@
+# Source: toml-rs/toml, upstream fix fb0c1b37 "fix(writer): Don't overflow" (issue #1188). Pin = its parent 5e70a703,
+# where toml_writer counts runs of quotes in a u8 and panics on the 256th consecutive quote in debug builds.
+# Small bug fix: one function in crates/toml_writer/src/string.rs. The existing `many_quotes` test pins the panic with
+# #[should_panic], so the grader skips it; the hidden test checks every encoding of long quote runs round-trips.
+id: toml-writer-quote-overflow
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: rust
+repo: https://github.com/toml-rs/toml.git
+commit: 5e70a7031d7cd667bdc081419373df4b74bf78d8
+setup: |
+  cargo test --workspace --no-run
+prompt: |
+  The cargo workspace is already built (`cargo test --workspace --no-run`); run the writer's tests with
+  `cargo test -p toml_writer`.
+
+  Serializing a string that contains a run of 256 or more consecutive quote characters panics in debug builds:
+
+      let mut table = toml::Table::new();
+      table.insert("key".into(), toml::Value::String("\"".repeat(256)));
+      let _ = toml::to_string(&table); // attempt to add with overflow
+
+  The panic comes from `toml_writer` (`crates/toml_writer/src/string.rs`), which decides how to encode keys and
+  string values (`TomlKeyBuilder`, `TomlStringBuilder`). `"'".repeat(256)` panics the same way, and so does a key
+  with such a run. Any length of quote run must work, and every encoding the builders offer must still produce valid
+  TOML that decodes back to the original string; output for other strings must not change.
+
+  Fix it in `toml_writer` and update the tests in `crates/toml_writer/tests/string.rs` (the `many_quotes` test
+  currently expects the panic). Keep the rest of the test suite green. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cat > crates/toml_writer/tests/bench_grade.rs <<'EOT'
+  use toml_writer::ToTomlKey;
+  use toml_writer::ToTomlValue;
+  use toml_writer::TomlKeyBuilder;
+  use toml_writer::TomlStringBuilder;
+
+  fn roundtrip(key: &str, value: &str, decoded: &str) {
+      let doc = format!("{key} = {value}");
+      let parsed = doc
+          .parse::<toml_old::Value>()
+          .unwrap_or_else(|e| panic!("could not parse {doc:?}: {e}"));
+      let (k, v) = parsed.as_table().unwrap().iter().next().unwrap();
+      assert_eq!(k, decoded);
+      assert_eq!(v.as_str().unwrap(), decoded);
+  }
+
+  fn check(decoded: &str) {
+      let key = TomlKeyBuilder::new(decoded);
+      let string = TomlStringBuilder::new(decoded);
+      let default_key = key.as_default().to_toml_key();
+      let mut keys = vec![default_key.clone(), key.as_basic().to_toml_key()];
+      keys.extend(key.as_literal().map(|k| k.to_toml_key()));
+      keys.extend(key.as_basic_pretty().map(|k| k.to_toml_key()));
+      let mut values = vec![
+          string.as_default().to_toml_value(),
+          string.as_basic().to_toml_value(),
+          string.as_ml_basic().to_toml_value(),
+      ];
+      values.extend(string.as_literal().map(|v| v.to_toml_value()));
+      values.extend(string.as_ml_literal().map(|v| v.to_toml_value()));
+      values.extend(string.as_basic_pretty().map(|v| v.to_toml_value()));
+      values.extend(string.as_ml_basic_pretty().map(|v| v.to_toml_value()));
+      for k in &keys {
+          roundtrip(k, &values[0], decoded);
+      }
+      for v in &values {
+          roundtrip(&default_key, v, decoded);
+      }
+  }
+
+  #[test]
+  fn bench_long_quote_runs() {
+      for n in [255, 256, 257, 511, 1000] {
+          for q in ["\"", "'"] {
+              check(&q.repeat(n));
+              check(&format!("a{}b", q.repeat(n)));
+          }
+          check(&format!("{}x{}", "'".repeat(n), "\"".repeat(n)));
+          check(&format!("{}\n{}", "\"".repeat(n), "'".repeat(3)));
+      }
+  }
+  EOT
+  cargo test -p toml_writer -- --skip many_quotes
+timeout_min: 30
+cpus: 2
+memory: 6g

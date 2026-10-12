@@ -1,0 +1,135 @@
+# Source: toml-rs/toml, upstream feature 139b30ab "feat(serde): Support integer keys" (issue #1049). Pin = its parent
+# 2d65a88b, where maps with integer keys neither deserialize nor serialize (keys are strings only).
+# Small feature, repetitive but in four places: key deserializer + key serializer in both `toml` and `toml_edit`.
+# The hidden test runs the same checks against both crates (toml_edit's serde suite has autotests = false, so the
+# grader adds a module to tests/serde/main.rs).
+id: toml-integer-keys
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: rust
+repo: https://github.com/toml-rs/toml.git
+commit: 2d65a88b1d79be3904c50b50af6d600aecb69509
+setup: |
+  cargo test --workspace --no-run && cargo test -p toml -p toml_edit --all-features --no-run
+prompt: |
+  The cargo workspace is already built; run tests with `cargo test -p toml -p toml_edit --all-features`
+  (toml_edit's serde tests need its `serde` feature).
+
+  Maps keyed by integers do not work with serde in this repo, although TOML keys like `114514` or `'42'` are valid
+  and other formats (serde_json) accept them:
+
+      use std::collections::HashMap;
+      toml::from_str::<HashMap<i32, i32>>("114514 = 1919810").unwrap();
+      // Err: invalid type: string "114514", expected i32
+      let m: HashMap<u16, String> = [(80, "http".to_owned())].into();
+      toml::to_string(&m).unwrap();
+      // Err: map key was not a string
+
+  Add support for integer map keys (`i8`..`i128`, `u8`..`u128`) in both directions, in both serde front ends:
+  `toml` (`toml::from_str`, `toml::to_string`/`to_string_pretty`, `toml::de::ValueDeserializer`,
+  `toml::ser::ValueSerializer`) and `toml_edit` (`toml_edit::de`, `toml_edit::ser`). A key must work whether it is
+  written bare or quoted, at the top level, in `[table]` headers and in inline tables. A key that is not a valid
+  integer of the target type (e.g. `256` for `u8`, `abc`, `1.5`) must be an error, not a silent default. String keys
+  and everything else must behave as before.
+
+  The key (de)serializers live in `crates/toml/src/de/deserializer/key.rs`, `crates/toml/src/ser/value/key.rs`,
+  `crates/toml_edit/src/de/key.rs` and `crates/toml_edit/src/ser/key.rs`. Add tests (see `tests/serde/de_key.rs` and
+  `ser_key.rs` in both crates) and keep the rest of the suite green. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cat > /tmp/bench_grade_body.rs <<'EOT'
+  use std::collections::{BTreeMap, HashMap};
+
+  use serde::{Deserialize, Serialize};
+
+  #[derive(Debug, Deserialize, Serialize, PartialEq)]
+  struct Config {
+      ports: BTreeMap<u16, String>,
+      offsets: BTreeMap<i64, bool>,
+  }
+
+  #[test]
+  fn bench_integer_keys_deserialize() {
+      let m: BTreeMap<u32, String> = from_str("1 = 'a'\n'2' = 'b'\n\"300\" = 'c'").unwrap();
+      let expected: BTreeMap<u32, String> =
+          [(1, "a".into()), (2, "b".into()), (300, "c".into())].into();
+      assert_eq!(m, expected);
+
+      let m: HashMap<i8, i32> = from_str("-5 = 1\n7 = 2").unwrap();
+      assert_eq!(m, [(-5, 1), (7, 2)].into());
+
+      let c: Config = from_str("[ports]\n80 = 'http'\n443 = 'https'\n\n[offsets]\n-1 = true\n0 = false").unwrap();
+      assert_eq!(c.ports[&443], "https");
+      assert_eq!(c.offsets, [(-1, true), (0, false)].into());
+
+      let c: Config = from_str("ports = { 22 = 'ssh' }\noffsets = { 9 = true }").unwrap();
+      assert_eq!(c.ports, [(22, "ssh".to_owned())].into());
+
+      let m: BTreeMap<u128, u8> = from_str("340282366920938463463374607431768211455 = 1").unwrap();
+      assert_eq!(m, [(u128::MAX, 1)].into());
+      let m: BTreeMap<i128, u8> = from_str("-170141183460469231731687303715884105728 = 1").unwrap();
+      assert_eq!(m, [(i128::MIN, 1)].into());
+      let m: BTreeMap<u64, u8> = value_from_str("{ 18446744073709551615 = 1, 0 = 2 }").unwrap();
+      assert_eq!(m, [(u64::MAX, 1), (0, 2)].into());
+
+      assert!(from_str::<BTreeMap<u8, String>>("256 = 'x'").is_err());
+      assert!(from_str::<BTreeMap<u8, String>>("abc = 'x'").is_err());
+      assert!(from_str::<BTreeMap<i32, String>>("[map]\n1.5 = 'x'").is_err());
+
+      let m: BTreeMap<String, i32> = from_str("1 = 2\nkey = 3").unwrap();
+      assert_eq!(m, [("1".to_owned(), 2), ("key".to_owned(), 3)].into());
+  }
+
+  #[test]
+  fn bench_integer_keys_serialize() {
+      let m: BTreeMap<u32, &str> = [(1, "a"), (20, "b")].into();
+      let s = to_string(&m).unwrap();
+      assert!(s.contains("20 = \"b\""), "{s}");
+      assert_eq!(from_str::<BTreeMap<u32, String>>(&s).unwrap().len(), 2);
+
+      let c = Config {
+          ports: [(80, "http".to_owned()), (443, "https".to_owned())].into(),
+          offsets: [(-1, true), (i64::MAX, false)].into(),
+      };
+      for s in [to_string(&c).unwrap(), to_string_pretty(&c).unwrap()] {
+          assert_eq!(from_str::<Config>(&s).unwrap(), c, "{s}");
+      }
+
+      let wide: BTreeMap<i128, u8> = [(i128::MIN, 1), (5, 2)].into();
+      let s = to_string(&wide).unwrap();
+      assert_eq!(from_str::<BTreeMap<i128, u8>>(&s).unwrap(), wide, "{s}");
+      let wide: BTreeMap<u128, u8> = [(u128::MAX, 1)].into();
+      let s = to_string(&wide).unwrap();
+      assert_eq!(from_str::<BTreeMap<u128, u8>>(&s).unwrap(), wide, "{s}");
+
+      let small: BTreeMap<i8, bool> = [(-128, true), (127, false)].into();
+      let s = to_string(&small).unwrap();
+      assert_eq!(from_str::<BTreeMap<i8, bool>>(&s).unwrap(), small, "{s}");
+  }
+  EOT
+  {
+    cat <<'EOT'
+  use toml::de::from_str;
+  use toml::ser::{to_string, to_string_pretty};
+  fn value_from_str<T: serde::de::DeserializeOwned>(s: &str) -> Result<T, toml::de::Error> {
+      T::deserialize(toml::de::ValueDeserializer::parse(s)?)
+  }
+  EOT
+    cat /tmp/bench_grade_body.rs
+  } > crates/toml/tests/bench_grade.rs
+  {
+    cat <<'EOT'
+  use toml_edit::de::from_str;
+  use toml_edit::ser::{to_string, to_string_pretty};
+  fn value_from_str<T: serde::de::DeserializeOwned>(s: &str) -> Result<T, toml_edit::de::Error> {
+      T::deserialize(s.parse::<toml_edit::de::ValueDeserializer>()?)
+  }
+  EOT
+    cat /tmp/bench_grade_body.rs
+  } > crates/toml_edit/tests/serde/bench_grade.rs
+  echo 'mod bench_grade;' >> crates/toml_edit/tests/serde/main.rs
+  cargo test --no-fail-fast --all-features -p toml -p toml_edit
+timeout_min: 30
+cpus: 2
+memory: 6g

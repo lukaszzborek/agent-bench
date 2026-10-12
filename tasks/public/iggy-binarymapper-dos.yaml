@@ -12,6 +12,8 @@ commit: dc1cdf23209c91fd703b59ceb47bdb9b4c662480
 env:
   # Keep restores of this historical snapshot independent of new vulnerability advisories.
   NuGetAudit: "false"
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
 setup: |
   cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
 prompt: |
@@ -79,9 +81,6 @@ grade: |
   }
   EOT
   timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
-arms:
-  control: []
-  rtk: [rtk]
 timeout_min: 30
 cpus: 2
 memory: 6g

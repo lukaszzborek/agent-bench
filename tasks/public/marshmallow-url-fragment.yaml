@@ -1,0 +1,65 @@
+# Source: marshmallow-code/marshmallow, upstream fix 902f99c4 "Fix URL validator rejecting a fragment after an empty
+# path" (#3016). Pin = its parent 3207be31, so validate.URL still rejects `https://example.com#frag`.
+# Small bug fix: one regex in src/marshmallow/validate.py. Hidden test mirrors the upstream test additions.
+id: marshmallow-url-fragment
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/marshmallow-code/marshmallow.git
+commit: 3207be31474530f7c0685dfbd7b4faca5b35fbf5
+setup: |
+  uv venv -q && uv pip install -q -e . pytest simplejson && echo .venv >> .git/info/exclude
+prompt: |
+  A virtualenv with the package installed in editable mode and pytest is ready in `.venv`; run tests with
+  `.venv/bin/python -m pytest tests`.
+
+  `marshmallow.validate.URL` rejects valid URLs whose fragment directly follows the host (empty path, no query):
+
+      from marshmallow import validate
+      validate.URL()("https://example.com/#top")   # ok
+      validate.URL()("https://example.com?q=1#top") # ok
+      validate.URL()("https://example.com#top")    # ValidationError: Not a valid URL.
+
+  RFC 3986 allows a fragment after an empty path, and anchor links to a site root are common. The same happens with
+  userinfo or a port (`http://user@example.com#frag`, `https://example.com:8080#frag`). For consistency with how a
+  bare `?query` is handled, a bare fragment such as `#frag` should also be accepted when relative URLs are allowed
+  (`validate.URL(relative=True)` and `validate.URL(relative=True, absolute=False)`).
+
+  Fix the validator in `src/marshmallow/validate.py` without loosening anything else, and add tests to
+  `tests/test_validate.py`. Keep the existing test suite green. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cat > tests/test_bench_grade.py <<'EOT'
+  import pytest
+  from marshmallow import ValidationError, validate
+
+
+  @pytest.mark.parametrize(
+      "url",
+      [
+          "http://example.org#fragment",
+          "http://user@example.com#fragment",
+          "https://example.com:8080#top",
+          "http://localhost#x",
+      ],
+  )
+  def test_absolute_fragment_after_empty_path(url):
+      assert validate.URL()(url) == url
+      assert validate.URL(relative=True)(url) == url
+
+
+  @pytest.mark.parametrize("kwargs", [{"relative": True}, {"relative": True, "absolute": False}])
+  def test_relative_bare_fragment(kwargs):
+      assert validate.URL(**kwargs)("#frag") == "#frag"
+
+
+  @pytest.mark.parametrize("url", ["#frag", "example.org#frag", "http://example.org# frag"])
+  def test_still_invalid(url):
+      with pytest.raises(ValidationError):
+          validate.URL()(url)
+  EOT
+  .venv/bin/python -m pytest -q -p no:cacheprovider tests
+timeout_min: 20
+cpus: 2
+memory: 4g

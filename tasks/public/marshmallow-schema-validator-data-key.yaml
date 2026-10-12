@@ -1,0 +1,129 @@
+# Source: marshmallow-code/marshmallow, upstream fix 9f751e1c "Fix handling data_key in ValidationErrors raised in
+# schema validators" (#2792, issue #2170). Pin = its parent a578ed23 (4.0 dev, Jan 2025), so errors raised from
+# @validates_schema with field_name=<attr> are still keyed by the attribute name instead of data_key.
+# Medium bug fix: Schema._run_validator in src/marshmallow/schema.py. Hidden test extends the upstream test.
+# test_from_timestamp_with_overflow_value fails on Python 3.14 at this pin (fixed upstream in 024d8d35), so grade
+# deselects it. This snapshot's .gitignore lacks `.venv`, hence the .git/info/exclude line in setup
+# (keeps the venv out of patch.diff).
+id: marshmallow-schema-validator-data-key
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/marshmallow-code/marshmallow.git
+commit: a578ed23092bd558acfbd9cd09a164108689326d
+setup: |
+  uv venv -q && uv pip install -q -e . pytest simplejson && echo .venv >> .git/info/exclude
+prompt: |
+  A virtualenv with the package installed in editable mode and pytest is ready in `.venv`; run tests with
+  `.venv/bin/python -m pytest tests`. `tests/test_utils.py::test_from_timestamp_with_overflow_value` already fails on
+  this Python version (error message wording changed); it is unrelated, leave it alone.
+
+  Errors raised from a schema-level validator ignore the field's `data_key`. Field validation errors and errors from
+  `@validates("<attr>")` are reported under the `data_key` (the external name the client sent), but a
+  `@validates_schema` method that raises `ValidationError("...", field_name="<attr>")` reports the error under the
+  Python attribute name, so a single field's errors end up split across two keys:
+
+      from marshmallow import Schema, fields, validates, validates_schema, ValidationError
+
+      class MySchema(Schema):
+          foo = fields.Int(data_key="fooKey")
+
+          @validates("foo")
+          def validate_foo(self, value, **kwargs):
+              raise ValidationError("from validates")
+
+          @validates_schema(skip_on_field_errors=False)
+          def validate_schema(self, data, **kwargs):
+              raise ValidationError("from validates_schema", field_name="foo")
+
+      MySchema().load({"fooKey": 42})
+      # actual:   {'fooKey': ['from validates'], 'foo': ['from validates_schema']}
+      # expected: {'fooKey': ['from validates', 'from validates_schema']}
+
+  When a schema validator raises with `field_name` naming a schema field, store the error under that field's
+  `data_key` (or the field name when it has none). `field_name="_schema"` (the default) and names that are not fields
+  of the schema must keep working as today. This must also hold for `many=True` loads, where errors are keyed by
+  index. The relevant code is in `src/marshmallow/schema.py`.
+
+  Add tests to `tests/test_decorators.py`. Keep the existing test suite green. Do not create a branch, push, or open
+  a PR.
+grade: |
+  set -e
+  cat > tests/test_bench_grade.py <<'EOT'
+  import pytest
+  from marshmallow import Schema, ValidationError, fields, validates, validates_schema
+
+
+  class MySchema(Schema):
+      foo = fields.Int(data_key="fooKey")
+      bar = fields.Int()
+
+      @validates("foo")
+      def validate_foo(self, value, **kwargs):
+          raise ValidationError("from validates")
+
+      @validates_schema(skip_on_field_errors=False)
+      def validate_schema(self, data, **kwargs):
+          raise ValidationError("from validates_schema str", field_name="foo")
+
+      @validates_schema(skip_on_field_errors=False)
+      def validate_schema2(self, data, **kwargs):
+          raise ValidationError({"fooKey": "from validates_schema dict"})
+
+
+  def test_data_key_is_used_in_errors_dict():
+      with pytest.raises(ValidationError) as excinfo:
+          MySchema().load({"fooKey": 42})
+      assert excinfo.value.messages == {
+          "fooKey": [
+              "from validates",
+              "from validates_schema str",
+              "from validates_schema dict",
+          ]
+      }
+
+
+  def test_data_key_is_used_with_many():
+      with pytest.raises(ValidationError) as excinfo:
+          MySchema(many=True).load([{"fooKey": 1}])
+      assert excinfo.value.messages == {
+          0: {
+              "fooKey": [
+                  "from validates",
+                  "from validates_schema str",
+                  "from validates_schema dict",
+              ]
+          }
+      }
+
+
+  def test_field_without_data_key_schema_and_unknown_names():
+      class S(Schema):
+          bar = fields.Int()
+
+          @validates_schema
+          def v1(self, data, **kwargs):
+              raise ValidationError("bar err", field_name="bar")
+
+          @validates_schema
+          def v2(self, data, **kwargs):
+              raise ValidationError("schema err")
+
+          @validates_schema
+          def v3(self, data, **kwargs):
+              raise ValidationError("other err", field_name="not_a_field")
+
+      with pytest.raises(ValidationError) as excinfo:
+          S().load({"bar": 1})
+      assert excinfo.value.messages == {
+          "bar": ["bar err"],
+          "_schema": ["schema err"],
+          "not_a_field": ["other err"],
+      }
+  EOT
+  .venv/bin/python -m pytest -q -p no:cacheprovider tests \
+    --deselect tests/test_utils.py::test_from_timestamp_with_overflow_value
+timeout_min: 20
+cpus: 2
+memory: 4g

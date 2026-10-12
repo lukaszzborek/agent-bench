@@ -1,0 +1,212 @@
+# Source: apache/iggy 2783907c7 "fix(csharp): set default socket buffer size to OS default" (#4013, closes #4010).
+# Pin = its parent 831b2a652, where every config/builder defaults both socket buffers to 4096 and the TCP client
+# always sets them. Medium task (config, two builders, two configs, factory, TCP client). Only foreign/csharp is
+# touched; no cargo build. Test projects multi-target net8.0;net10.0 and the image has SDK 10 only, hence
+# -f net10.0 everywhere. The grade adds a socket-level check (dummy TcpListener, reflection to the client's
+# Socket) on top of the upstream config tests, so hard-coding another fixed default does not pass.
+id: iggy-socket-buffer-default
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet
+repo: https://github.com/apache/iggy.git
+commit: 831b2a652ba71af89497aca9a08e2b8742d61e03
+env:
+  # Keep restores of this historical snapshot independent of new vulnerability advisories.
+  NuGetAudit: "false"
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
+setup: |
+  cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
+prompt: |
+  Work only in the C# SDK under `foreign/csharp`. Build and test with `-f net10.0` only (the image has no .NET 8
+  runtime), e.g. `dotnet test --project Iggy_SDK_Tests -f net10.0`.
+
+  Issue: the C# TCP client is far slower than the Rust client on the same machine, especially for large polls
+  and sends over links with some latency. The cause is the socket buffer configuration: `IggyClientConfigurator`,
+  `IggyPublisherConfig` and `IggyConsumerConfig` default `ReceiveBufferSize`/`SendBufferSize` to 4096, the
+  publisher/consumer builders' `WithConnection(...)` overloads default their buffer parameters to 4096, and
+  `TcpMessageStream` always assigns both values to the socket. A 4 KB buffer caps the TCP window, and on Linux
+  setting `SO_RCVBUF`/`SO_SNDBUF` at all disables kernel auto-tuning.
+
+  Make the buffer sizes optional everywhere (`int?`, default `null`, including the `WithConnection` parameters).
+  When a size is null the TCP client must not touch that socket option, so the OS default and auto-tuning apply;
+  when it is set it is applied as before. A configured size that is zero or negative is still an error:
+  `IggyClientFactory.CreateClient` throws `ArgumentOutOfRangeException`, and the publisher/consumer builders'
+  `Build()` throw `InvalidOperationException` as they do today. Update the XML docs and the README section
+  describing these options. Add unit tests in `Iggy_SDK_Tests`. Keep the existing unit suite green and
+  `dotnet format --verify-no-changes` clean. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd foreign/csharp
+  mkdir -p Iggy_SDK_Tests/BenchGrade
+  cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
+  using System;
+  using System.Collections.Generic;
+  using System.Net;
+  using System.Net.Sockets;
+  using System.Reflection;
+  using System.Threading.Tasks;
+  using Apache.Iggy.Configuration;
+  using Apache.Iggy.Consumers;
+  using Apache.Iggy.Enums;
+  using Apache.Iggy.Factory;
+  using Apache.Iggy.IggyClient;
+  using Apache.Iggy.Kinds;
+  using Apache.Iggy.Publishers;
+  using Xunit;
+  namespace Apache.Iggy.Tests.BenchGrade;
+  public class BenchGradeTests
+  {
+      private static readonly Identifier StreamId = Identifier.Numeric(1);
+      private static readonly Identifier TopicId = Identifier.Numeric(1);
+
+      [Fact]
+      public void Defaults_AreUnset()
+      {
+          var options = new IggyClientConfigurator { BaseAddress = "127.0.0.1:8090", Protocol = Protocol.Tcp };
+          Assert.Null(options.ReceiveBufferSize);
+          Assert.Null(options.SendBufferSize);
+          Assert.Null(new IggyPublisherConfig().ReceiveBufferSize);
+          Assert.Null(new IggyPublisherConfig().SendBufferSize);
+          Assert.Null(new IggyConsumerConfig().ReceiveBufferSize);
+          Assert.Null(new IggyConsumerConfig().SendBufferSize);
+      }
+
+      [Theory]
+      [InlineData(0, null)]
+      [InlineData(-1, null)]
+      [InlineData(null, 0)]
+      [InlineData(null, -1)]
+      public void Factory_RejectsNonPositiveSize(int? receive, int? send)
+      {
+          var options = new IggyClientConfigurator
+          {
+              BaseAddress = "127.0.0.1:8090",
+              Protocol = Protocol.Tcp,
+              ReceiveBufferSize = receive,
+              SendBufferSize = send
+          };
+          Assert.Throws<ArgumentOutOfRangeException>(() => IggyClientFactory.CreateClient(options));
+      }
+
+      [Fact]
+      public void Builders_DefaultToUnsetAndBuild()
+      {
+          var consumer = IggyConsumerBuilder.Create(StreamId, TopicId, Consumer.New(1))
+              .WithConnection(Protocol.Tcp, "127.0.0.1:8090", "user", "pass");
+          Assert.Null(consumer.Config.ReceiveBufferSize);
+          Assert.Null(consumer.Config.SendBufferSize);
+          Assert.NotNull(consumer.Build());
+
+          var publisher = IggyPublisherBuilder.Create(StreamId, TopicId)
+              .WithConnection(Protocol.Tcp, "127.0.0.1:8090", "token");
+          Assert.Null(publisher.Config.ReceiveBufferSize);
+          Assert.Null(publisher.Config.SendBufferSize);
+          Assert.NotNull(publisher.Build());
+      }
+
+      [Theory]
+      [InlineData(0, null)]
+      [InlineData(-1, null)]
+      [InlineData(null, 0)]
+      [InlineData(null, -1)]
+      public void Builders_RejectNonPositiveSize(int? receive, int? send)
+      {
+          var consumer = IggyConsumerBuilder.Create(StreamId, TopicId, Consumer.New(1))
+              .WithConnection(Protocol.Tcp, "127.0.0.1:8090", "user", "pass",
+                  receiveBufferSize: receive, sendBufferSize: send);
+          Assert.Throws<InvalidOperationException>(() => consumer.Build());
+
+          var publisher = IggyPublisherBuilder.Create(StreamId, TopicId)
+              .WithConnection(Protocol.Tcp, "127.0.0.1:8090", "user", "pass",
+                  receiveBufferSize: receive, sendBufferSize: send);
+          Assert.Throws<InvalidOperationException>(() => publisher.Build());
+      }
+
+      private static Socket? FindSocket(object root)
+      {
+          var seen = new HashSet<object>(ReferenceEqualityComparer.Instance);
+          var queue = new Queue<(object, int)>();
+          queue.Enqueue((root, 0));
+          while (queue.Count > 0)
+          {
+              var (current, depth) = queue.Dequeue();
+              if (!seen.Add(current)) continue;
+              if (current is Socket socket) return socket;
+              if (current is NetworkStream ns) return ns.Socket;
+              if (depth >= 4) continue;
+              for (var type = current.GetType(); type != null && type != typeof(object); type = type.BaseType)
+              {
+                  foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
+                  {
+                      if (field.FieldType.IsPrimitive || field.FieldType == typeof(string)) continue;
+                      object? value;
+                      try { value = field.GetValue(current); } catch { continue; }
+                      if (value != null && !value.GetType().IsValueType) queue.Enqueue((value, depth + 1));
+                  }
+              }
+          }
+          return null;
+      }
+
+      private static async Task<(IIggyClient client, Socket socket, Socket reference)> ConnectAsync(IggyClientConfigurator options,
+          TcpListener listener, Action<Socket> configureReference)
+      {
+          var client = IggyClientFactory.CreateClient(options);
+          await client.ConnectAsync().WaitAsync(TimeSpan.FromSeconds(10));
+          var socket = FindSocket(client);
+          Assert.NotNull(socket);
+          var reference = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+          configureReference(reference);
+          await reference.ConnectAsync((IPEndPoint)listener.LocalEndpoint);
+          return (client, socket!, reference);
+      }
+
+      [Fact]
+      public async Task TcpClient_ByDefault_LeavesSocketBuffersToOs()
+      {
+          using var listener = new TcpListener(IPAddress.Loopback, 0);
+          listener.Start();
+          var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+          var options = new IggyClientConfigurator { BaseAddress = $"127.0.0.1:{port}", Protocol = Protocol.Tcp };
+          var (client, socket, reference) = await ConnectAsync(options, listener, _ => { });
+          using (reference)
+          using ((IDisposable)client)
+          {
+              Assert.Equal(reference.ReceiveBufferSize, socket.ReceiveBufferSize);
+              Assert.Equal(reference.SendBufferSize, socket.SendBufferSize);
+          }
+      }
+
+      [Fact]
+      public async Task TcpClient_AppliesExplicitSocketBuffers()
+      {
+          using var listener = new TcpListener(IPAddress.Loopback, 0);
+          listener.Start();
+          var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+          var options = new IggyClientConfigurator
+          {
+              BaseAddress = $"127.0.0.1:{port}",
+              Protocol = Protocol.Tcp,
+              ReceiveBufferSize = 24576,
+              SendBufferSize = 12288
+          };
+          var (client, socket, reference) = await ConnectAsync(options, listener, s =>
+          {
+              s.ReceiveBufferSize = 24576;
+              s.SendBufferSize = 12288;
+          });
+          using (reference)
+          using ((IDisposable)client)
+          {
+              Assert.Equal(reference.ReceiveBufferSize, socket.ReceiveBufferSize);
+              Assert.Equal(reference.SendBufferSize, socket.SendBufferSize);
+          }
+      }
+  }
+  EOT
+  timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+timeout_min: 30
+cpus: 2
+memory: 6g

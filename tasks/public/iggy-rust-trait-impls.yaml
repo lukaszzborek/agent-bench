@@ -1,0 +1,40 @@
+# Read-only navigation task: trait implementations including a blanket impl, no build.
+# Ground truth (2026-09-29): (a) grep of every `UserClient` mention under core/ gives 3 own impls (ClientWrapper,
+# HttpClient in core/sdk, IggyClient) plus `impl<B: BinaryClient> UserClient for B` in
+# core/common/src/traits/binary_impls/users.rs; `impl BinaryClient for` exists only for TcpClient, QuicClient and
+# WebSocketClient. (b) `cargo check -p iggy` on a scratch copy with `fn a<T: UserClient>()` asserted for all six types
+# compiles, and adding a non-implementor (IggyProducer) fails with E0277. No mockall/macro-generated impls of
+# UserClient exist. The unrelated test struct core/integration/tests/server/http_client.rs::HttpClient does not
+# implement it.
+# `rust` template so the serena arm has rust-analyzer: serena/setup.sh indexes iggy in ~2.5 min (rust-analyzer runs the
+# workspace's build scripts, ~3 GB target/); the first semantic query (find_implementations) then takes ~70 s and
+# rust-analyzer grows to 3.7-5.6 GB RSS on 2 CPUs, hence memory 6g and timeout 15 for every arm.
+id: iggy-rust-trait-impls
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: rust
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+env:
+  SERENA_LANGUAGES: rust
+prompt: |
+  Read the code only; do not build or run anything and do not modify tracked files.
+
+  Consider the Rust trait `UserClient` defined in `core/common/src/traits/user_client.rs`. Find every concrete type
+  (struct or enum) under `core/` that implements it. For each, say how: `direct` if an `impl UserClient for <Type>`
+  block names that type, `blanket` if it gets the trait only through a generic impl over some other trait bound.
+
+  Write `ANSWER.txt` at the repo root with one line per type: `<TypeName> <direct|blanket>`, type name without
+  module path or generic arguments. Order does not matter. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  test "$(tr -d '\r' < ANSWER.txt | tr -s ' \t' ' ' | sed 's/^ //;s/ $//' | grep -v '^$' | LC_ALL=C sort -u)" = "ClientWrapper direct
+  HttpClient direct
+  IggyClient direct
+  QuicClient blanket
+  TcpClient blanket
+  WebSocketClient blanket"
+timeout_min: 15
+cpus: 2
+memory: 6g

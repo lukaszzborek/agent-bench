@@ -1,0 +1,66 @@
+# Read-only navigation task: two-level call hierarchy (incoming calls) in the C# SDK, no build.
+# Ground truth (2026-09-29): (a) grep call sites of WriteBytesFromIdentifier / the 15 TcpContracts methods and map each
+# line to its enclosing method with an indentation-based awk scan, (b) an independent brace-depth scan over the
+# comment/string-stripped source. Both agree. WriteBytesFromIdentifier is only called from TcpContracts; the
+# look-alikes WriteBytesFromStreamAndTopicIdentifiers and TcpMessageStreamHelpers.GetBytesFromIdentifier do not call
+# it. Level 2 spans both partial files of TcpMessageStream (SyncGroupAssignmentAsync lives in TcpMessageStream.Vsr.cs);
+# test-project callers (UserContractsTests, TopicContractsTests) are excluded by the prompt.
+id: iggy-csharp-callers
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet   # Serena's C# language server needs the .NET SDK
+env:
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+prompt: |
+  Read the code only; do not build or run anything and do not modify tracked files.
+
+  In the C# SDK library project `foreign/csharp/Iggy_SDK` (ignore the test, benchmark and example projects),
+  consider the internal extension method `WriteBytesFromIdentifier` defined in `Iggy_SDK/Extensions/Extensions.cs`.
+
+  - Level 1: every method that calls `WriteBytesFromIdentifier` directly.
+  - Level 2: every method that directly calls one of the level-1 methods.
+
+  Write `ANSWER.txt` at the repo root with one line per method in the form `<level> <Type>.<Method>`, e.g.
+  `1 SomeType.SomeMethod`: type name without namespace or generic arguments (a partial class is named by the class),
+  method name without parameters. List a method once per level even if it has several call sites. Order does not
+  matter. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  test "$(tr -d '\r' < ANSWER.txt | tr -s ' \t' ' ' | sed 's/^ //;s/ $//' | grep -v '^$' | LC_ALL=C sort -u)" = "1 TcpContracts.ChangePassword
+  1 TcpContracts.CreateTopic
+  1 TcpContracts.DeleteGroup
+  1 TcpContracts.DeleteOffset
+  1 TcpContracts.DeleteUser
+  1 TcpContracts.GetGroup
+  1 TcpContracts.GetMessages
+  1 TcpContracts.GetOffset
+  1 TcpContracts.GetUser
+  1 TcpContracts.JoinGroup
+  1 TcpContracts.LeaveGroup
+  1 TcpContracts.UpdateOffset
+  1 TcpContracts.UpdatePermissions
+  1 TcpContracts.UpdateStream
+  1 TcpContracts.UpdateUser
+  2 TcpMessageStream.ChangePasswordAsync
+  2 TcpMessageStream.CreateTopicAsync
+  2 TcpMessageStream.DeleteConsumerGroupAsync
+  2 TcpMessageStream.DeleteOffsetAsync
+  2 TcpMessageStream.DeleteUserAsync
+  2 TcpMessageStream.GetConsumerGroupByIdAsync
+  2 TcpMessageStream.GetOffsetAsync
+  2 TcpMessageStream.GetUserAsync
+  2 TcpMessageStream.JoinConsumerGroupAsync
+  2 TcpMessageStream.LeaveConsumerGroupAsync
+  2 TcpMessageStream.PollPartitionMessagesRentedAsync
+  2 TcpMessageStream.StoreOffsetAsync
+  2 TcpMessageStream.SyncGroupAssignmentAsync
+  2 TcpMessageStream.UpdatePermissionsAsync
+  2 TcpMessageStream.UpdateStreamAsync
+  2 TcpMessageStream.UpdateUserAsync"
+timeout_min: 10
+cpus: 2
+memory: 4g

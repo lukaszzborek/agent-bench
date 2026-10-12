@@ -1,0 +1,33 @@
+# Diagnostic, not a benchmark: the agent writes down every tool it can see, so an arm can be checked for "the tool is
+# actually in front of the model" before spending a real run on it. Same repo, image and Serena language as the iggy
+# C# tasks, so Serena starts exactly as it does there. Run it, read grade.log, archive the result (do not publish).
+#   ./bench run tool-probe --arm control --arm serena --arm serena-upfront --model claude-sonnet-5-5
+id: tool-probe
+agent: claude
+model: claude-sonnet-5-5
+effort: low
+template_tag: dotnet
+env:
+  SERENA_LANGUAGES: csharp
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+prompt: |
+  Do not read, search or run anything. Your only action is to write the file `TOOLS.txt` at the repo root.
+
+  List every tool you have access to right now, one name per line, exactly as the name appears in your tool list:
+  built-in tools, MCP tools (names starting with `mcp__`), and tools that are only listed by name and must be loaded
+  before use (deferred tools). Put deferred tools after the others, each prefixed with `deferred: `.
+  Then one empty line, then one line with the names of any MCP servers whose instructions you received.
+grade: |
+  set -e
+  test -s TOOLS.txt
+  cat TOOLS.txt
+  # the arm comes from the trial's OTEL_RESOURCE_ATTRIBUTES (arm=<name>); serena arms must expose Serena's tools
+  case ",$OTEL_RESOURCE_ATTRIBUTES," in
+    *,arm=serena-upfront,*) grep -q '^mcp__serena__' TOOLS.txt ;;  # full schemas: listed as normal tools
+    *,arm=serena,*) grep -q 'mcp__serena__' TOOLS.txt ;;            # deferred is fine
+    *) ! grep -q 'mcp__serena__' TOOLS.txt ;;
+  esac
+timeout_min: 5
+cpus: 2
+memory: 4g

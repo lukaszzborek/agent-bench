@@ -1,0 +1,122 @@
+# Source: toml-rs/toml, upstream fix 534039cc "fix(serde): Deserialize Value datetimes into typed targets" (issue #440).
+# Pin = its parent 6e45cef5, where `toml::Value::try_into::<Datetime>()` (and structs with Datetime fields built from a
+# Value/Table) fails with "invalid type: string ..., expected a TOML datetime".
+# Medium bug fix: needs serde deserializer internals (toml_datetime's private struct protocol) in crates/toml/src/value.rs
+# and table.rs, without changing how datetimes reach non-TOML targets (serde_json gets a string). The grader skips the
+# existing test that pins the old error (deserialize_datetime_from_value_issue_440, in both toml and toml_edit suites).
+id: toml-value-datetime-into
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: rust
+repo: https://github.com/toml-rs/toml.git
+commit: 6e45cef5d5061fee00fe43cb6b52c3126e05d57a
+setup: |
+  cargo test --workspace --no-run && cargo test -p toml -p toml_edit --all-features --no-run
+prompt: |
+  The cargo workspace is already built; run tests with `cargo test -p toml -p toml_edit --all-features`
+  (toml_edit's serde tests need its `serde` feature).
+
+  A `toml::Value` (or `toml::Table`) that holds a datetime cannot be deserialized into a typed datetime, although
+  parsing the same document directly works:
+
+      use serde::Deserialize;
+      use toml::value::Datetime;
+
+      #[derive(Deserialize)]
+      struct Release { at: Datetime }
+
+      let doc = "at = 1979-05-27T07:32:00Z";
+      let direct: Release = toml::from_str(doc).unwrap();               // ok
+      let table: toml::Table = toml::from_str(doc).unwrap();
+      let via_table: Release = table.try_into().unwrap();                // Err
+      let dt: Datetime = toml::Value::Datetime(direct.at).try_into().unwrap(); // Err
+      // invalid type: string "1979-05-27T07:32:00Z", expected a TOML datetime
+
+  Converting through a `Value`/`Table` must give the same result as `toml::from_str` for `Datetime` targets (plain,
+  in struct fields, `Option<Datetime>`, `Vec<Datetime>`, all four datetime kinds). Converting a `Value` datetime into
+  other types must keep working as today: e.g. `value.try_into::<serde_json::Value>()` still yields a JSON string, and
+  `try_into::<String>()` still yields the formatted datetime.
+
+  The conversion lives in `crates/toml/src/value.rs` and `crates/toml/src/table.rs` (the `Deserializer` impls for
+  `Value` and `Table`). Add tests; the existing `deserialize_datetime_from_value_issue_440` tests (in
+  `crates/toml/tests/serde/general.rs` and `crates/toml_edit/tests/serde/general.rs`) assert the current error and
+  should be updated. Keep the rest of the test suite green. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cat > crates/toml/tests/bench_grade.rs <<'EOT'
+  use serde::Deserialize;
+  use toml::value::{Date, Datetime, Offset};
+  use toml::{Table, Value};
+
+  #[derive(Debug, Deserialize, PartialEq)]
+  struct Release {
+      name: String,
+      at: Datetime,
+      day: Option<Datetime>,
+  }
+
+  #[derive(Debug, Deserialize, PartialEq)]
+  struct Doc {
+      release: Release,
+      history: Vec<Datetime>,
+  }
+
+  const DOC: &str = r#"
+  history = [1979-05-27, 07:32:00, 1979-05-27T07:32:00.5]
+
+  [release]
+  name = "v1"
+  at = 1979-05-27T07:32:00-08:00
+  day = 1979-05-27
+  "#;
+
+  #[test]
+  fn bench_value_datetime_into_datetime() {
+      let input = "1979-05-27T07:32:00Z";
+      let dt: Datetime = input.parse().unwrap();
+      let value = Value::Datetime(dt);
+      assert_eq!(value.clone().try_into::<Datetime>().unwrap(), dt);
+      assert_eq!(value.try_into::<Datetime>().unwrap().to_string(), input);
+
+      let local_time = Value::Datetime("07:32:00".parse().unwrap());
+      let local_time = local_time.try_into::<Datetime>().unwrap();
+      assert_eq!(local_time.date, None);
+      assert_eq!(local_time.time.map(|t| (t.hour, t.minute)), Some((7, 32)));
+  }
+
+  #[test]
+  fn bench_table_with_datetimes_into_struct() {
+      let table: Table = toml::from_str(DOC).unwrap();
+      let expected: Doc = toml::from_str(DOC).unwrap();
+      assert_eq!(table.clone().try_into::<Doc>().unwrap(), expected);
+      assert_eq!(Value::Table(table.clone()).try_into::<Doc>().unwrap(), expected);
+
+      let release = table["release"].clone().try_into::<Release>().unwrap();
+      assert_eq!(release.name, "v1");
+      assert_eq!(
+          release.at.date,
+          Some(Date { year: 1979, month: 5, day: 27 })
+      );
+      assert_eq!(release.at.offset, Some(Offset::Custom { minutes: -480 }));
+      assert_eq!(release.day.unwrap().to_string(), "1979-05-27");
+  }
+
+  #[test]
+  fn bench_datetime_to_other_formats_unchanged() {
+      let table: Table = toml::from_str(DOC).unwrap();
+      let json = Value::Table(table).try_into::<serde_json::Value>().unwrap();
+      assert_eq!(json["release"]["at"], serde_json::json!("1979-05-27T07:32:00-08:00"));
+      assert_eq!(json["history"][1], serde_json::json!("07:32:00"));
+
+      let s = Value::Datetime("1979-05-27".parse().unwrap()).try_into::<String>().unwrap();
+      assert_eq!(s, "1979-05-27");
+
+      let err = Value::String("1979-05-27".into()).try_into::<Datetime>().unwrap_err();
+      assert!(err.to_string().contains("datetime"), "{err}");
+  }
+  EOT
+  cargo test --no-fail-fast --all-features -p toml -p toml_edit -- --skip deserialize_datetime_from_value_issue_440
+timeout_min: 30
+cpus: 2
+memory: 6g

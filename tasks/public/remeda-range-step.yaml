@@ -1,0 +1,131 @@
+# Source: remeda/remeda PR #1257, upstream commit cf2dee04174cf833b218fc4e19140aca570dc602
+# "fix(range): add step parameter to range function". Pin = its parent, where `range` only counts up by 1.
+# Pinned before the Claude Code harness (.claude/ hooks, 2026-04-20) landed upstream, so no project hooks run.
+# Hidden test = upstream range.test.ts minus the `test.fails` lodash-parity cases and the `-0` start case.
+id: remeda-range-step
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/remeda/remeda.git
+commit: a6a8f0cbd0755b5eebd1921459ef0b6e436c0535
+setup: |
+  # the sandbox proxy resets connections under parallel load (ECONNRESET); npm ci starts clean, so a retry is safe
+  npm ci --no-audit --no-fund || { sleep 10; npm ci --no-audit --no-fund; } || { sleep 30; npm ci --no-audit --no-fund; }
+prompt: |
+  Feature request for the `remeda` package (`packages/remeda`): `range` (`src/range.ts`) can only produce
+  sequences with a step of 1. We want lodash-style steps without breaking the existing `range(start, end)` and
+  data-last `range(end)(start)` forms.
+
+  Because `range` is dispatched between data-first and data-last by argument count, the step goes into an
+  options object that replaces `end` in the same position:
+
+      range(1, { end: 20, step: 5 });        // => [1, 6, 11, 16]
+      pipe(1, range({ end: 20, step: 5 }));  // => [1, 6, 11, 16]
+      range(20, { end: 1, step: -5 });       // => [20, 15, 10, 5]
+
+  Rules: `end` stays exclusive; a negative step counts down; a step pointing away from `end` gives `[]`;
+  a step of `0` throws a `RangeError`; fractional steps must not gain an extra element from floating-point
+  drift (`range(0, { end: 3, step: 0.1 })` has exactly 30 items), and that guard must scale with the step instead of
+  being a fixed epsilon, so tiny ranges are not snapped away (`range(0, 1e-13)` => `[0]`); fractional `start`/`end` keep working
+  (`range(0.5, 5)` => `[0.5, 1.5, 2.5, 3.5, 4.5]`).
+
+  Update the JSDoc and add tests. From `packages/remeda`: `npx vitest run --project runtime`,
+  `npx vitest run --project types`, and `npm run check` (tsc). Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd packages/remeda
+  cat > src/range.bench-grade.test.ts <<'EOT'
+  import { describe, expect, test } from "vitest";
+  import { pipe } from "./pipe";
+  import { range } from "./range";
+
+  describe("existing behaviour", () => {
+    test("start at 0", () => {
+      expect(range(0, 5)).toStrictEqual([0, 1, 2, 3, 4]);
+    });
+    test("end at 0", () => {
+      expect(range(5, 0)).toStrictEqual([]);
+    });
+    test("empty range", () => {
+      expect(range(0, 0)).toStrictEqual([]);
+    });
+    test("simple range", () => {
+      expect(range(10, 20)).toStrictEqual([10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+    });
+    test("switched bounds", () => {
+      expect(range(20, 1)).toStrictEqual([]);
+    });
+    test("data last", () => {
+      expect(pipe(1, range(5))).toStrictEqual([1, 2, 3, 4]);
+      expect(range(5)(1)).toStrictEqual([1, 2, 3, 4]);
+    });
+  });
+
+  test("step 0 throws", () => {
+    expect(() => range(0, { end: 5, step: 0 })).toThrow(RangeError);
+  });
+
+  test("data last with step", () => {
+    expect(pipe(1, range({ end: 20, step: 5 }))).toStrictEqual([1, 6, 11, 16]);
+  });
+
+  describe("positive step", () => {
+    test("trivial step", () => {
+      expect(range(1, { end: 5, step: 1 })).toStrictEqual([1, 2, 3, 4]);
+    });
+    test("simple step", () => {
+      expect(range(1, { end: 20, step: 5 })).toStrictEqual([1, 6, 11, 16]);
+    });
+    test("step larger than range", () => {
+      expect(range(1, { end: 5, step: 100 })).toStrictEqual([1]);
+      expect(range(1, { end: 5, step: 20 })).toStrictEqual([1]);
+    });
+    test("step exactly divides range", () => {
+      expect(range(0, { end: 10, step: 5 })).toStrictEqual([0, 5]);
+      expect(range(0, { end: 20, step: 5 })).toStrictEqual([0, 5, 10, 15]);
+    });
+  });
+
+  describe("negative step", () => {
+    test("trivial step", () => {
+      expect(range(5, { end: 0, step: -1 })).toStrictEqual([5, 4, 3, 2, 1]);
+      expect(range(5, { end: 1, step: -1 })).toStrictEqual([5, 4, 3, 2]);
+      expect(range(0, { end: -4, step: -1 })).toStrictEqual([0, -1, -2, -3]);
+    });
+    test("simple decrementing range", () => {
+      expect(range(20, { end: 1, step: -5 })).toStrictEqual([20, 15, 10, 5]);
+      expect(range(21, { end: 10, step: -3 })).toStrictEqual([21, 18, 15, 12]);
+    });
+    test("step in wrong direction", () => {
+      expect(range(1, { end: 20, step: -5 })).toStrictEqual([]);
+    });
+  });
+
+  describe("non-integer inputs", () => {
+    test("floating-point start", () => {
+      expect(range(0.5, 5)).toStrictEqual([0.5, 1.5, 2.5, 3.5, 4.5]);
+    });
+    test("floating-point step", () => {
+      expect(range(1, { end: 5, step: 0.5 })).toStrictEqual([
+        1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
+      ]);
+    });
+    test("floating-point end", () => {
+      expect(range(1, 5.5)).toStrictEqual([1, 2, 3, 4, 5]);
+    });
+    test("floating-point drift does not add an extra element", () => {
+      expect(range(0, { end: 3, step: 0.1 })).toHaveLength(30);
+    });
+    test("very small range near zero is not snapped away", () => {
+      expect(range(0, 1e-13)).toStrictEqual([0]);
+    });
+  });
+  EOT
+  npx tsc -p tsconfig.json
+  # Runtime tests scoped to range: the full suite has real-timer funnel/debounce tests that flake on 2 cpus.
+  npx vitest run --project runtime src/range
+  npx vitest run --project types
+timeout_min: 20
+cpus: 2
+memory: 4g

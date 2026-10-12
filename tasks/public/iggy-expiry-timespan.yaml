@@ -1,0 +1,212 @@
+# Source: apache/iggy e2fcc6728 "refactor(csharp): change expiry handling to use TimeSpan" (#2690). Pin = its parent
+# 30f456832, where message/token expiries are raw ulongs documented as milliseconds or seconds although the server
+# reads microseconds. Larger multi-file task: public API change across interfaces, TCP + HTTP clients, mapper,
+# JSON contract, publisher config/builder, plus every caller in the integration tests. Only foreign/csharp is
+# touched; no cargo build. Test projects multi-target net8.0;net10.0 and the image has SDK 10 only, hence
+# -f net10.0 everywhere. Upstream left Benchmarks/Program.cs on the old signature, so the grade builds the
+# integration and BDD test projects but not Benchmarks.
+id: iggy-expiry-timespan
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet
+repo: https://github.com/apache/iggy.git
+commit: 30f456832f447a356cae31fb1d655f0622faadbf
+env:
+  # Keep restores of this historical snapshot independent of new vulnerability advisories.
+  NuGetAudit: "false"
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
+setup: |
+  cd foreign/csharp && dotnet restore Iggy_SDK.sln && dotnet build Iggy_SDK_Tests -f net10.0 --nologo -v q
+prompt: |
+  Work only in the C# SDK under `foreign/csharp`. Build and test with `-f net10.0` only (the image has no .NET 8
+  runtime), e.g. `dotnet test --project Iggy_SDK_Tests -f net10.0`. There is no Iggy server available, so the
+  integration tests only need to compile.
+
+  Issue: expiry durations in the C# SDK are raw `ulong`s with wrong and inconsistent units.
+  `IIggyTopic.CreateTopicAsync`/`UpdateTopicAsync` document `messageExpiry` as milliseconds,
+  `IggyPublisherConfig.TopicMessageExpiry` says seconds, `IIggyPersonalAccessToken.CreatePersonalAccessTokenAsync`
+  says milliseconds, and `TopicResponse.MessageExpiry` is an unexplained number. The server reads and returns all
+  of them as microseconds, with 0 meaning "server default" and u64::MAX meaning "never expire" (see `IggyExpiry` in
+  `core/common/src/utils/expiry.rs`), over both the TCP and HTTP transports. A user passing `3_600_000` for one
+  hour gets 3.6 seconds.
+
+  Replace the raw numbers with `TimeSpan` in the public API:
+  - `CreateTopicAsync(..., TimeSpan? messageExpiry = null, ...)` and `UpdateTopicAsync(..., TimeSpan? messageExpiry = null, ...)`
+    on `IIggyTopic` and both client implementations (keep parameter names and order);
+  - `CreatePersonalAccessTokenAsync(string name, TimeSpan? expiry = null, CancellationToken token = default)`;
+  - `TopicResponse.MessageExpiry` becomes `TimeSpan`, decoded correctly from both TCP and HTTP (JSON) responses;
+  - `IggyPublisherConfig.TopicMessageExpiry` becomes `TimeSpan` (default `TimeSpan.Zero`), and
+    `IggyPublisherBuilder.CreateTopicIfNotExists(..., TimeSpan messageExpiry = default, ...)`.
+
+  Wire mapping: `null` or `TimeSpan.Zero` -> 0, `TimeSpan.MaxValue` <-> u64::MAX, anything else -> whole
+  microseconds; a wire value too large for a `TimeSpan` decodes to `TimeSpan.MaxValue`. Put the conversion in a new
+  public static class `Apache.Iggy.Utils.DurationHelpers` with `TimeSpan FromDuration(ulong duration)` and
+  `ulong ToDuration(TimeSpan? duration)`. Update the XML docs and every caller in `Iggy_SDK.Tests.Integration` and
+  `Iggy_SDK.Tests.BDD` so they compile. Add unit tests in `Iggy_SDK_Tests`. Keep the existing unit suite green and
+  `dotnet format --verify-no-changes` clean. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd foreign/csharp
+  mkdir -p Iggy_SDK_Tests/BenchGrade
+  cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
+  using System;
+  using System.Buffers.Binary;
+  using System.Collections.Generic;
+  using System.Net;
+  using System.Net.Http;
+  using System.Text;
+  using System.Text.Json;
+  using System.Threading;
+  using System.Threading.Tasks;
+  using Apache.Iggy.Contracts;
+  using Apache.Iggy.Enums;
+  using Apache.Iggy.IggyClient;
+  using Apache.Iggy.IggyClient.Implementations;
+  using Apache.Iggy.Publishers;
+  using Apache.Iggy.Utils;
+  using Microsoft.Extensions.Logging.Abstractions;
+  using Moq;
+  using Xunit;
+  namespace Apache.Iggy.Tests.BenchGrade;
+  public class BenchGradeTests
+  {
+      private sealed class FakeHandler(string responseJson) : HttpMessageHandler
+      {
+          public List<string> Bodies { get; } = [];
+
+          protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+              CancellationToken cancellationToken)
+          {
+              Bodies.Add(request.Content is null ? "" : await request.Content.ReadAsStringAsync(cancellationToken));
+              return new HttpResponseMessage(HttpStatusCode.OK)
+              {
+                  Content = new StringContent(responseJson, Encoding.UTF8, "application/json")
+              };
+          }
+      }
+
+      private static string TopicJson(ulong expiry) =>
+          $$"""{"id":1,"created_at":1700000000000000,"name":"t","compression_algorithm":"none","size":"0 B","message_expiry":{{expiry}},"max_topic_size":0,"messages_count":0,"partitions_count":1,"replication_factor":1}""";
+
+      private static (HttpMessageStream client, FakeHandler handler) Http(string json)
+      {
+          var handler = new FakeHandler(json);
+          var http = new HttpClient(handler) { BaseAddress = new Uri("http://127.0.0.1:3000") };
+          return (new HttpMessageStream(http), handler);
+      }
+
+      private static ulong JsonNumber(string body, string property) =>
+          JsonDocument.Parse(body).RootElement.GetProperty(property).GetUInt64();
+
+      [Fact]
+      public void DurationHelpers_ConvertMicroseconds()
+      {
+          Assert.Equal(TimeSpan.Zero, DurationHelpers.FromDuration(0));
+          Assert.Equal(TimeSpan.FromSeconds(1), DurationHelpers.FromDuration(1_000_000));
+          Assert.Equal(TimeSpan.FromMilliseconds(5), DurationHelpers.FromDuration(5_000));
+          Assert.Equal(TimeSpan.MaxValue, DurationHelpers.FromDuration(ulong.MaxValue));
+          Assert.Equal(TimeSpan.MaxValue, DurationHelpers.FromDuration(long.MaxValue));
+          Assert.Equal(0ul, DurationHelpers.ToDuration(null));
+          Assert.Equal(0ul, DurationHelpers.ToDuration(TimeSpan.Zero));
+          Assert.Equal(3_600_000_000ul, DurationHelpers.ToDuration(TimeSpan.FromHours(1)));
+          Assert.Equal(ulong.MaxValue, DurationHelpers.ToDuration(TimeSpan.MaxValue));
+          Assert.Equal(TimeSpan.FromDays(7), DurationHelpers.FromDuration(DurationHelpers.ToDuration(TimeSpan.FromDays(7))));
+      }
+
+      [Fact]
+      public void BinaryMapper_DecodesTopicExpiry()
+      {
+          var payload = new byte[51 + 1];
+          BinaryPrimitives.WriteUInt32LittleEndian(payload, 1);
+          BinaryPrimitives.WriteUInt64LittleEndian(payload.AsSpan(4), 1_700_000_000_000_000);
+          BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(12), 1);
+          BinaryPrimitives.WriteUInt64LittleEndian(payload.AsSpan(16), 90_000_000);
+          payload[24] = 1;
+          payload[33] = 1;
+          payload[50] = 1;
+          payload[51] = (byte)'t';
+          Assert.Equal(TimeSpan.FromSeconds(90), global::Apache.Iggy.Mappers.BinaryMapper.MapTopic(payload).MessageExpiry);
+
+          BinaryPrimitives.WriteUInt64LittleEndian(payload.AsSpan(16), ulong.MaxValue);
+          Assert.Equal(TimeSpan.MaxValue, global::Apache.Iggy.Mappers.BinaryMapper.MapTopic(payload).MessageExpiry);
+      }
+
+      [Fact]
+      public async Task Http_CreateTopic_SendsMicrosecondsAndDecodesResponse()
+      {
+          var (client, handler) = Http(TopicJson(3_600_000_000));
+          var topic = await client.CreateTopicAsync(Identifier.Numeric(1), "t", 1,
+              messageExpiry: TimeSpan.FromHours(1));
+          Assert.Equal(3_600_000_000ul, JsonNumber(handler.Bodies[0], "message_expiry"));
+          Assert.NotNull(topic);
+          Assert.Equal(TimeSpan.FromHours(1), topic!.MessageExpiry);
+
+          await client.CreateTopicAsync(Identifier.Numeric(1), "t", 1);
+          Assert.Equal(0ul, JsonNumber(handler.Bodies[1], "message_expiry"));
+
+          await client.CreateTopicAsync(Identifier.Numeric(1), "t", 1, messageExpiry: TimeSpan.MaxValue);
+          Assert.Equal(ulong.MaxValue, JsonNumber(handler.Bodies[2], "message_expiry"));
+      }
+
+      [Fact]
+      public async Task Http_GetTopic_DecodesNeverExpire()
+      {
+          var (client, _) = Http(TopicJson(ulong.MaxValue));
+          var topic = await client.GetTopicByIdAsync(Identifier.Numeric(1), Identifier.Numeric(1));
+          Assert.NotNull(topic);
+          Assert.Equal(TimeSpan.MaxValue, topic!.MessageExpiry);
+      }
+
+      [Fact]
+      public async Task Http_UpdateTopic_SendsMicroseconds()
+      {
+          var (client, handler) = Http("{}");
+          await client.UpdateTopicAsync(Identifier.Numeric(1), Identifier.Numeric(1), "t",
+              messageExpiry: TimeSpan.FromMinutes(2));
+          Assert.Equal(120_000_000ul, JsonNumber(handler.Bodies[0], "message_expiry"));
+      }
+
+      [Fact]
+      public async Task Http_CreatePersonalAccessToken_SendsMicroseconds()
+      {
+          var (client, handler) = Http("""{"token":"secret"}""");
+          IIggyClient iggy = client;
+          await iggy.CreatePersonalAccessTokenAsync("pat", TimeSpan.FromSeconds(30));
+          Assert.Equal(30_000_000ul, JsonNumber(handler.Bodies[0], "expiry"));
+      }
+
+      [Fact]
+      public async Task Publisher_CreatesTopicWithConfiguredExpiry()
+      {
+          var builder = IggyPublisherBuilder.Create(Identifier.Numeric(1), Identifier.Numeric(1))
+              .CreateTopicIfNotExists("t", messageExpiry: TimeSpan.FromMinutes(5));
+          Assert.Equal(TimeSpan.FromMinutes(5), builder.Config.TopicMessageExpiry);
+          Assert.Equal(TimeSpan.Zero, new IggyPublisherConfig().TopicMessageExpiry);
+
+          var mock = new Mock<IIggyClient>();
+          var config = new IggyPublisherConfig
+          {
+              StreamId = Identifier.Numeric(1),
+              TopicId = Identifier.Numeric(1),
+              CreateStream = true,
+              StreamName = "s",
+              CreateTopic = true,
+              TopicName = "t",
+              TopicMessageExpiry = TimeSpan.FromMinutes(5)
+          };
+          var publisher = new IggyPublisher(mock.Object, config, NullLogger<IggyPublisher>.Instance);
+          await publisher.InitAsync();
+          mock.Verify(c => c.CreateTopicAsync(It.IsAny<Identifier>(), "t", It.IsAny<uint>(),
+              It.IsAny<CompressionAlgorithm>(), It.IsAny<byte?>(), TimeSpan.FromMinutes(5), It.IsAny<ulong>(),
+              It.IsAny<CancellationToken>()), Times.Once);
+      }
+  }
+  EOT
+  dotnet build Iggy_SDK.Tests.Integration -f net10.0 --nologo -v q
+  dotnet build Iggy_SDK.Tests.BDD --nologo -v q
+  timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+timeout_min: 40
+cpus: 2
+memory: 6g

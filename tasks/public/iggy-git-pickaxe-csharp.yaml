@@ -4,7 +4,10 @@ id: iggy-git-pickaxe-csharp
 agent: claude
 model: claude-sonnet-5
 effort: medium
-template_tag: v1
+template_tag: dotnet   # Serena's C# language server needs the .NET SDK
+env:
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
 repo: https://github.com/apache/iggy.git
 commit: be2265c9e
 history: 200
@@ -23,9 +26,6 @@ grade: |
   a="$(tr -d ' \r' < ANSWER.txt)"
   echo "$a" | grep -qx 'heartbeat=3894'
   echo "$a" | grep -qx 'binarymapper=3800,3858,3880,3904,4027'
-arms:
-  control: []
-  rtk: [rtk]
 timeout_min: 10
 cpus: 2
 memory: 4g

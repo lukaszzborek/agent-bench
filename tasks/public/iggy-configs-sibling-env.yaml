@@ -1,0 +1,96 @@
+# Source: apache/iggy, upstream fix 30bdb469b "fix(configs): allow sibling IGGY variables" (#4149, issue #4143).
+# Pin = its parent af237a124, where the server's unknown-env-var fence rejects every IGGY_* name it does not know,
+# including the connectors runtime's IGGY_CONNECTORS_*, the MCP server's IGGY_MCP_* and the CLI's IGGY_HOME /
+# IGGY_USERNAME / IGGY_PASSWORD, so the server refuses to boot next to them. Two #[ignore]d tests in the repo describe
+# the bug (as in the upstream issue).
+# Small/medium bug fix confined to core/configs; `cargo test -p configs --no-run` takes ~2 min cold on 2 CPUs, no
+# services needed. The hidden test is appended to file_provider.rs (needs the private reject_unknown_env_names) and goes
+# through the public ServerConfig::config_provider, so it does not depend on how the allow-list is plumbed. It mutates
+# the process environment, hence --test-threads=1 (the rest of the suite too: the un-ignored .env test does the same).
+# The pin has iggy's own CLAUDE.md/AGENTS.md and .claude/skills (no hooks), like the other iggy tasks.
+id: iggy-configs-sibling-env
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: rust
+repo: https://github.com/apache/iggy.git
+commit: af237a124c5f63881ebb63d804e2e492b7d8a6aa
+env:
+  SERENA_LANGUAGES: rust
+setup: |
+  cargo test -p configs --no-run
+prompt: |
+  Work only in the `configs` crate (`core/configs`). It is already built; run its tests with
+  `cargo test -p configs` (do not build the whole workspace, it is large).
+
+  The server refuses to boot when environment variables that belong to other iggy binaries are set. Since the
+  server started rejecting unknown `IGGY_*` variables (so typos like `IGGY_TCP_ADRESS` fail fast), a shared container
+  environment, a shared `env_file`, or the `.env` that the server loads through `dotenvy` before reading its config
+  is enough to stop it:
+
+      IGGY_CONNECTORS_CONFIG_PATH=/etc/iggy/connectors.toml iggy-server
+      Unknown configuration environment variable 'IGGY_CONNECTORS_CONFIG_PATH'
+      ... server fails to start
+
+  The same happens with the MCP server's `IGGY_MCP_*` variables and the CLI's `IGGY_HOME`, `IGGY_USERNAME` and
+  `IGGY_PASSWORD`. The server must accept those, while still rejecting unknown `IGGY_*` names that are neither server
+  settings nor a sibling's. The check is in `core/configs/src/configs_impl/file_provider.rs`
+  (`reject_unknown_env_names`), the server's known names and provider in `core/configs/src/server_config/server.rs`
+  (`ServerConfig::config_provider`). Two tests in `file_provider.rs` are `#[ignore]`d because of this bug; make them
+  pass and remove the `#[ignore]`s (one mutates the process environment, so it must not run in parallel with tests
+  that read it). Keep the rest of the crate's tests green. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cat >> core/configs/src/configs_impl/file_provider.rs <<'EOT'
+
+  #[cfg(test)]
+  mod bench_grade {
+      use crate::server_config::server::ServerConfig;
+
+      fn rejects_with(vars: &[&str]) -> bool {
+          for v in vars {
+              // SAFETY: bench_grade tests run alone with --test-threads=1.
+              unsafe { std::env::set_var(v, "x") };
+          }
+          let rejected = ServerConfig::config_provider("nonexistent-config.toml")
+              .reject_unknown_env_names()
+              .is_err();
+          for v in vars {
+              // SAFETY: see above.
+              unsafe { std::env::remove_var(v) };
+          }
+          rejected
+      }
+
+      #[test]
+      fn bench_sibling_env_vars_do_not_block_boot() {
+          assert!(!rejects_with(&[]));
+          for v in [
+              "IGGY_CONNECTORS_CONFIG_PATH",
+              "IGGY_CONNECTORS_STATE_PATH",
+              "IGGY_CONNECTORS_SINK_STDOUT_ENABLED",
+              "IGGY_MCP_CONFIG_PATH",
+              "IGGY_MCP_TRANSPORT",
+              "IGGY_HOME",
+              "IGGY_USERNAME",
+              "IGGY_PASSWORD",
+          ] {
+              assert!(!rejects_with(&[v]), "{v} refuses server boot");
+          }
+          assert!(!rejects_with(&["IGGY_CONNECTORS_CONFIG_PATH", "IGGY_MCP_TRANSPORT", "IGGY_HOME"]));
+      }
+
+      #[test]
+      fn bench_unknown_server_env_vars_still_rejected() {
+          assert!(rejects_with(&["IGGY_TCP_ADRESS"]));
+          assert!(rejects_with(&["IGGY_SYSTEM_PATHH"]));
+          assert!(rejects_with(&["IGGY_HOME", "IGGY_HTTP_ENABLEDD"]));
+          assert!(!rejects_with(&["IGGY_TCP_ADDRESS"]));
+      }
+  }
+  EOT
+  cargo test -p configs bench_grade -- --test-threads=1
+  cargo test -p configs -- --skip bench_grade --test-threads=1
+timeout_min: 30
+cpus: 2
+memory: 6g

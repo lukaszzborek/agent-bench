@@ -1,0 +1,89 @@
+# Source: marshmallow-code/marshmallow, upstream feature ec2178c2 "Improve the allow_none default for by_value enums"
+# (issue #2985, released in 4.3.1). Pin = its parent 3265c139, so fields.Enum(..., by_value=True) over an enum with a
+# None-valued member still rejects None. Small feature: Enum.__init__ in src/marshmallow/fields.py.
+# Hidden test extends the upstream test (explicit allow_none wins, by-name enums unchanged).
+id: marshmallow-enum-none-allow-none
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/marshmallow-code/marshmallow.git
+commit: 3265c13945a9533f9a3ade8d47eb9b32412c4c27
+setup: |
+  uv venv -q && uv pip install -q -e . pytest simplejson && echo .venv >> .git/info/exclude
+prompt: |
+  A virtualenv with the package installed in editable mode and pytest is ready in `.venv`; run tests with
+  `.venv/bin/python -m pytest tests`.
+
+  Feature request: `fields.Enum` serialized by value should accept `None` by default when the enum itself has a
+  member whose value is `None`. Today you have to repeat that fact with `allow_none=True`:
+
+      from enum import Enum
+      from marshmallow import fields
+
+      class Ultimatum(Enum):
+          all = float("inf")
+          nothing = None
+
+      field = fields.Enum(Ultimatum, by_value=True)
+      field.deserialize(None)  # ValidationError: Field may not be null.
+
+  Desired behaviour: when `by_value` is enabled (`True`, or a field class/instance) and any member's value is `None`,
+  `allow_none` defaults to `True`, so the example above returns `None` like any other field with
+  `allow_none=True`. An explicitly passed `allow_none` always wins, and enums (de)serialized by name
+  (`by_value=False`, the default) are unaffected. The field lives in `src/marshmallow/fields.py`; document the new
+  default in the `Enum` docstring.
+
+  Add tests (e.g. in `tests/test_deserialization.py`). Keep the existing test suite green. Do not create a branch,
+  push, or open a PR.
+grade: |
+  set -e
+  cat > tests/test_bench_grade.py <<'EOT'
+  from enum import Enum
+
+  import pytest
+  from marshmallow import ValidationError, fields
+
+
+  class Ultimatum(Enum):
+      all = float("inf")
+      nothing = None
+
+
+  class Plain(Enum):
+      a = 1
+      b = 2
+
+
+  @pytest.mark.parametrize("by_value", [True, fields.Raw, fields.Raw()])
+  def test_by_value_with_none_member_allows_none(by_value):
+      field = fields.Enum(Ultimatum, by_value=by_value)
+      assert field.allow_none is True
+      assert field.deserialize(None) is None
+      assert field.deserialize(float("inf")) is Ultimatum.all
+
+
+  def test_explicit_allow_none_false_wins():
+      field = fields.Enum(Ultimatum, by_value=True, allow_none=False)
+      assert field.allow_none is False
+      with pytest.raises(ValidationError):
+          field.deserialize(None)
+
+
+  def test_by_name_unchanged():
+      field = fields.Enum(Ultimatum)
+      assert field.allow_none is False
+      with pytest.raises(ValidationError):
+          field.deserialize(None)
+
+
+  def test_enum_without_none_member_unchanged():
+      field = fields.Enum(Plain, by_value=True)
+      assert field.allow_none is False
+      with pytest.raises(ValidationError):
+          field.deserialize(None)
+  EOT
+  .venv/bin/python -m pytest -q -p no:cacheprovider tests
+timeout_min: 20
+cpus: 2
+memory: 4g

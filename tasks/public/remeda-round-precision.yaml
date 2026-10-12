@@ -1,0 +1,87 @@
+# Source: remeda/remeda PR #1055 (issue #1051), upstream commit ab2ac3918dda4b7589a9a718e8659820393ff653
+# "fix(round,floor,ceil): better handle double-floating point inaccuracies". Pin = its parent.
+# Pre-dates the upstream Claude Code harness (.claude/ hooks), so no project hooks run.
+# Hidden test = upstream round() regression (2.135 -> 2.14) plus floor/ceil/data-last cases whose expected values
+# were computed with the upstream fix and fail on the pin. Negative inputs are left out on purpose (Math.round
+# half-up-toward-+inf semantics make "expected" debatable).
+id: remeda-round-precision
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: v1
+repo: https://github.com/remeda/remeda.git
+commit: b6562be98e8bfab1b3620b1517aa5c63210d37ed
+setup: |
+  # the sandbox proxy resets connections under parallel load (ECONNRESET); npm ci starts clean, so a retry is safe
+  npm ci --no-audit --no-fund || { sleep 10; npm ci --no-audit --no-fund; } || { sleep 30; npm ci --no-audit --no-fund; }
+prompt: |
+  Bug in the `remeda` package (`packages/remeda`): `round`, `floor` and `ceil` with a `precision` argument
+  return wrong results for ordinary decimal inputs, because of binary floating-point error:
+
+      R.round(2.135, 2); // 2.13, expected 2.14
+      R.round(1.005, 2); // 1,    expected 1.01
+      R.floor(4.35, 2);  // 4.34, expected 4.35
+      R.ceil(0.07, 2);   // 0.08, expected 0.07
+
+  The result should be what you get by rounding the decimal number as it is written (as JS prints it),
+  for positive and negative `precision`, in both data-first and data-last (`pipe`) forms. Keep the existing
+  behaviour otherwise: precision validation errors, `precision === 0`, NaN/Infinity pass-through, and negative
+  precision never producing float noise (`round(123456, -5) === 100000`). The three functions share
+  `src/internal/withPrecision.ts`.
+
+  Fix it and add regression tests. From `packages/remeda`: `npx vitest run` for runtime tests and
+  `npx tsc -p tsconfig.tests.json` to typecheck the tests. Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  cd packages/remeda
+  cat > src/round.bench-grade.test.ts <<'EOT'
+  import { ceil } from "./ceil";
+  import { floor } from "./floor";
+  import { pipe } from "./pipe";
+  import { round } from "./round";
+
+  test("round: IEEE 754 inaccuracies (issue #1051)", () => {
+    expect(round(2.345, 2)).toBe(2.35);
+    expect(round(2.135, 2)).toBe(2.14);
+    expect(round(1.005, 2)).toBe(1.01);
+    expect(round(8.345, 2)).toBe(8.35);
+  });
+
+  test("floor: IEEE 754 inaccuracies", () => {
+    expect(floor(4.35, 2)).toBe(4.35);
+    expect(floor(1.13, 2)).toBe(1.13);
+    expect(floor(0.29, 2)).toBe(0.29);
+  });
+
+  test("ceil: IEEE 754 inaccuracies", () => {
+    expect(ceil(0.07, 2)).toBe(0.07);
+    expect(ceil(1.1, 1)).toBe(1.1);
+    expect(ceil(2.3, 1)).toBe(2.3);
+  });
+
+  test("data last", () => {
+    expect(pipe(1.005, round(2))).toBe(1.01);
+    expect(pipe(4.35, floor(2))).toBe(4.35);
+    expect(pipe(0.07, ceil(2))).toBe(0.07);
+  });
+
+  test("existing behaviour", () => {
+    expect(round(8123.4317, 3)).toBe(8123.432);
+    expect(round(8123.4317, -2)).toBe(8100);
+    expect(round(123_456, -5)).toBe(100_000);
+    expect(round(123.456, -1)).toBe(120);
+    expect(floor(8123.4317, 3)).toBe(8123.431);
+    expect(ceil(8123.4317, 3)).toBe(8123.432);
+    expect(round(1.23e-10, 11)).toBe(1.2e-10);
+    expect(round(Number.NaN, 2)).toBeNaN();
+    expect(round(Number.POSITIVE_INFINITY, 2)).toBe(Number.POSITIVE_INFINITY);
+    expect(() => round(1, 1.5)).toThrow(TypeError);
+    expect(() => round(1, 16)).toThrow(RangeError);
+  });
+  EOT
+  npx tsc -p tsconfig.tests.json
+  # Scoped to the touched modules: the full suite has real-timer funnel/debounce tests that flake on 2 cpus.
+  npx vitest run src/round src/floor src/ceil
+timeout_min: 20
+cpus: 2
+memory: 4g

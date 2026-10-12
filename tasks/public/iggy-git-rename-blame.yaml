@@ -1,0 +1,42 @@
+# Read-only git task: rename tracking + blame on one file. core/server/src/pat.rs was moved from
+# core/server-ng/src/pat.rs in #3856 (R100), so pickaxe/log on the current path without --follow wrongly attributes
+# everything to #3856. The 200-commit window starts at #3753, which "adds" the file, so no question asks about its
+# creation. Ground truth (2026-09-29): `git log --follow --name-status`, `git log --follow -S` and `git log -S` over
+# both paths agree on 3773 / 3836; `git blame` on the declaration line and `git show 0270b76` (pub(crate) -> pub)
+# agree on 4023.
+id: iggy-git-rename-blame
+agent: claude
+model: claude-sonnet-5
+effort: medium
+template_tag: dotnet   # Serena's C# language server needs the .NET SDK
+env:
+  # Serena would infer Rust (most files in iggy); only the C# language server works in these images.
+  SERENA_LANGUAGES: csharp
+repo: https://github.com/apache/iggy.git
+commit: be2265c9e
+history: 200
+prompt: |
+  Use git history only; do not build anything and do not modify tracked files.
+
+  Answer these about `core/server/src/pat.rs` as it is at HEAD. The file has not always lived at this path; history
+  under its earlier path counts too. PR number = the number in the trailing `(#NNNN)` of the commit subject.
+
+  1. The path the file had immediately before it got its current path, and the PR that moved it there.
+  2. The PR that first introduced the identifier `pat_count_of` into this file.
+  3. The PR that first introduced the identifier `RoutedRequestHeader` into this file.
+  4. The PR that last changed the line that declares `fn maybe_rewrite_pat_request(`.
+
+  Write `ANSWER.txt` at the repo root with exactly five lines: `moved_from=<repo-relative path>`,
+  `moved_in=<number>`, `pat_count_of=<number>`, `routed_header=<number>`, `maybe_rewrite=<number>`.
+  Do not create a branch, push, or open a PR.
+grade: |
+  set -e
+  a="$(tr -d ' \r' < ANSWER.txt)"
+  echo "$a" | grep -qx 'moved_from=core/server-ng/src/pat.rs'
+  echo "$a" | grep -qx 'moved_in=3856'
+  echo "$a" | grep -qx 'pat_count_of=3773'
+  echo "$a" | grep -qx 'routed_header=3836'
+  echo "$a" | grep -qx 'maybe_rewrite=4023'
+timeout_min: 10
+cpus: 2
+memory: 4g
