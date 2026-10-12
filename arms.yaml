@@ -1,0 +1,8 @@
+# Shared arms: name -> tools from tools/<name>/setup.sh, installed in that order.
+# Used by every task without its own `arms:` block. Pick arms per run with `bench run ... --arm A --arm B`.
+control: []
+rtk: [rtk]
+serena: [serena]
+serena-upfront: [serena, upfront]
+graphify: [graphify]
+rtk-serena: [rtk, serena]
