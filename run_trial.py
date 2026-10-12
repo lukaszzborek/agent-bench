@@ -3,8 +3,10 @@
 
 Driven by `bench run`. Results: <run_dir>/<arm>-r<rep>/
 """
+import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -71,8 +73,15 @@ def agent_cmd(agent: str, task: dict) -> list[str]:
     sys.exit(f"unknown agent {agent}")
 
 
-def install_tools(name: str, agent: str, tools: list[str]) -> dict:
-    """Copy tools/<tool> into the sandbox and run its setup.sh as root. Returns per-tool logs."""
+def version(name: str, binary: str) -> str | None:
+    """First line of `<binary> --version` inside the sandbox; None if it fails."""
+    r = sbx_exec(name, binary, "--version", check=False)
+    return r.stdout.strip().splitlines()[0] if r.returncode == 0 and r.stdout.strip() else None
+
+
+def install_tools(name: str, agent: str, tools: list[str], work: str, env: dict) -> dict:
+    """Copy tools/<tool> into the sandbox and run `setup.sh <agent> <repo dir>` as root with the task's env
+    (tool knobs such as SERENA_LANGUAGES). Returns per-tool logs."""
     logs = {}
     if tools:
         sh("sbx", "exec", "-u", "root", name, "mkdir", "-p", "/opt/bench-tools")
@@ -81,19 +90,31 @@ def install_tools(name: str, agent: str, tools: list[str]) -> dict:
         if not (src / "setup.sh").exists():
             sys.exit(f"no setup.sh for tool {tool} in {src}")
         sh("sbx", "cp", str(src), f"{name}:/opt/bench-tools/{tool}")
-        r = sh("sbx", "exec", "-u", "root", name, "bash", f"/opt/bench-tools/{tool}/setup.sh", agent)
+        env_args = [a for k, v in env.items() for a in ("-e", f"{k}={v}")]
+        r = sh("sbx", "exec", "-u", "root", *env_args, name, "bash", f"/opt/bench-tools/{tool}/setup.sh", agent, work)
         logs[tool] = r.stdout + r.stderr
     return logs
 
 
 def summarize(agent: str, jsonl: Path) -> dict:
-    """Pull final usage from the agent's own structured output."""
-    last = None
+    """Pull final usage and per-tool call counts from the agent's own structured output."""
+    last, calls, seen = None, {}, set()
     for line in jsonl.read_text(errors="replace").splitlines():
         try:
             ev = json.loads(line)
         except json.JSONDecodeError:
             continue
+        # tells "the tool did not help" apart from "the agent never called it"
+        if agent == "claude" and ev.get("type") == "assistant":
+            for b in (ev.get("message") or {}).get("content") or []:
+                if b.get("type") == "tool_use" and b.get("id") not in seen:
+                    seen.add(b.get("id"))
+                    calls[b["name"]] = calls.get(b["name"], 0) + 1
+        elif agent == "codex" and ev.get("type") == "item.completed":
+            it = ev.get("item") or {}
+            name = f"mcp__{it.get('server')}__{it.get('tool')}" if it.get("type") == "mcp_tool_call" else it.get("type")
+            if name not in (None, "agent_message", "reasoning"):
+                calls[name] = calls.get(name, 0) + 1
         if agent == "claude" and ev.get("type") == "result":
             last = {k: ev.get(k) for k in ("session_id", "num_turns", "duration_ms", "duration_api_ms",
                                             "total_cost_usd", "usage", "modelUsage", "is_error", "subtype")}
@@ -101,7 +122,7 @@ def summarize(agent: str, jsonl: Path) -> dict:
             last = {"usage": ev["usage"], "thread_id": ev.get("thread_id")}
         elif agent == "codex" and ev.get("type") == "thread.started":
             last = {**(last or {}), "thread_id": ev.get("thread_id")}
-    return last or {}
+    return {**last, "tool_calls": calls} if last else {}
 
 
 def session_tags(meta: dict) -> list[str]:
@@ -116,8 +137,16 @@ def session_tags(meta: dict) -> list[str]:
     return tags + [f"trial:{meta['trial']}"]
 
 
+def slug(s: str) -> str:
+    """Sandbox/dir-safe form of a name (model ids contain dots)."""
+    return re.sub(r"[^a-z0-9-]+", "-", s.lower())
+
+
 def load_tasks(ref: str) -> list[dict]:
-    """Tasks for a ref: a yaml path, a dataset (subdir of tasks/), or a task file name anywhere under tasks/."""
+    """Tasks for a ref: a yaml path, a dataset (subdir of tasks/), or a task file name anywhere under tasks/.
+
+    Tasks without an `arms:` block get the shared arms from arms.yaml.
+    """
     tasks = HERE / "tasks"
     if Path(ref).is_file():
         paths = [Path(ref)]
@@ -128,7 +157,16 @@ def load_tasks(ref: str) -> list[dict]:
     if not paths:
         names = sorted({p.stem for p in tasks.rglob("*.yaml")} | {p.name for p in tasks.iterdir() if p.is_dir()})
         sys.exit(f"no task or dataset {ref!r}; available: {', '.join(names)}")
-    return [yaml.safe_load(p.read_text()) for p in paths]
+    arms = yaml.safe_load((HERE / "arms.yaml").read_text())
+    loaded = []
+    for p in paths:
+        t = yaml.safe_load(p.read_text())
+        t.setdefault("arms", arms)
+        t["dataset"] = p.parent.name if p.parent != tasks else "-"
+        if t.get("hidden"):
+            t["hidden"] = str(p.parent / t["hidden"])
+        loaded.append(t)
+    return loaded
 
 
 def resolve_repo(repo: str, commit: str) -> str:
@@ -149,7 +187,11 @@ def run_trial(task: dict, arm: str, rep: int, run_dir: Path, template_tag: str, 
     agent = task["agent"]
     tools = task["arms"][arm] or []
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    trial = f"{task['id']}-{agent}-{arm}-r{rep}-{ts}".lower()
+    base = slug(f"{task['id']}-{task['model']}-{arm}-r{rep}")  # model implies agent
+    trial = f"{base}-{ts.lower()}"
+    if len(trial) > 63:
+        # doubles as the sandbox name, which sbx caps at 63; the hash (over the timestamp too) keeps it unique
+        trial = f"{base[:54].rstrip('-')}-{hashlib.sha1(trial.encode()).hexdigest()[:8]}"
     out = run_dir / f"{arm}-r{rep}"
     out.mkdir(parents=True)
     work = f"{SBX_HOME}/workspace/{Path(task['repo_path']).name}"
@@ -184,9 +226,15 @@ def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta:
             env_args += ["--env-file", str(tel)]
         for key, value in (task.get("env") or {}).items():
             env_args += ["-e", f"{key}={value}"]
-        env_args += ["-e", f"OTEL_RESOURCE_ATTRIBUTES=trial.id={trial},arm={arm},task={task['id']},agent={agent}"]
-        if agent == "claude" and os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
-            env_args += ["-e", "CLAUDE_CODE_OAUTH_TOKEN"]  # subscription auth fallback, taken from host env
+        env_args += ["-e", f"OTEL_RESOURCE_ATTRIBUTES=trial.id={trial},arm={arm},task={task['id']},agent={agent},model={task['model']}"]
+        if agent == "claude":
+            # subscription auth would otherwise mount the account's claude.ai connectors (Docs, Gmail, ...) in the trial
+            env_args += ["-e", "ENABLE_CLAUDEAI_MCP_SERVERS=false"]
+            # -p does not wait for MCP servers by default: the first request (and with it the model's plan) goes out
+            # while e.g. Serena is still starting, so its tools are missing exactly when the agent picks its approach
+            env_args += ["-e", "MCP_CONNECTION_NONBLOCKING=false"]
+            if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+                env_args += ["-e", "CLAUDE_CODE_OAUTH_TOKEN"]  # subscription auth fallback, taken from host env
 
         print(f"[{trial}] create sandbox")
         sh("sbx", "create", "-q", "--name", trial, "-t", meta["template"],
@@ -200,8 +248,10 @@ def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta:
                 (out / "setup.log").write_text(r.stdout + r.stderr)
                 if r.returncode != 0:
                     sys.exit(f"[{trial}] setup failed ({r.returncode}), see {out / 'setup.log'}")
-            meta["tool_logs"] = install_tools(trial, agent, tools)
+            meta["tool_logs"] = install_tools(trial, agent, tools, work, task.get("env") or {})
             meta["setup_s"] = round(time.monotonic() - t0, 1)
+            # what actually ran: agent CLIs come from a floating base image, tool pins can be overridden via env
+            meta["versions"] = {n: version(trial, n) for n in (agent, *tools)}
             # after setup/tools (they download from GitHub), so the agent cannot fetch upstream history or fixes;
             # sandbox-scoped rules are dropped by `sbx rm`
             sh("sbx", "policy", "deny", "network", "--sandbox", trial,
@@ -231,11 +281,16 @@ def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta:
             for src, dst in {
                 "claude": [(f"{SBX_HOME}/.claude/projects", "claude-projects"), (f"{SBX_HOME}/.claude/settings.json", "claude-settings.json")],
                 "codex": [(f"{SBX_HOME}/.codex/sessions", "codex-sessions"), (f"{SBX_HOME}/.codex", "codex-home")],
-            }[agent] + [(f"{SBX_HOME}/.local/share/rtk", "rtk-data")]:
+            }[agent] + [(f"{SBX_HOME}/.local/share/rtk", "rtk-data"), (f"{SBX_HOME}/.serena/logs", "serena-logs"),
+                        (f"{SBX_HOME}/.cache/graphify/queries.jsonl", "graphify-queries.jsonl")]:
                 sh("sbx", "cp", f"{trial}:{src}", str(out / dst), check=False)
             if "rtk" in tools:
                 (out / "rtk-gain.txt").write_text(sbx_exec(trial, "rtk", "gain", "--history", check=False).stdout)
 
+            if task.get("hidden"):
+                # only after the agent exits, so it never sees the grading tests; overwrites its own versions
+                sh("sbx", "cp", task["hidden"], f"{trial}:/tmp/bench-hidden")
+                sbx_exec(trial, "cp", "-rT", "/tmp/bench-hidden", work)
             if task.get("grade"):
                 print(f"[{trial}] grade")
                 g = sbx_exec(trial, "bash", "-lc", task["grade"], workdir=work, check=False, timeout=600)

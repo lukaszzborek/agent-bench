@@ -4,3 +4,4 @@ results/
 .serena/
 telemetry.env
 tasks/private/
+results-archive/

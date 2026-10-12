@@ -2,8 +2,9 @@
 """bench — sandboxed agent benchmark CLI.
 
   bench list                                   tasks with dataset, agent, model, arms
-  bench run <task>... [--arm A] [--reps N] [--jobs N] [--keep]
+  bench run <task>... [--arm A] [--model [AGENT:]MODEL] [--effort E] [--reps N] [--jobs N] [--keep]
   bench report [path...]                       default: everything in results/
+  bench publish [path...]                      merge results into site/data.json (GitHub Pages dashboard)
   bench build [claude|codex ...] [--tag T] [--deps "dotnet node"]
 
 <task> = dataset (subdir of tasks/), task file name without .yaml, or a path to a yaml file.
@@ -17,32 +18,47 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
+from publish import publish
 from report import report
-from run_trial import HERE, load_tasks, resolve_repo, run_trial
+from run_trial import HERE, load_tasks, resolve_repo, run_trial, slug
 
 
 def cmd_list(a):
-    tasks = HERE / "tasks"
-    for p in sorted(tasks.rglob("*.yaml")):
+    for p in sorted((HERE / "tasks").rglob("*.yaml")):
         t = load_tasks(str(p))[0]
-        dataset = p.parent.name if p.parent != tasks else "-"
-        print(f"{dataset:10} {p.stem:36} {t['agent']:7} {t['model']:22} {t.get('template_tag', 'v1'):8} arms: {', '.join(t.get('arms', {}))}")
+        print(f"{t['dataset']:10} {p.stem:40} {t['agent']:7} {t['model']:22} {t.get('template_tag', 'v1'):8} arms: {', '.join(t['arms'])}")
+
+
+def model_variants(task: dict, models: list[str] | None, effort: str | None) -> list[dict]:
+    """Copies of `task`, one per `[agent:]model` spec; the task's own agent/model when none given."""
+    variants = []
+    for spec in models or [None]:
+        t = dict(task)
+        if spec:
+            agent, _, model = spec.rpartition(":")
+            t["agent"], t["model"] = agent or t["agent"], model
+        if effort:
+            t["effort"] = effort
+        variants.append(t)
+    return variants
 
 
 def cmd_run(a):
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     plan, run_dirs = [], []
-    for task in (t for ref in a.task for t in load_tasks(ref)):
+    tasks = [v for ref in a.task for t in load_tasks(ref) for v in model_variants(t, a.model, a.effort)]
+    for task in tasks:
         # resolved here, serially, so parallel trials never race on the same clone
         task["repo_path"] = resolve_repo(task["repo"], task["commit"])
-        arms = a.arm or list(task.get("arms", {}))
-        for arm in arms:
-            if arm not in task.get("arms", {}):
-                sys.exit(f"arm {arm!r} not in {task['id']} arms {list(task.get('arms', {}))}")
+        arms = [arm for arm in a.arm or task["arms"] if arm in task["arms"]]
+        for arm in set(a.arm or []) - set(task["arms"]):
+            print(f"skip {task['id']}: no arm {arm!r} (has {', '.join(task['arms'])})", file=sys.stderr)
         tag = a.template_tag or os.environ.get("TAG") or task.get("template_tag", "v1")
-        run_dir = Path(a.out) / f"{task['id']}-{task['agent']}-{ts}".lower()
+        run_dir = Path(a.out) / slug(f"{task['id']}-{task['agent']}-{task['model']}-{ts}")
         run_dirs.append(run_dir)
         plan += [(task, arm, rep, run_dir, tag, a.keep) for arm in arms for rep in range(1, a.reps + 1)]
+    if not plan:
+        sys.exit("nothing to run")
     random.shuffle(plan)  # interleave arms so time-of-day and API cache effects do not favour one arm
 
     with ThreadPoolExecutor(a.jobs) as pool:
@@ -59,6 +75,10 @@ def cmd_run(a):
 
 def cmd_report(a):
     report([Path(p) for p in a.path] or [HERE / "results"])
+
+
+def cmd_publish(a):
+    publish([Path(p) for p in a.path] or [HERE / "results"], HERE / "site" / "data.json")
 
 
 def cmd_build(a):
@@ -80,11 +100,19 @@ def main():
     p.add_argument("--keep", action="store_true", help="do not remove the sandboxes afterwards")
     p.add_argument("--out", default=str(HERE / "results"))
     p.add_argument("--template-tag", help="overrides the task's template_tag (default v1)")
+    p.add_argument("--model", action="append", metavar="[AGENT:]MODEL",
+                   help="override the task's model, repeatable = one full plan per model; e.g. claude-opus-5-5, "
+                        "codex:gpt-5.3-codex (AGENT defaults to the task's agent)")
+    p.add_argument("--effort", help="override the task's effort (claude: low|medium|high, codex: minimal..xhigh)")
     p.set_defaults(fn=cmd_run)
 
     p = sub.add_parser("report", help="table + per-arm medians")
     p.add_argument("path", nargs="*", help="results dir or run dir(s) (default: results/)")
     p.set_defaults(fn=cmd_report)
+
+    p = sub.add_parser("publish", help="merge results into site/data.json for the GitHub Pages dashboard")
+    p.add_argument("path", nargs="*", help="results dir or run dir(s) (default: results/)")
+    p.set_defaults(fn=cmd_publish)
 
     p = sub.add_parser("build", help="build sandbox templates (wraps build-templates.sh)")
     p.add_argument("agent", nargs="*", choices=["claude", "codex"], help="default: both")
