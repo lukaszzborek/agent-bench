@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-12T22:12:40+00:00",
+ "updated": "2026-10-13T15:45:04+00:00",
  "trials": [
   {
    "trial": "iggy-csharp-callers-claude-sonnet-5-5-rtk-r1-20261012t211946z",
@@ -35,7 +35,35 @@
    "tool_calls": {
     "Bash": 5
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30892,
+   "ctx_peak": 39689,
+   "ctx_turns": [
+    30892,
+    35176,
+    36070,
+    37789,
+    39061,
+    39689
+   ],
+   "tool_out": 1911,
+   "tool_out_by": {
+    "Bash": 1911
+   },
+   "rtk": {
+    "cmds": 4,
+    "raw": 1066,
+    "saved": 163,
+    "hooked": 5,
+    "rewritten": 3
+   },
+   "rtk_saved": 163,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-r1-1bc6ce00",
@@ -71,7 +99,29 @@
    "tool_calls": {
     "Bash": 5
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 34399,
+   "ctx_peak": 41938,
+   "ctx_turns": [
+    34399,
+    35408,
+    37285,
+    39678,
+    40936,
+    41938
+   ],
+   "tool_out": 2854,
+   "tool_out_by": {
+    "Bash": 2854
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-r1-60da9432",
@@ -107,7 +157,27 @@
    "tool_calls": {
     "Bash": 3
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 34315,
+   "ctx_peak": 36435,
+   "ctx_turns": [
+    34315,
+    34659,
+    35605,
+    36435
+   ],
+   "tool_out": 729,
+   "tool_out_by": {
+    "Bash": 729
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
   },
   {
    "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-upfr-c951e9f2",
@@ -145,7 +215,32 @@
    "tool_calls": {
     "Bash": 9
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 53755,
+   "ctx_peak": 65346,
+   "ctx_turns": [
+    53755,
+    55462,
+    58550,
+    59893,
+    60880,
+    62651,
+    63894,
+    64274,
+    65044,
+    65346
+   ],
+   "tool_out": 4488,
+   "tool_out_by": {
+    "Bash": 4488
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
   },
   {
    "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-upfront-d775441e",
@@ -183,7 +278,28 @@
    "tool_calls": {
     "Bash": 4
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 59339,
+   "ctx_peak": 62603,
+   "ctx_turns": [
+    59339,
+    59644,
+    60544,
+    62321,
+    62603
+   ],
+   "tool_out": 1302,
+   "tool_out_by": {
+    "Bash": 1302
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
   },
   {
    "trial": "private-3f54af-claude-sonnet-5-5-rtk-r1-cb6ca0d2",
@@ -219,7 +335,37 @@
    "tool_calls": {
     "Bash": 8
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 39946,
+   "ctx_peak": 71278,
+   "ctx_turns": [
+    39946,
+    50022,
+    56176,
+    57250,
+    60178,
+    63126,
+    65232,
+    70712,
+    71278
+   ],
+   "tool_out": 12237,
+   "tool_out_by": {
+    "Bash": 12237
+   },
+   "rtk": {
+    "cmds": 6,
+    "raw": 6214,
+    "saved": 11,
+    "hooked": 8,
+    "rewritten": 2
+   },
+   "rtk_saved": 11,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "iggy-csharp-callers-claude-sonnet-5-5-control-r1-c7ea87fa",
@@ -252,7 +398,30 @@
    "tool_calls": {
     "Bash": 6
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30603,
+   "ctx_peak": 38455,
+   "ctx_turns": [
+    30603,
+    31612,
+    32868,
+    34145,
+    36303,
+    37936,
+    38455
+   ],
+   "tool_out": 3205,
+   "tool_out_by": {
+    "Bash": 3205
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-control-r1-141bf7c0",
@@ -285,7 +454,28 @@
    "tool_calls": {
     "Bash": 4
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30776,
+   "ctx_peak": 35393,
+   "ctx_turns": [
+    30776,
+    34444,
+    34872,
+    35182,
+    35393
+   ],
+   "tool_out": 163,
+   "tool_out_by": {
+    "Bash": 163
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-control-r1-1d604947",
@@ -318,7 +508,27 @@
    "tool_calls": {
     "Bash": 3
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30587,
+   "ctx_peak": 35318,
+   "ctx_turns": [
+    30587,
+    34200,
+    34979,
+    35318
+   ],
+   "tool_out": 380,
+   "tool_out_by": {
+    "Bash": 380
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
   },
   {
    "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-r1-18320f8f",
@@ -354,7 +564,26 @@
    "tool_calls": {
     "Bash": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 34482,
+   "ctx_peak": 35164,
+   "ctx_turns": [
+    34482,
+    34919,
+    35164
+   ],
+   "tool_out": 130,
+   "tool_out_by": {
+    "Bash": 130
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "private-3f54af-claude-sonnet-5-5-control-r1-67d71187",
@@ -388,7 +617,33 @@
     "Bash": 9,
     "Write": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 36576,
+   "ctx_peak": 68163,
+   "ctx_turns": [
+    36576,
+    42478,
+    48534,
+    49446,
+    57336,
+    60260,
+    62797,
+    66139,
+    67990,
+    68163
+   ],
+   "tool_out": 9787,
+   "tool_out_by": {
+    "Bash": 9709,
+    "Write": 78
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-r1-f59c31e3",
@@ -424,7 +679,33 @@
    "tool_calls": {
     "Bash": 10
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 34715,
+   "ctx_peak": 65645,
+   "ctx_turns": [
+    34715,
+    44327,
+    49701,
+    53745,
+    56150,
+    56733,
+    59218,
+    60534,
+    64641,
+    65362,
+    65645
+   ],
+   "tool_out": 14174,
+   "tool_out_by": {
+    "Bash": 14174
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-utf8-identifier-claude-sonnet-5-5-rtk-r1-20261012t213127z",
@@ -461,7 +742,42 @@
     "Bash": 11,
     "Read": 4
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 31199,
+   "ctx_peak": 70471,
+   "ctx_turns": [
+    31199,
+    37589,
+    41904,
+    50024,
+    54179,
+    58196,
+    61992,
+    63660,
+    65032,
+    65909,
+    69677,
+    69908,
+    70471
+   ],
+   "tool_out": 16249,
+   "tool_out_by": {
+    "Bash": 10180,
+    "Read": 6069
+   },
+   "rtk": {
+    "cmds": 12,
+    "raw": 25772,
+    "saved": 21035,
+    "hooked": 11,
+    "rewritten": 6
+   },
+   "rtk_saved": 21035,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-upfront-45deacad",
@@ -500,7 +816,31 @@
     "mcp__serena__initial_instructions": 1,
     "Bash": 7
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 59741,
+   "ctx_peak": 92126,
+   "ctx_turns": [
+    59741,
+    73312,
+    76956,
+    82527,
+    83721,
+    87123,
+    88444,
+    92126
+   ],
+   "tool_out": 16399,
+   "tool_out_by": {
+    "Bash": 14295,
+    "mcp__serena__initial_instructions": 2104
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-upfro-50b19367",
@@ -538,7 +878,26 @@
    "tool_calls": {
     "Bash": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 59507,
+   "ctx_peak": 60175,
+   "ctx_turns": [
+    59507,
+    59927,
+    60175
+   ],
+   "tool_out": 130,
+   "tool_out_by": {
+    "Bash": 130
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-upfront-r-7ebc8e4c",
@@ -576,7 +935,30 @@
    "tool_calls": {
     "Bash": 6
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 59423,
+   "ctx_peak": 66170,
+   "ctx_turns": [
+    59423,
+    60432,
+    61690,
+    62472,
+    63664,
+    65301,
+    66170
+   ],
+   "tool_out": 2313,
+   "tool_out_by": {
+    "Bash": 2313
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-utf8-identifier-claude-sonnet-5-5-control-r1-68a1ff6b",
@@ -609,7 +991,31 @@
    "tool_calls": {
     "Bash": 8
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30868,
+   "ctx_peak": 62128,
+   "ctx_turns": [
+    30868,
+    43756,
+    47392,
+    53390,
+    54493,
+    57799,
+    58658,
+    61794,
+    62128
+   ],
+   "tool_out": 13414,
+   "tool_out_by": {
+    "Bash": 13414
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
   },
   {
    "trial": "toml-value-datetime-into-claude-sonnet-5-5-rtk-r1-9b7ae3e8",
@@ -645,7 +1051,36 @@
    "tool_calls": {
     "Bash": 7
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 25245,
+   "ctx_peak": 38511,
+   "ctx_turns": [
+    25245,
+    30065,
+    32610,
+    34136,
+    36808,
+    37423,
+    38151,
+    38511
+   ],
+   "tool_out": 5376,
+   "tool_out_by": {
+    "Bash": 5376
+   },
+   "rtk": {
+    "cmds": 8,
+    "raw": 3094,
+    "saved": 262,
+    "hooked": 7,
+    "rewritten": 4
+   },
+   "rtk_saved": 262,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
   },
   {
    "trial": "toml-value-datetime-into-claude-sonnet-5-5-control-r1-0799082f",
@@ -678,7 +1113,28 @@
    "tool_calls": {
     "Bash": 5
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 28065,
+   "ctx_peak": 39432,
+   "ctx_turns": [
+    28065,
+    31177,
+    34730,
+    35723,
+    38258,
+    39432
+   ],
+   "tool_out": 4531,
+   "tool_out_by": {
+    "Bash": 4531
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
   },
   {
    "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-rtk-r1-54e73191",
@@ -714,7 +1170,32 @@
    "tool_calls": {
     "Bash": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 30975,
+   "ctx_peak": 35072,
+   "ctx_turns": [
+    30975,
+    34731,
+    35072
+   ],
+   "tool_out": 144,
+   "tool_out_by": {
+    "Bash": 144
+   },
+   "rtk": {
+    "cmds": 0,
+    "raw": 0,
+    "saved": 0,
+    "hooked": 2,
+    "rewritten": 0
+   },
+   "rtk_saved": 0,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
   },
   {
    "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-rtk-r1-20261012t214036z",
@@ -750,7 +1231,33 @@
    "tool_calls": {
     "Bash": 3
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 33960,
+   "ctx_peak": 35891,
+   "ctx_turns": [
+    33960,
+    34442,
+    35524,
+    35891
+   ],
+   "tool_out": 541,
+   "tool_out_by": {
+    "Bash": 541
+   },
+   "rtk": {
+    "cmds": 5,
+    "raw": 535,
+    "saved": 19,
+    "hooked": 3,
+    "rewritten": 2
+   },
+   "rtk_saved": 19,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
   },
   {
    "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-r1-ee6d8c19",
@@ -786,7 +1293,31 @@
    "tool_calls": {
     "Bash": 8
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 28726,
+   "ctx_peak": 37876,
+   "ctx_turns": [
+    28726,
+    30160,
+    32723,
+    34018,
+    35837,
+    36287,
+    37033,
+    37449,
+    37876
+   ],
+   "tool_out": 3259,
+   "tool_out_by": {
+    "Bash": 3259
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
   },
   {
    "trial": "private-3f54af-claude-sonnet-5-5-serena-r1-c13025cb",
@@ -824,7 +1355,38 @@
     "Read": 1,
     "Write": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 40242,
+   "ctx_peak": 79574,
+   "ctx_turns": [
+    40242,
+    52313,
+    58164,
+    58500,
+    63007,
+    65267,
+    68236,
+    68699,
+    70593,
+    72802,
+    76409,
+    76983,
+    78403,
+    79574
+   ],
+   "tool_out": 12978,
+   "tool_out_by": {
+    "Bash": 9476,
+    "Read": 3424,
+    "Write": 78
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "private-3f54af-claude-sonnet-5-5-serena-upfr-9cd8951d",
@@ -862,7 +1424,31 @@
    "tool_calls": {
     "Bash": 9
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 66982,
+   "ctx_peak": 99495,
+   "ctx_turns": [
+    66982,
+    77232,
+    83810,
+    86215,
+    89541,
+    91105,
+    96536,
+    97997,
+    99495
+   ],
+   "tool_out": 11948,
+   "tool_out_by": {
+    "Bash": 11948
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "remeda-range-step-claude-sonnet-5-5-rtk-r1-20261012t220530z",
@@ -898,7 +1484,31 @@
    "tool_calls": {
     "Bash": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 25092,
+   "ctx_peak": 32327,
+   "ctx_turns": [
+    25092,
+    29067,
+    32327
+   ],
+   "tool_out": 513,
+   "tool_out_by": {
+    "Bash": 513
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 333,
+    "saved": 11,
+    "hooked": 2,
+    "rewritten": 1
+   },
+   "rtk_saved": 11,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "remeda-range-step-claude-sonnet-5-5-serena-r1-20261012t220530z",
@@ -934,7 +1544,27 @@
    "tool_calls": {
     "Bash": 4
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 28599,
+   "ctx_peak": 34600,
+   "ctx_turns": [
+    28599,
+    29277,
+    33038,
+    33968,
+    34600
+   ],
+   "tool_out": 1395,
+   "tool_out_by": {
+    "Bash": 1395
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "remeda-range-step-claude-sonnet-5-5-control-r1-20261012t220618z",
@@ -968,7 +1598,28 @@
     "Read": 1,
     "Bash": 4
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 28126,
+   "ctx_peak": 33901,
+   "ctx_turns": [
+    28126,
+    29055,
+    32813,
+    33540,
+    33901
+   ],
+   "tool_out": 799,
+   "tool_out_by": {
+    "Read": 262,
+    "Bash": 537
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
   },
   {
    "trial": "remeda-range-step-claude-sonnet-5-5-serena-upfront-r1-56e92f67",
@@ -1006,7 +1657,6457 @@
    "tool_calls": {
     "Bash": 2
    },
-   "sbx": "v0.47.0"
+   "ctx_first": 53624,
+   "ctx_peak": 57330,
+   "ctx_turns": [
+    53624,
+    54342,
+    57330
+   ],
+   "tool_out": 494,
+   "tool_out_by": {
+    "Bash": 494
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-git-rename-blame-claude-sonnet-5-5-control-r1-3db89c6c",
+   "run": "iggy-git-rename-blame-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T111831Z",
+   "dataset": "public",
+   "task": "iggy-git-rename-blame",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 12.8,
+   "setup_s": 0.0,
+   "turns": 4,
+   "cost": 0.1126,
+   "in": 8,
+   "cache_read": 116578,
+   "cache_write": 22761,
+   "out": 984,
+   "tokens": 140331,
+   "patch_lines": 11,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 34011,
+   "ctx_peak": 35445,
+   "ctx_turns": [
+    34011,
+    34684,
+    35207,
+    35445
+   ],
+   "tool_out": 366,
+   "tool_out_by": {
+    "Bash": 366
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-control-r1-1be40c0f",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T111831Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 50.3,
+   "setup_s": 64.7,
+   "turns": 8,
+   "cost": 0.1523,
+   "in": 14,
+   "cache_read": 206852,
+   "cache_write": 25303,
+   "out": 3042,
+   "tokens": 235211,
+   "patch_lines": 116,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 6,
+    "Read": 1
+   },
+   "ctx_first": 25022,
+   "ctx_peak": 37986,
+   "ctx_turns": [
+    25022,
+    29553,
+    32870,
+    34175,
+    35744,
+    36819,
+    37986
+   ],
+   "tool_out": 3826,
+   "tool_out_by": {
+    "Bash": 2748,
+    "Read": 1078
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "toml-writer-quote-overflow-claude-sonnet-5-5-serena-r1-43223e31",
+   "run": "toml-writer-quote-overflow-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T111831Z",
+   "dataset": "public",
+   "task": "toml-writer-quote-overflow",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 48.3,
+   "setup_s": 70.2,
+   "turns": 6,
+   "cost": 0.1355,
+   "in": 12,
+   "cache_read": 170510,
+   "cache_write": 24501,
+   "out": 2042,
+   "tokens": 197065,
+   "patch_lines": 55,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 28443,
+   "ctx_peak": 35480,
+   "ctx_turns": [
+    28443,
+    30028,
+    32307,
+    34071,
+    34694,
+    35480
+   ],
+   "tool_out": 3124,
+   "tool_out_by": {
+    "Bash": 3124
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "toml-integer-keys-claude-sonnet-5-5-serena-r1-20261013t111901z",
+   "run": "toml-integer-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T111901Z",
+   "dataset": "public",
+   "task": "toml-integer-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 120.8,
+   "setup_s": 83.6,
+   "turns": 14,
+   "cost": 0.2776,
+   "in": 28,
+   "cache_read": 593205,
+   "cache_write": 39281,
+   "out": 6106,
+   "tokens": 638620,
+   "patch_lines": 574,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 13
+   },
+   "ctx_first": 28704,
+   "ctx_peak": 52045,
+   "ctx_turns": [
+    28704,
+    36840,
+    40083,
+    42021,
+    42744,
+    43054,
+    45431,
+    47143,
+    49977,
+    50343,
+    51140,
+    51344,
+    51645,
+    52045
+   ],
+   "tool_out": 9275,
+   "tool_out_by": {
+    "Bash": 9275
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-rtk-r1-20261013t112100z",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112100Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 13.0,
+   "setup_s": 3.4,
+   "turns": 4,
+   "cost": 0.1198,
+   "in": 8,
+   "cache_read": 114843,
+   "cache_write": 24738,
+   "out": 934,
+   "tokens": 140523,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 34062,
+   "ctx_peak": 35717,
+   "ctx_turns": [
+    34062,
+    34439,
+    35371,
+    35717
+   ],
+   "tool_out": 446,
+   "tool_out_by": {
+    "Bash": 446
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 507,
+    "saved": 87,
+    "hooked": 3,
+    "rewritten": 2
+   },
+   "rtk_saved": 87,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
+  },
+  {
+   "trial": "httpx-unraised-exceptions-claude-sonnet-5-5-graphify-r-eb48484a",
+   "run": "httpx-unraised-exceptions-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112102Z",
+   "dataset": "public",
+   "task": "httpx-unraised-exceptions",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 16.8,
+   "setup_s": 7.1,
+   "turns": 4,
+   "cost": 0.1198,
+   "in": 8,
+   "cache_read": 101879,
+   "cache_write": 23314,
+   "out": 1638,
+   "tokens": 126839,
+   "patch_lines": 11,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 24943,
+   "ctx_peak": 34293,
+   "ctx_turns": [
+    24943,
+    32088,
+    33877,
+    34293
+   ],
+   "tool_out": 3077,
+   "tool_out_by": {
+    "Bash": 3077
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 2235,
+    "edges": 4209,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "python"
+   ]
+  },
+  {
+   "trial": "remeda-round-precision-claude-sonnet-5-5-serena-r1-0b67ca04",
+   "run": "remeda-round-precision-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112135Z",
+   "dataset": "public",
+   "task": "remeda-round-precision",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 99.6,
+   "setup_s": 46.1,
+   "turns": 4,
+   "cost": 0.1172,
+   "in": 8,
+   "cache_read": 100977,
+   "cache_write": 21267,
+   "out": 2203,
+   "tokens": 124455,
+   "patch_lines": 112,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 28468,
+   "ctx_peak": 32246,
+   "ctx_turns": [
+    28468,
+    29934,
+    31604,
+    32246
+   ],
+   "tool_out": 1009,
+   "tool_out_by": {
+    "Bash": 1009
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-rtk-r1-20261013t112144z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112144Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 52.2,
+   "setup_s": 23.2,
+   "turns": 4,
+   "cost": 0.1322,
+   "in": 6,
+   "cache_read": 65132,
+   "cache_write": 21795,
+   "out": 3854,
+   "tokens": 90787,
+   "patch_lines": 182,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 2
+   },
+   "ctx_first": 25001,
+   "ctx_peak": 32774,
+   "ctx_turns": [
+    25001,
+    29158,
+    32774
+   ],
+   "tool_out": 564,
+   "tool_out_by": {
+    "Read": 262,
+    "Bash": 302
+   },
+   "rtk": {
+    "cmds": 2,
+    "raw": 97,
+    "saved": 11,
+    "hooked": 2,
+    "rewritten": 1
+   },
+   "rtk_saved": 11,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-rtk-r1-20c0f3c0",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112317Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 155.7,
+   "setup_s": 17.5,
+   "turns": 11,
+   "cost": 0.4223,
+   "in": 22,
+   "cache_read": 587412,
+   "cache_write": 60060,
+   "out": 12324,
+   "tokens": 659818,
+   "patch_lines": 987,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 39857,
+   "ctx_peak": 72746,
+   "ctx_turns": [
+    39857,
+    43287,
+    48939,
+    53892,
+    57352,
+    60486,
+    63003,
+    66310,
+    70002,
+    71620,
+    72746
+   ],
+   "tool_out": 12141,
+   "tool_out_by": {
+    "Bash": 12141
+   },
+   "rtk": {
+    "cmds": 0,
+    "raw": 0,
+    "saved": 0,
+    "hooked": 10,
+    "rewritten": 0
+   },
+   "rtk_saved": 0,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "marshmallow-url-fragment-claude-sonnet-5-5-serena-r1-ed3ae626",
+   "run": "marshmallow-url-fragment-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112350Z",
+   "dataset": "public",
+   "task": "marshmallow-url-fragment",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 21.1,
+   "setup_s": 18.4,
+   "turns": 5,
+   "cost": 0.1054,
+   "in": 10,
+   "cache_read": 134207,
+   "cache_write": 19329,
+   "out": 1467,
+   "tokens": 155013,
+   "patch_lines": 52,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 28474,
+   "ctx_peak": 32096,
+   "ctx_turns": [
+    28474,
+    30209,
+    31222,
+    31545,
+    32096
+   ],
+   "tool_out": 1458,
+   "tool_out_by": {
+    "Bash": 1458
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-socket-buffer-default-claude-sonnet-5-5-graphify-a0eac922",
+   "run": "iggy-socket-buffer-default-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112439Z",
+   "dataset": "public",
+   "task": "iggy-socket-buffer-default",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 102.1,
+   "setup_s": 51.7,
+   "turns": 10,
+   "cost": 0.282,
+   "in": 20,
+   "cache_read": 426196,
+   "cache_write": 43066,
+   "out": 6708,
+   "tokens": 475990,
+   "patch_lines": 423,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 9
+   },
+   "ctx_first": 31140,
+   "ctx_peak": 55750,
+   "ctx_turns": [
+    31140,
+    38902,
+    40972,
+    43879,
+    48272,
+    49418,
+    50825,
+    54671,
+    55453,
+    55750
+   ],
+   "tool_out": 7752,
+   "tool_out_by": {
+    "Bash": 7752
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 47357,
+    "edges": 120988,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-enum-none-allow-none-claude-sonnet-5-5-ser-1e51e08d",
+   "run": "marshmallow-enum-none-allow-none-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112451Z",
+   "dataset": "public",
+   "task": "marshmallow-enum-none-allow-none",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 25.8,
+   "setup_s": 19.2,
+   "turns": 5,
+   "cost": 0.117,
+   "in": 10,
+   "cache_read": 134297,
+   "cache_write": 20011,
+   "out": 2353,
+   "tokens": 156671,
+   "patch_lines": 78,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 28497,
+   "ctx_peak": 32778,
+   "ctx_turns": [
+    28497,
+    30069,
+    31032,
+    31942,
+    32778
+   ],
+   "tool_out": 1440,
+   "tool_out_by": {
+    "Bash": 1440
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "toml-integer-keys-claude-sonnet-5-5-control-r1-20261013t112558z",
+   "run": "toml-integer-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112558Z",
+   "dataset": "public",
+   "task": "toml-integer-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 83.3,
+   "setup_s": 52.7,
+   "turns": 14,
+   "cost": 0.2791,
+   "in": 26,
+   "cache_read": 513463,
+   "cache_write": 38938,
+   "out": 7198,
+   "tokens": 559625,
+   "patch_lines": 744,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 11,
+    "bash": 1,
+    "Edit": 1
+   },
+   "ctx_first": 24995,
+   "ctx_peak": 51621,
+   "ctx_turns": [
+    24995,
+    36301,
+    38081,
+    40114,
+    41162,
+    42538,
+    42745,
+    44211,
+    45022,
+    47594,
+    48098,
+    49945,
+    51621
+   ],
+   "tool_out": 8757,
+   "tool_out_by": {
+    "Bash": 8706,
+    "bash": 29,
+    "Edit": 22
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-graphify-r1-a313c63f",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112803Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.5,
+   "setup_s": 40.6,
+   "turns": 4,
+   "cost": 0.1161,
+   "in": 8,
+   "cache_read": 113913,
+   "cache_write": 23312,
+   "out": 1149,
+   "tokens": 138382,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 30927,
+   "ctx_peak": 35996,
+   "ctx_turns": [
+    30927,
+    34691,
+    35619,
+    35996
+   ],
+   "tool_out": 459,
+   "tool_out_by": {
+    "Bash": 459
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48377,
+    "edges": 124121,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-control-r1-20261013t112809z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112809Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 49.9,
+   "setup_s": 19.6,
+   "turns": 5,
+   "cost": 0.1273,
+   "in": 8,
+   "cache_read": 96923,
+   "cache_write": 20418,
+   "out": 3596,
+   "tokens": 120945,
+   "patch_lines": 167,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 3
+   },
+   "ctx_first": 24870,
+   "ctx_peak": 33102,
+   "ctx_turns": [
+    24870,
+    29006,
+    30371,
+    33102
+   ],
+   "tool_out": 946,
+   "tool_out_by": {
+    "Read": 262,
+    "Bash": 684
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "toml-writer-quote-overflow-claude-sonnet-5-5-rtk-r1-c6e2b9cb",
+   "run": "toml-writer-quote-overflow-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112852Z",
+   "dataset": "public",
+   "task": "toml-writer-quote-overflow",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 24.6,
+   "setup_s": 44.3,
+   "turns": 5,
+   "cost": 0.1028,
+   "in": 10,
+   "cache_read": 121389,
+   "cache_write": 17753,
+   "out": 1967,
+   "tokens": 141119,
+   "patch_lines": 84,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 24868,
+   "ctx_peak": 30436,
+   "ctx_turns": [
+    24868,
+    26133,
+    28097,
+    29618,
+    30436
+   ],
+   "tool_out": 2337,
+   "tool_out_by": {
+    "Bash": 2337
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 1065,
+    "saved": 501,
+    "hooked": 4,
+    "rewritten": 1
+   },
+   "rtk_saved": 501,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-graphify-r1-d0067293",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T112919Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 206.1,
+   "setup_s": 49.2,
+   "turns": 12,
+   "cost": 0.4217,
+   "in": 24,
+   "cache_read": 639488,
+   "cache_write": 58452,
+   "out": 12390,
+   "tokens": 710354,
+   "patch_lines": 986,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 11
+   },
+   "ctx_first": 40044,
+   "ctx_peak": 71138,
+   "ctx_turns": [
+    40044,
+    43930,
+    49531,
+    50501,
+    53476,
+    59272,
+    62694,
+    64093,
+    64782,
+    68247,
+    70256,
+    71138
+   ],
+   "tool_out": 11611,
+   "tool_out_by": {
+    "Bash": 11611
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 31654,
+    "edges": 95761,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 0,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-git-rename-blame-claude-sonnet-5-5-rtk-r1-20261013t113002z",
+   "run": "iggy-git-rename-blame-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113002Z",
+   "dataset": "public",
+   "task": "iggy-git-rename-blame",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 13.3,
+   "setup_s": 2.9,
+   "turns": 4,
+   "cost": 0.1136,
+   "in": 8,
+   "cache_read": 114148,
+   "cache_write": 23118,
+   "out": 974,
+   "tokens": 138248,
+   "patch_lines": 11,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 30923,
+   "ctx_peak": 35802,
+   "ctx_turns": [
+    30923,
+    34985,
+    35564,
+    35802
+   ],
+   "tool_out": 384,
+   "tool_out_by": {
+    "Bash": 384
+   },
+   "rtk": {
+    "cmds": 5,
+    "raw": 221,
+    "saved": 5,
+    "hooked": 3,
+    "rewritten": 2
+   },
+   "rtk_saved": 5,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-graphify-r1-ee8fb41a",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113025Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 53.9,
+   "setup_s": 32.0,
+   "turns": 4,
+   "cost": 0.1318,
+   "in": 6,
+   "cache_read": 67439,
+   "cache_write": 20812,
+   "out": 4178,
+   "tokens": 92435,
+   "patch_lines": 175,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 2
+   },
+   "ctx_first": 25208,
+   "ctx_peak": 33496,
+   "ctx_turns": [
+    25208,
+    29553,
+    33496
+   ],
+   "tool_out": 560,
+   "tool_out_by": {
+    "Read": 262,
+    "Bash": 298
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 2889,
+    "edges": 5702,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "private-bca4f9-claude-sonnet-5-5-rtk-r1-9f298f30",
+   "run": "private-bca4f9-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113039Z",
+   "dataset": "private",
+   "task": "private-bca4f9",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "fail",
+   "timeout": false,
+   "wall_s": 535.5,
+   "setup_s": 85.0,
+   "turns": 34,
+   "cost": 1.0565,
+   "in": 66,
+   "cache_read": 2842921,
+   "cache_write": 108247,
+   "out": 33911,
+   "tokens": 2985145,
+   "patch_lines": 1262,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 33
+   },
+   "ctx_first": 33673,
+   "ctx_peak": 120933,
+   "ctx_turns": [
+    33673,
+    39104,
+    50578,
+    56509,
+    59257,
+    63650,
+    68102,
+    69445,
+    71767,
+    73927,
+    76309,
+    83232,
+    85294,
+    88431,
+    89642,
+    90704,
+    92929,
+    95256,
+    99383,
+    102626,
+    103178,
+    104726,
+    106126,
+    107986,
+    111867,
+    112756,
+    112885,
+    113069,
+    113593,
+    116757,
+    118143,
+    119397,
+    120933
+   ],
+   "tool_out": 30843,
+   "tool_out_by": {
+    "Bash": 30843
+   },
+   "rtk": {
+    "cmds": 73,
+    "raw": 29230,
+    "saved": 8120,
+    "hooked": 33,
+    "rewritten": 18
+   },
+   "rtk_saved": 8120,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-expiry-timespan-claude-sonnet-5-5-control-r1-17903669",
+   "run": "iggy-expiry-timespan-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113239Z",
+   "dataset": "public",
+   "task": "iggy-expiry-timespan",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 129.6,
+   "setup_s": 10.9,
+   "turns": 17,
+   "cost": 0.4111,
+   "in": 34,
+   "cache_read": 833108,
+   "cache_write": 51494,
+   "out": 12179,
+   "tokens": 896815,
+   "patch_lines": 693,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 16
+   },
+   "ctx_first": 25270,
+   "ctx_peak": 64178,
+   "ctx_turns": [
+    25270,
+    29595,
+    37755,
+    42364,
+    46996,
+    49768,
+    53380,
+    55410,
+    56182,
+    56621,
+    58368,
+    58751,
+    59921,
+    62611,
+    63543,
+    63923,
+    64178
+   ],
+   "tool_out": 12003,
+   "tool_out_by": {
+    "Bash": 12003
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-binarymapper-dos-claude-sonnet-5-5-graphify-r1-e72d3d04",
+   "run": "iggy-binarymapper-dos-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113534Z",
+   "dataset": "public",
+   "task": "iggy-binarymapper-dos",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 130.3,
+   "setup_s": 58.5,
+   "turns": 8,
+   "cost": 0.2273,
+   "in": 14,
+   "cache_read": 262317,
+   "cache_write": 37219,
+   "out": 5214,
+   "tokens": 304764,
+   "patch_lines": 186,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 6,
+    "Read": 1
+   },
+   "ctx_first": 30858,
+   "ctx_peak": 49903,
+   "ctx_turns": [
+    30858,
+    35474,
+    42647,
+    43362,
+    47704,
+    49602,
+    49903
+   ],
+   "tool_out": 5694,
+   "tool_out_by": {
+    "Bash": 2900,
+    "Read": 2794
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 47126,
+    "edges": 120296,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-bca4f9-claude-sonnet-5-5-control-a4b36baa",
+   "run": "private-bca4f9-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113544Z",
+   "dataset": "private",
+   "task": "private-bca4f9",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "fail",
+   "timeout": false,
+   "wall_s": 295.4,
+   "setup_s": 83.2,
+   "turns": 26,
+   "cost": 0.8827,
+   "in": 50,
+   "cache_read": 1865361,
+   "cache_write": 97674,
+   "out": 30532,
+   "tokens": 1993617,
+   "patch_lines": 1223,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 25
+   },
+   "ctx_first": 33453,
+   "ctx_peak": 110360,
+   "ctx_turns": [
+    33453,
+    39863,
+    41157,
+    53061,
+    55916,
+    58616,
+    61476,
+    62373,
+    68415,
+    74099,
+    79021,
+    79973,
+    80715,
+    81774,
+    84061,
+    86881,
+    91424,
+    93191,
+    97949,
+    100476,
+    105879,
+    106514,
+    107242,
+    109196,
+    110360
+   ],
+   "tool_out": 27818,
+   "tool_out_by": {
+    "Bash": 27818
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-socket-buffer-default-claude-sonnet-5-5-rtk-r1-8b8792d5",
+   "run": "iggy-socket-buffer-default-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T113935Z",
+   "dataset": "public",
+   "task": "iggy-socket-buffer-default",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 185.2,
+   "setup_s": 15.2,
+   "turns": 15,
+   "cost": 0.4072,
+   "in": 30,
+   "cache_read": 735280,
+   "cache_write": 54978,
+   "out": 11375,
+   "tokens": 801663,
+   "patch_lines": 445,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 14
+   },
+   "ctx_first": 31199,
+   "ctx_peak": 67662,
+   "ctx_turns": [
+    31199,
+    38635,
+    40347,
+    42761,
+    45863,
+    49567,
+    53670,
+    55142,
+    55539,
+    56607,
+    57642,
+    63557,
+    64999,
+    67098,
+    67662
+   ],
+   "tool_out": 12336,
+   "tool_out_by": {
+    "Bash": 12336
+   },
+   "rtk": {
+    "cmds": 14,
+    "raw": 2960,
+    "saved": 1051,
+    "hooked": 14,
+    "rewritten": 9
+   },
+   "rtk_saved": 1051,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-diff-csharp-claude-sonnet-5-5-rtk-r1-20261013t114212z",
+   "run": "iggy-git-diff-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114212Z",
+   "dataset": "public",
+   "task": "iggy-git-diff-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 10.0,
+   "setup_s": 3.0,
+   "turns": 3,
+   "cost": 0.1039,
+   "in": 6,
+   "cache_read": 77998,
+   "cache_write": 22211,
+   "out": 724,
+   "tokens": 100939,
+   "patch_lines": 10,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30801,
+   "ctx_peak": 34895,
+   "ctx_turns": [
+    30801,
+    34519,
+    34895
+   ],
+   "tool_out": 84,
+   "tool_out_by": {
+    "Bash": 84
+   },
+   "rtk": {
+    "cmds": 0,
+    "raw": 0,
+    "saved": 0,
+    "hooked": 2,
+    "rewritten": 0
+   },
+   "rtk_saved": 0,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-writer-quote-overflow-claude-sonnet-5-5-control-r-b6b29335",
+   "run": "toml-writer-quote-overflow-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114243Z",
+   "dataset": "public",
+   "task": "toml-writer-quote-overflow",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 26.2,
+   "setup_s": 40.2,
+   "turns": 6,
+   "cost": 0.1241,
+   "in": 12,
+   "cache_read": 163704,
+   "cache_write": 21684,
+   "out": 2100,
+   "tokens": 187500,
+   "patch_lines": 62,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 24650,
+   "ctx_peak": 34367,
+   "ctx_turns": [
+    24650,
+    28510,
+    31389,
+    32995,
+    33489,
+    34367
+   ],
+   "tool_out": 2924,
+   "tool_out_by": {
+    "Bash": 2924
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "private-21ec68-claude-sonnet-5-5-control-3cf36859",
+   "run": "private-21ec68-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114252Z",
+   "dataset": "private",
+   "task": "private-21ec68",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 67.8,
+   "setup_s": 10.2,
+   "turns": 8,
+   "cost": 0.3188,
+   "in": 16,
+   "cache_read": 323493,
+   "cache_write": 48797,
+   "out": 9127,
+   "tokens": 381433,
+   "patch_lines": 558,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "ctx_first": 33280,
+   "ctx_peak": 59776,
+   "ctx_turns": [
+    33280,
+    34483,
+    44467,
+    45889,
+    48601,
+    51592,
+    54218,
+    59776
+   ],
+   "tool_out": 11283,
+   "tool_out_by": {
+    "Bash": 11283
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-expiry-timespan-claude-sonnet-5-5-serena-r1-6419c5ff",
+   "run": "iggy-expiry-timespan-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114352Z",
+   "dataset": "public",
+   "task": "iggy-expiry-timespan",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 106.7,
+   "setup_s": 42.2,
+   "turns": 12,
+   "cost": 0.3576,
+   "in": 24,
+   "cache_read": 562150,
+   "cache_write": 49378,
+   "out": 10384,
+   "tokens": 621936,
+   "patch_lines": 658,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 11
+   },
+   "ctx_first": 29088,
+   "ctx_peak": 62143,
+   "ctx_turns": [
+    29088,
+    35787,
+    42131,
+    46521,
+    50928,
+    53250,
+    54474,
+    56535,
+    58421,
+    60457,
+    61817,
+    62143
+   ],
+   "tool_out": 11795,
+   "tool_out_by": {
+    "Bash": 11795
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-rtk-r1-20261013t114409z",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114409Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 21.3,
+   "setup_s": 3.1,
+   "turns": 6,
+   "cost": 0.1477,
+   "in": 12,
+   "cache_read": 191469,
+   "cache_write": 26960,
+   "out": 2071,
+   "tokens": 220512,
+   "patch_lines": 37,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 30670,
+   "ctx_peak": 39644,
+   "ctx_turns": [
+    30670,
+    35088,
+    36365,
+    37621,
+    39053,
+    39644
+   ],
+   "tool_out": 2030,
+   "tool_out_by": {
+    "Bash": 2030
+   },
+   "rtk": {
+    "cmds": 4,
+    "raw": 1820,
+    "saved": 314,
+    "hooked": 5,
+    "rewritten": 3
+   },
+   "rtk_saved": 314,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "remeda-round-precision-claude-sonnet-5-5-control-r1-4080ea4d",
+   "run": "remeda-round-precision-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114442Z",
+   "dataset": "public",
+   "task": "remeda-round-precision",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 70.0,
+   "setup_s": 22.7,
+   "turns": 4,
+   "cost": 0.0865,
+   "in": 8,
+   "cache_read": 89314,
+   "cache_write": 14953,
+   "out": 1770,
+   "tokens": 106045,
+   "patch_lines": 122,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 24674,
+   "ctx_peak": 27637,
+   "ctx_turns": [
+    24674,
+    25350,
+    26614,
+    27637
+   ],
+   "tool_out": 789,
+   "tool_out_by": {
+    "Bash": 789
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "remeda-groupby-proto-keys-claude-sonnet-5-5-control-r1-dbd61fe6",
+   "run": "remeda-groupby-proto-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114458Z",
+   "dataset": "public",
+   "task": "remeda-groupby-proto-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 79.0,
+   "setup_s": 21.4,
+   "turns": 8,
+   "cost": 0.1274,
+   "in": 10,
+   "cache_read": 135263,
+   "cache_write": 21870,
+   "out": 2635,
+   "tokens": 159778,
+   "patch_lines": 132,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Read": 2,
+    "Edit": 2,
+    "Bash": 3
+   },
+   "ctx_first": 24571,
+   "ctx_peak": 34554,
+   "ctx_turns": [
+    24571,
+    30970,
+    33101,
+    33947,
+    34554
+   ],
+   "tool_out": 2212,
+   "tool_out_by": {
+    "Read": 1574,
+    "Edit": 82,
+    "Bash": 556
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-configs-sibling-env-claude-sonnet-5-5-rtk-r1-0b232d31",
+   "run": "iggy-configs-sibling-env-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114645Z",
+   "dataset": "public",
+   "task": "iggy-configs-sibling-env",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 32.5,
+   "setup_s": 118.1,
+   "turns": 6,
+   "cost": 0.1905,
+   "in": 10,
+   "cache_read": 178109,
+   "cache_write": 35569,
+   "out": 3037,
+   "tokens": 216725,
+   "patch_lines": 93,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 4
+   },
+   "ctx_first": 31382,
+   "ctx_peak": 48253,
+   "ctx_turns": [
+    31382,
+    42931,
+    44652,
+    46470,
+    48253
+   ],
+   "tool_out": 6493,
+   "tool_out_by": {
+    "Read": 4698,
+    "Bash": 1795
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 1564,
+    "saved": 653,
+    "hooked": 4,
+    "rewritten": 2
+   },
+   "rtk_saved": 653,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-git-diff-csharp-claude-sonnet-5-5-serena-r1-60a21b8d",
+   "run": "iggy-git-diff-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114659Z",
+   "dataset": "public",
+   "task": "iggy-git-diff-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.1,
+   "setup_s": 47.9,
+   "turns": 3,
+   "cost": 0.1052,
+   "in": 6,
+   "cache_read": 81898,
+   "cache_write": 22410,
+   "out": 735,
+   "tokens": 105049,
+   "patch_lines": 18,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 34472,
+   "ctx_peak": 35175,
+   "ctx_turns": [
+    34472,
+    34667,
+    35175
+   ],
+   "tool_out": 78,
+   "tool_out_by": {
+    "Bash": 78
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "remeda-groupby-proto-keys-claude-sonnet-5-5-graphify-r-6f38219c",
+   "run": "remeda-groupby-proto-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114710Z",
+   "dataset": "public",
+   "task": "remeda-groupby-proto-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 103.5,
+   "setup_s": 30.2,
+   "turns": 8,
+   "cost": 0.1543,
+   "in": 16,
+   "cache_read": 230846,
+   "cache_write": 22731,
+   "out": 4029,
+   "tokens": 257622,
+   "patch_lines": 145,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "ctx_first": 25132,
+   "ctx_peak": 35415,
+   "ctx_turns": [
+    25132,
+    29770,
+    30940,
+    31783,
+    32783,
+    33363,
+    34407,
+    35415
+   ],
+   "tool_out": 1601,
+   "tool_out_by": {
+    "Bash": 1601
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 2536,
+    "edges": 4840,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "httpx-unraised-exceptions-claude-sonnet-5-5-control-r1-f4393355",
+   "run": "httpx-unraised-exceptions-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114824Z",
+   "dataset": "public",
+   "task": "httpx-unraised-exceptions",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 12.8,
+   "setup_s": 0.0,
+   "turns": 4,
+   "cost": 0.1015,
+   "in": 8,
+   "cache_read": 101995,
+   "cache_write": 20365,
+   "out": 987,
+   "tokens": 123355,
+   "patch_lines": 11,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 24473,
+   "ctx_peak": 33049,
+   "ctx_turns": [
+    24473,
+    31968,
+    32878,
+    33049
+   ],
+   "tool_out": 2531,
+   "tool_out_by": {
+    "Bash": 2531
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "python"
+   ]
+  },
+  {
+   "trial": "remeda-round-precision-claude-sonnet-5-5-rtk-r1-0f9ddcdb",
+   "run": "remeda-round-precision-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114852Z",
+   "dataset": "public",
+   "task": "remeda-round-precision",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 245.5,
+   "setup_s": 23.7,
+   "turns": 7,
+   "cost": 0.129,
+   "in": 14,
+   "cache_read": 197258,
+   "cache_write": 20003,
+   "out": 2925,
+   "tokens": 220200,
+   "patch_lines": 116,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 28023,
+   "ctx_peak": 32687,
+   "ctx_turns": [
+    28023,
+    29493,
+    30545,
+    31781,
+    32266,
+    32480,
+    32687
+   ],
+   "tool_out": 1064,
+   "tool_out_by": {
+    "Bash": 1064
+   },
+   "rtk": {
+    "cmds": 7,
+    "raw": 499,
+    "saved": 152,
+    "hooked": 6,
+    "rewritten": 4
+   },
+   "rtk_saved": 152,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "private-21ec68-claude-sonnet-5-5-rtk-r1-3bd137a1",
+   "run": "private-21ec68-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114953Z",
+   "dataset": "private",
+   "task": "private-21ec68",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 71.1,
+   "setup_s": 16.4,
+   "turns": 9,
+   "cost": 0.3418,
+   "in": 16,
+   "cache_read": 340192,
+   "cache_write": 50448,
+   "out": 10598,
+   "tokens": 401254,
+   "patch_lines": 692,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "ctx_first": 33420,
+   "ctx_peak": 63134,
+   "ctx_turns": [
+    33420,
+    36727,
+    42423,
+    50395,
+    51509,
+    53811,
+    59237,
+    63134
+   ],
+   "tool_out": 12299,
+   "tool_out_by": {
+    "Bash": 12299
+   },
+   "rtk": {
+    "cmds": 14,
+    "raw": 9826,
+    "saved": 1209,
+    "hooked": 8,
+    "rewritten": 5
+   },
+   "rtk_saved": 1209,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "remeda-range-step-claude-sonnet-5-5-serena-r1-20261013t114957z",
+   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T114957Z",
+   "dataset": "public",
+   "task": "remeda-range-step",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 73.7,
+   "setup_s": 57.5,
+   "turns": 6,
+   "cost": 0.1436,
+   "in": 10,
+   "cache_read": 138303,
+   "cache_write": 21702,
+   "out": 4298,
+   "tokens": 164313,
+   "patch_lines": 184,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 4
+   },
+   "ctx_first": 28598,
+   "ctx_peak": 34467,
+   "ctx_turns": [
+    28598,
+    29527,
+    33382,
+    34041,
+    34467
+   ],
+   "tool_out": 964,
+   "tool_out_by": {
+    "Read": 262,
+    "Bash": 702
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "marshmallow-schema-validator-data-key-claude-sonnet-5-46076757",
+   "run": "marshmallow-schema-validator-data-key-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115155Z",
+   "dataset": "public",
+   "task": "marshmallow-schema-validator-data-key",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 17.2,
+   "setup_s": 1.3,
+   "turns": 4,
+   "cost": 0.1095,
+   "in": 8,
+   "cache_read": 96062,
+   "cache_write": 20773,
+   "out": 1680,
+   "tokens": 118523,
+   "patch_lines": 80,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 24908,
+   "ctx_peak": 31752,
+   "ctx_turns": [
+    24908,
+    29598,
+    30585,
+    31752
+   ],
+   "tool_out": 1658,
+   "tool_out_by": {
+    "Bash": 1658
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-control-r1-796dbe71",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115229Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 9.8,
+   "setup_s": 0.0,
+   "turns": 3,
+   "cost": 0.1021,
+   "in": 6,
+   "cache_read": 77720,
+   "cache_write": 21908,
+   "out": 672,
+   "tokens": 100306,
+   "patch_lines": 8,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30666,
+   "ctx_peak": 34592,
+   "ctx_turns": [
+    30666,
+    34376,
+    34592
+   ],
+   "tool_out": 129,
+   "tool_out_by": {
+    "Bash": 129
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-r1-49b91bb0",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115252Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 51.5,
+   "setup_s": 85.2,
+   "turns": 7,
+   "cost": 0.153,
+   "in": 14,
+   "cache_read": 214066,
+   "cache_write": 25529,
+   "out": 2941,
+   "tokens": 242550,
+   "patch_lines": 110,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 28729,
+   "ctx_peak": 38293,
+   "ctx_turns": [
+    28729,
+    30699,
+    33464,
+    34867,
+    36270,
+    37287,
+    38293
+   ],
+   "tool_out": 3934,
+   "tool_out_by": {
+    "Bash": 3934
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-serena-r1-16a8c94c",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115304Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 248.4,
+   "setup_s": 166.3,
+   "turns": 11,
+   "cost": 0.413,
+   "in": 22,
+   "cache_read": 601123,
+   "cache_write": 58032,
+   "out": 12074,
+   "tokens": 671251,
+   "patch_lines": 984,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 40244,
+   "ctx_peak": 70799,
+   "ctx_turns": [
+    40244,
+    50635,
+    53956,
+    55607,
+    59742,
+    61614,
+    62898,
+    65255,
+    68342,
+    70085,
+    70799
+   ],
+   "tool_out": 10991,
+   "tool_out_by": {
+    "Bash": 10991
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-control-r1-285d6950",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115409Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 12.8,
+   "setup_s": 0.0,
+   "turns": 4,
+   "cost": 0.113,
+   "in": 8,
+   "cache_read": 112593,
+   "cache_write": 22751,
+   "out": 1077,
+   "tokens": 136429,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 30454,
+   "ctx_peak": 35435,
+   "ctx_turns": [
+    30454,
+    34296,
+    35167,
+    35435
+   ],
+   "tool_out": 463,
+   "tool_out_by": {
+    "Bash": 463
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-control-r1-d4e04f3b",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115440Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 93.8,
+   "setup_s": 13.1,
+   "turns": 9,
+   "cost": 0.3037,
+   "in": 18,
+   "cache_read": 421429,
+   "cache_write": 50086,
+   "out": 6122,
+   "tokens": 477655,
+   "patch_lines": 348,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "ctx_first": 30982,
+   "ctx_peak": 62770,
+   "ctx_turns": [
+    30982,
+    43764,
+    48490,
+    52400,
+    56190,
+    58180,
+    58990,
+    59767,
+    62770
+   ],
+   "tool_out": 13827,
+   "tool_out_by": {
+    "Bash": 13827
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-r1-942507fb",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115546Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.6,
+   "setup_s": 43.8,
+   "turns": 3,
+   "cost": 0.1055,
+   "in": 6,
+   "cache_read": 82153,
+   "cache_write": 22379,
+   "out": 776,
+   "tokens": 105314,
+   "patch_lines": 16,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 34482,
+   "ctx_peak": 35144,
+   "ctx_turns": [
+    34482,
+    34912,
+    35144
+   ],
+   "tool_out": 129,
+   "tool_out_by": {
+    "Bash": 129
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-3cad98-claude-sonnet-5-5-control-r1-f43f8bd2",
+   "run": "private-3cad98-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115707Z",
+   "dataset": "private",
+   "task": "private-3cad98",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 112.8,
+   "setup_s": 93.1,
+   "turns": 20,
+   "cost": 0.5017,
+   "in": 24,
+   "cache_read": 730798,
+   "cache_write": 71357,
+   "out": 14317,
+   "tokens": 816496,
+   "patch_lines": 3793,
+   "template": "bench/claude:dotnet-node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Read": 2,
+    "Edit": 7,
+    "Bash": 10
+   },
+   "ctx_first": 40660,
+   "ctx_peak": 82336,
+   "ctx_turns": [
+    40660,
+    51456,
+    56981,
+    57416,
+    61920,
+    69330,
+    71840,
+    73233,
+    78784,
+    78970,
+    79253,
+    82336
+   ],
+   "tool_out": 10554,
+   "tool_out_by": {
+    "Read": 2708,
+    "Edit": 357,
+    "Bash": 7489
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "toml-writer-quote-overflow-claude-sonnet-5-5-graphify-0d1f91e9",
+   "run": "toml-writer-quote-overflow-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115711Z",
+   "dataset": "public",
+   "task": "toml-writer-quote-overflow",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 38.8,
+   "setup_s": 49.1,
+   "turns": 8,
+   "cost": 0.1498,
+   "in": 16,
+   "cache_read": 239344,
+   "cache_write": 24710,
+   "out": 2697,
+   "tokens": 266767,
+   "patch_lines": 76,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 6,
+    "Read": 1
+   },
+   "ctx_first": 24944,
+   "ctx_peak": 37393,
+   "ctx_turns": [
+    24944,
+    29092,
+    32652,
+    33205,
+    34805,
+    35314,
+    36665,
+    37393
+   ],
+   "tool_out": 3804,
+   "tool_out_by": {
+    "Bash": 1662,
+    "Read": 2142
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 5001,
+    "edges": 11001,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "httpx-unraised-exceptions-claude-sonnet-5-5-rtk-r1-7c0390ab",
+   "run": "httpx-unraised-exceptions-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115905Z",
+   "dataset": "public",
+   "task": "httpx-unraised-exceptions",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 18.5,
+   "setup_s": 3.0,
+   "turns": 6,
+   "cost": 0.1214,
+   "in": 10,
+   "cache_read": 136779,
+   "cache_write": 22298,
+   "out": 1850,
+   "tokens": 160937,
+   "patch_lines": 11,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 24694,
+   "ctx_peak": 34982,
+   "ctx_turns": [
+    24694,
+    31776,
+    33340,
+    34295,
+    34982
+   ],
+   "tool_out": 3241,
+   "tool_out_by": {
+    "Bash": 3241
+   },
+   "rtk": {
+    "cmds": 9,
+    "raw": 4251,
+    "saved": 1151,
+    "hooked": 5,
+    "rewritten": 4
+   },
+   "rtk_saved": 1151,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-graphify-r1-03913053",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T115943Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 166.5,
+   "setup_s": 51.1,
+   "turns": 12,
+   "cost": 0.3088,
+   "in": 24,
+   "cache_read": 538819,
+   "cache_write": 45399,
+   "out": 7327,
+   "tokens": 591569,
+   "patch_lines": 389,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 11
+   },
+   "ctx_first": 31275,
+   "ctx_peak": 58083,
+   "ctx_turns": [
+    31275,
+    35793,
+    37888,
+    46587,
+    48121,
+    50431,
+    51917,
+    52700,
+    56633,
+    57183,
+    57631,
+    58083
+   ],
+   "tool_out": 9219,
+   "tool_out_by": {
+    "Bash": 9219
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48377,
+    "edges": 124121,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-expiry-timespan-claude-sonnet-5-5-graphify-r1-245a474c",
+   "run": "iggy-expiry-timespan-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120131Z",
+   "dataset": "public",
+   "task": "iggy-expiry-timespan",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 143.4,
+   "setup_s": 30.4,
+   "turns": 16,
+   "cost": 0.401,
+   "in": 30,
+   "cache_read": 727129,
+   "cache_write": 53200,
+   "out": 11546,
+   "tokens": 791905,
+   "patch_lines": 723,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 15
+   },
+   "ctx_first": 25544,
+   "ctx_peak": 65884,
+   "ctx_turns": [
+    25544,
+    35666,
+    39975,
+    44102,
+    47609,
+    51327,
+    52518,
+    53386,
+    55543,
+    57654,
+    59283,
+    61474,
+    64854,
+    65540,
+    65884
+   ],
+   "tool_out": 13233,
+   "tool_out_by": {
+    "Bash": 13233
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 25952,
+    "edges": 59905,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-expiry-timespan-claude-sonnet-5-5-rtk-r1-20261013t120222z",
+   "run": "iggy-expiry-timespan-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120222Z",
+   "dataset": "public",
+   "task": "iggy-expiry-timespan",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 157.7,
+   "setup_s": 13.5,
+   "turns": 14,
+   "cost": 0.3382,
+   "in": 28,
+   "cache_read": 617654,
+   "cache_write": 45873,
+   "out": 9291,
+   "tokens": 672846,
+   "patch_lines": 662,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 13
+   },
+   "ctx_first": 25448,
+   "ctx_peak": 58557,
+   "ctx_turns": [
+    25448,
+    35004,
+    38803,
+    41244,
+    42579,
+    47259,
+    47611,
+    51511,
+    52403,
+    53172,
+    54881,
+    56921,
+    58162,
+    58557
+   ],
+   "tool_out": 10524,
+   "tool_out_by": {
+    "Bash": 10524
+   },
+   "rtk": {
+    "cmds": 20,
+    "raw": 5769,
+    "saved": 1178,
+    "hooked": 13,
+    "rewritten": 8
+   },
+   "rtk_saved": 1178,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-url-fragment-claude-sonnet-5-5-graphify-r1-d8174215",
+   "run": "marshmallow-url-fragment-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120417Z",
+   "dataset": "public",
+   "task": "marshmallow-url-fragment",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 20.9,
+   "setup_s": 6.9,
+   "turns": 5,
+   "cost": 0.1099,
+   "in": 10,
+   "cache_read": 131507,
+   "cache_write": 19723,
+   "out": 1782,
+   "tokens": 153022,
+   "patch_lines": 46,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 25084,
+   "ctx_peak": 32409,
+   "ctx_turns": [
+    25084,
+    30080,
+    31530,
+    32137,
+    32409
+   ],
+   "tool_out": 1614,
+   "tool_out_by": {
+    "Bash": 1614
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 1577,
+    "edges": 2748,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-graphify-r1-51129286",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120503Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 22.9,
+   "setup_s": 41.6,
+   "turns": 6,
+   "cost": 0.1538,
+   "in": 12,
+   "cache_read": 193339,
+   "cache_write": 27651,
+   "out": 2386,
+   "tokens": 223388,
+   "patch_lines": 37,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 31011,
+   "ctx_peak": 40335,
+   "ctx_turns": [
+    31011,
+    35277,
+    36612,
+    38134,
+    39633,
+    40335
+   ],
+   "tool_out": 2064,
+   "tool_out_by": {
+    "Bash": 2064
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48377,
+    "edges": 124121,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-644b82-claude-sonnet-5-5-rtk-r1-7f42a37b",
+   "run": "private-644b82-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120505Z",
+   "dataset": "private",
+   "task": "private-644b82",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 180.3,
+   "setup_s": 37.2,
+   "turns": 25,
+   "cost": 0.9152,
+   "in": 46,
+   "cache_read": 2054650,
+   "cache_write": 120361,
+   "out": 22816,
+   "tokens": 2197873,
+   "patch_lines": 695,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 24
+   },
+   "ctx_first": 32469,
+   "ctx_peak": 133049,
+   "ctx_turns": [
+    32469,
+    40162,
+    41325,
+    47440,
+    53495,
+    67939,
+    76762,
+    88306,
+    92986,
+    95739,
+    97788,
+    99440,
+    106205,
+    111524,
+    113521,
+    116324,
+    120388,
+    123654,
+    126344,
+    128057,
+    130384,
+    131756,
+    133049
+   ],
+   "tool_out": 39991,
+   "tool_out_by": {
+    "Bash": 39991
+   },
+   "rtk": {
+    "cmds": 37,
+    "raw": 34517,
+    "saved": 7551,
+    "hooked": 24,
+    "rewritten": 15
+   },
+   "rtk_saved": 7551,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-rename-blame-claude-sonnet-5-5-graphify-r1-267fd17f",
+   "run": "iggy-git-rename-blame-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120550Z",
+   "dataset": "public",
+   "task": "iggy-git-rename-blame",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 16.9,
+   "setup_s": 39.3,
+   "turns": 5,
+   "cost": 0.1206,
+   "in": 10,
+   "cache_read": 149367,
+   "cache_write": 23267,
+   "out": 1256,
+   "tokens": 173900,
+   "patch_lines": 11,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 31020,
+   "ctx_peak": 35951,
+   "ctx_turns": [
+    31020,
+    34811,
+    35215,
+    35647,
+    35951
+   ],
+   "tool_out": 282,
+   "tool_out_by": {
+    "Bash": 282
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48530,
+    "edges": 124588,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-stats-metrics-claude-sonnet-5-5-serena-r1-20261013t120627z",
+   "run": "iggy-stats-metrics-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120627Z",
+   "dataset": "public",
+   "task": "iggy-stats-metrics",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 109.4,
+   "setup_s": 44.2,
+   "turns": 8,
+   "cost": 0.2592,
+   "in": 16,
+   "cache_read": 315950,
+   "cache_write": 40771,
+   "out": 6444,
+   "tokens": 363181,
+   "patch_lines": 217,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "ctx_first": 28579,
+   "ctx_peak": 53536,
+   "ctx_turns": [
+    28579,
+    37956,
+    41303,
+    45618,
+    47221,
+    49296,
+    53228,
+    53536
+   ],
+   "tool_out": 10679,
+   "tool_out_by": {
+    "Bash": 10679
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-integer-keys-claude-sonnet-5-5-graphify-r1-d186786e",
+   "run": "toml-integer-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120709Z",
+   "dataset": "public",
+   "task": "toml-integer-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 112.5,
+   "setup_s": 68.1,
+   "turns": 11,
+   "cost": 0.2671,
+   "in": 22,
+   "cache_read": 428548,
+   "cache_write": 38825,
+   "out": 6891,
+   "tokens": 474286,
+   "patch_lines": 739,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 25313,
+   "ctx_peak": 51508,
+   "ctx_turns": [
+    25313,
+    36619,
+    38406,
+    39214,
+    41225,
+    43046,
+    44482,
+    47282,
+    49538,
+    50762,
+    51508
+   ],
+   "tool_out": 8434,
+   "tool_out_by": {
+    "Bash": 8434
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 4816,
+    "edges": 10613,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 4,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "marshmallow-enum-none-allow-none-claude-sonnet-5-5-gra-0a1b3e4a",
+   "run": "marshmallow-enum-none-allow-none-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120926Z",
+   "dataset": "public",
+   "task": "marshmallow-enum-none-allow-none",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 30.2,
+   "setup_s": 7.3,
+   "turns": 7,
+   "cost": 0.1218,
+   "in": 14,
+   "cache_read": 191965,
+   "cache_write": 20033,
+   "out": 2242,
+   "tokens": 214254,
+   "patch_lines": 81,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 25108,
+   "ctx_peak": 32719,
+   "ctx_turns": [
+    25108,
+    29653,
+    30254,
+    30944,
+    31510,
+    31824,
+    32719
+   ],
+   "tool_out": 1406,
+   "tool_out_by": {
+    "Bash": 1406
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 1575,
+    "edges": 2743,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 4,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "marshmallow-schema-validator-data-key-claude-sonnet-5-e7aef4a1",
+   "run": "marshmallow-schema-validator-data-key-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T120937Z",
+   "dataset": "public",
+   "task": "marshmallow-schema-validator-data-key",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 27.7,
+   "setup_s": 8.3,
+   "turns": 7,
+   "cost": 0.1281,
+   "in": 14,
+   "cache_read": 199044,
+   "cache_write": 21137,
+   "out": 2363,
+   "tokens": 222558,
+   "patch_lines": 77,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 28568,
+   "ctx_peak": 33904,
+   "ctx_turns": [
+    28568,
+    30138,
+    30530,
+    31680,
+    32507,
+    32868,
+    33904
+   ],
+   "tool_out": 2219,
+   "tool_out_by": {
+    "Bash": 2219
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 1581,
+    "edges": 2758,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 3,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-binarymapper-dos-claude-sonnet-5-5-rtk-r1-20261013t121024z",
+   "run": "iggy-binarymapper-dos-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121024Z",
+   "dataset": "public",
+   "task": "iggy-binarymapper-dos",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 112.0,
+   "setup_s": 16.6,
+   "turns": 7,
+   "cost": 0.1959,
+   "in": 14,
+   "cache_read": 245588,
+   "cache_write": 32250,
+   "out": 4233,
+   "tokens": 282085,
+   "patch_lines": 146,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 31003,
+   "ctx_peak": 44934,
+   "ctx_turns": [
+    31003,
+    35156,
+    39220,
+    41171,
+    41731,
+    44637,
+    44934
+   ],
+   "tool_out": 4006,
+   "tool_out_by": {
+    "Bash": 4006
+   },
+   "rtk": {
+    "cmds": 7,
+    "raw": 1554,
+    "saved": 301,
+    "hooked": 6,
+    "rewritten": 5
+   },
+   "rtk_saved": 301,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-binarymapper-dos-claude-sonnet-5-5-control-r1-efa618be",
+   "run": "iggy-binarymapper-dos-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121033Z",
+   "dataset": "public",
+   "task": "iggy-binarymapper-dos",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 109.2,
+   "setup_s": 13.7,
+   "turns": 7,
+   "cost": 0.199,
+   "in": 14,
+   "cache_read": 243451,
+   "cache_write": 32069,
+   "out": 4637,
+   "tokens": 280171,
+   "patch_lines": 180,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 30673,
+   "ctx_peak": 44753,
+   "ctx_turns": [
+    30673,
+    35128,
+    39182,
+    39774,
+    41528,
+    44496,
+    44753
+   ],
+   "tool_out": 3610,
+   "tool_out_by": {
+    "Bash": 3610
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "remeda-round-precision-claude-sonnet-5-5-graphify-r1-5b0a6864",
+   "run": "remeda-round-precision-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121057Z",
+   "dataset": "public",
+   "task": "remeda-round-precision",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 71.2,
+   "setup_s": 28.2,
+   "turns": 4,
+   "cost": 0.1095,
+   "in": 6,
+   "cache_read": 68343,
+   "cache_write": 19972,
+   "out": 2280,
+   "tokens": 90601,
+   "patch_lines": 96,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 2
+   },
+   "ctx_first": 24926,
+   "ctx_peak": 32656,
+   "ctx_turns": [
+    24926,
+    30739,
+    32656
+   ],
+   "tool_out": 1230,
+   "tool_out_by": {
+    "Read": 312,
+    "Bash": 918
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 2536,
+    "edges": 4842,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-binarymapper-dos-claude-sonnet-5-5-serena-r1-a9d6e7a0",
+   "run": "iggy-binarymapper-dos-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121307Z",
+   "dataset": "public",
+   "task": "iggy-binarymapper-dos",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 107.6,
+   "setup_s": 47.4,
+   "turns": 5,
+   "cost": 0.1897,
+   "in": 10,
+   "cache_read": 163160,
+   "cache_write": 32358,
+   "out": 4397,
+   "tokens": 199925,
+   "patch_lines": 183,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 34520,
+   "ctx_peak": 45123,
+   "ctx_turns": [
+    34520,
+    35759,
+    39372,
+    40754,
+    45123
+   ],
+   "tool_out": 3773,
+   "tool_out_by": {
+    "Bash": 3773
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-r1-2b8118fc",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121322Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 148.3,
+   "setup_s": 45.9,
+   "turns": 11,
+   "cost": 0.347,
+   "in": 22,
+   "cache_read": 569333,
+   "cache_write": 54292,
+   "out": 7290,
+   "tokens": 630937,
+   "patch_lines": 457,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 34715,
+   "ctx_peak": 67057,
+   "ctx_turns": [
+    34715,
+    45542,
+    50918,
+    54911,
+    56522,
+    59755,
+    60911,
+    61451,
+    65358,
+    66507,
+    67057
+   ],
+   "tool_out": 15251,
+   "tool_out_by": {
+    "Bash": 15251
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-integer-keys-claude-sonnet-5-5-rtk-r1-20261013t121324z",
+   "run": "toml-integer-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121324Z",
+   "dataset": "public",
+   "task": "toml-integer-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 87.9,
+   "setup_s": 56.8,
+   "turns": 10,
+   "cost": 0.2736,
+   "in": 20,
+   "cache_read": 399254,
+   "cache_write": 40988,
+   "out": 6964,
+   "tokens": 447226,
+   "patch_lines": 580,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 9
+   },
+   "ctx_first": 28448,
+   "ctx_peak": 53752,
+   "ctx_turns": [
+    28448,
+    36584,
+    40306,
+    42651,
+    43344,
+    45511,
+    47764,
+    49320,
+    52582,
+    53752
+   ],
+   "tool_out": 10209,
+   "tool_out_by": {
+    "Bash": 10209
+   },
+   "rtk": {
+    "cmds": 14,
+    "raw": 9124,
+    "saved": 2168,
+    "hooked": 9,
+    "rewritten": 7
+   },
+   "rtk_saved": 2168,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-git-diff-csharp-claude-sonnet-5-5-graphify-r1-99f36db3",
+   "run": "iggy-git-diff-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121634Z",
+   "dataset": "public",
+   "task": "iggy-git-diff-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 11.6,
+   "setup_s": 41.8,
+   "turns": 3,
+   "cost": 0.1033,
+   "in": 6,
+   "cache_read": 78235,
+   "cache_write": 22295,
+   "out": 625,
+   "tokens": 101161,
+   "patch_lines": 10,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30898,
+   "ctx_peak": 34979,
+   "ctx_turns": [
+    30898,
+    34659,
+    34979
+   ],
+   "tool_out": 74,
+   "tool_out_by": {
+    "Bash": 74
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48530,
+    "edges": 124588,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-control-r1-24c769ad",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121636Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 22.9,
+   "setup_s": 0.0,
+   "turns": 6,
+   "cost": 0.1556,
+   "in": 12,
+   "cache_read": 197325,
+   "cache_write": 28383,
+   "out": 2233,
+   "tokens": 227953,
+   "patch_lines": 37,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 33603,
+   "ctx_peak": 41067,
+   "ctx_turns": [
+    33603,
+    34868,
+    36755,
+    39084,
+    40343,
+    41067
+   ],
+   "tool_out": 2857,
+   "tool_out_by": {
+    "Bash": 2857
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-schema-validator-data-key-claude-sonnet-5-a9ebc501",
+   "run": "marshmallow-schema-validator-data-key-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121717Z",
+   "dataset": "public",
+   "task": "marshmallow-schema-validator-data-key",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 21.7,
+   "setup_s": 19.4,
+   "turns": 4,
+   "cost": 0.1064,
+   "in": 8,
+   "cache_read": 103468,
+   "cache_write": 19889,
+   "out": 1646,
+   "tokens": 125011,
+   "patch_lines": 73,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 28722,
+   "ctx_peak": 32656,
+   "ctx_turns": [
+    28722,
+    30513,
+    31474,
+    32656
+   ],
+   "tool_out": 1892,
+   "tool_out_by": {
+    "Bash": 1892
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-stats-metrics-claude-sonnet-5-5-graphify-r1-d8301fe5",
+   "run": "iggy-stats-metrics-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121734Z",
+   "dataset": "public",
+   "task": "iggy-stats-metrics",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 109.6,
+   "setup_s": 38.9,
+   "turns": 11,
+   "cost": 0.2862,
+   "in": 22,
+   "cache_read": 449426,
+   "cache_write": 40883,
+   "out": 7770,
+   "tokens": 498101,
+   "patch_lines": 295,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 25005,
+   "ctx_peak": 53567,
+   "ctx_turns": [
+    25005,
+    37540,
+    40438,
+    41385,
+    43790,
+    44741,
+    46672,
+    50638,
+    53160,
+    53395,
+    53567
+   ],
+   "tool_out": 9712,
+   "tool_out_by": {
+    "Bash": 9712
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 33439,
+    "edges": 79211,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-url-fragment-claude-sonnet-5-5-control-r1-308e0e07",
+   "run": "marshmallow-url-fragment-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121750Z",
+   "dataset": "public",
+   "task": "marshmallow-url-fragment",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 26.5,
+   "setup_s": 1.5,
+   "turns": 7,
+   "cost": 0.1259,
+   "in": 14,
+   "cache_read": 195218,
+   "cache_write": 20689,
+   "out": 2361,
+   "tokens": 218282,
+   "patch_lines": 63,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 24767,
+   "ctx_peak": 33375,
+   "ctx_turns": [
+    24767,
+    29676,
+    30714,
+    31823,
+    32478,
+    33088,
+    33375
+   ],
+   "tool_out": 2068,
+   "tool_out_by": {
+    "Bash": 2068
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "private-e5ef92-claude-sonnet-5-5-control-r1-8e4311ad",
+   "run": "private-e5ef92-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121821Z",
+   "dataset": "private",
+   "task": "private-e5ef92",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 66.9,
+   "setup_s": 0.0,
+   "turns": 13,
+   "cost": 0.3802,
+   "in": 24,
+   "cache_read": 614866,
+   "cache_write": 58666,
+   "out": 8396,
+   "tokens": 681952,
+   "patch_lines": 117,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 11,
+    "Write": 1
+   },
+   "ctx_first": 32978,
+   "ctx_peak": 71352,
+   "ctx_turns": [
+    32978,
+    40179,
+    43349,
+    45268,
+    53085,
+    58148,
+    60124,
+    63843,
+    65863,
+    69063,
+    70304,
+    71352
+   ],
+   "tool_out": 18328,
+   "tool_out_by": {
+    "Bash": 18294,
+    "Write": 34
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "docs",
+    "read-only"
+   ]
+  },
+  {
+   "trial": "remeda-groupby-proto-keys-claude-sonnet-5-5-serena-r1-f1e9d1b3",
+   "run": "remeda-groupby-proto-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121837Z",
+   "dataset": "public",
+   "task": "remeda-groupby-proto-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 202.2,
+   "setup_s": 45.9,
+   "turns": 7,
+   "cost": 0.1737,
+   "in": 14,
+   "cache_read": 207016,
+   "cache_write": 24573,
+   "out": 5471,
+   "tokens": 237074,
+   "patch_lines": 147,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 6
+   },
+   "ctx_first": 28522,
+   "ctx_peak": 37338,
+   "ctx_turns": [
+    28522,
+    29906,
+    31092,
+    32873,
+    35076,
+    36796,
+    37338
+   ],
+   "tool_out": 2085,
+   "tool_out_by": {
+    "Bash": 2085
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-git-diff-csharp-claude-sonnet-5-5-control-r1-05339199",
+   "run": "iggy-git-diff-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T121948Z",
+   "dataset": "public",
+   "task": "iggy-git-diff-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 10.8,
+   "setup_s": 0.0,
+   "turns": 3,
+   "cost": 0.1024,
+   "in": 6,
+   "cache_read": 77302,
+   "cache_write": 21876,
+   "out": 713,
+   "tokens": 99897,
+   "patch_lines": 10,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30492,
+   "ctx_peak": 34560,
+   "ctx_turns": [
+    30492,
+    34132,
+    34560
+   ],
+   "tool_out": 81,
+   "tool_out_by": {
+    "Bash": 81
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-enum-none-allow-none-claude-sonnet-5-5-rtk-db10f1b3",
+   "run": "marshmallow-enum-none-allow-none-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122016Z",
+   "dataset": "public",
+   "task": "marshmallow-enum-none-allow-none",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 22.4,
+   "setup_s": 4.0,
+   "turns": 5,
+   "cost": 0.1094,
+   "in": 10,
+   "cache_read": 131879,
+   "cache_write": 19236,
+   "out": 1924,
+   "tokens": 153049,
+   "patch_lines": 78,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 28243,
+   "ctx_peak": 32003,
+   "ctx_turns": [
+    28243,
+    29531,
+    30169,
+    31179,
+    32003
+   ],
+   "tool_out": 1394,
+   "tool_out_by": {
+    "Bash": 1394
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 2501,
+    "saved": 1135,
+    "hooked": 4,
+    "rewritten": 2
+   },
+   "rtk_saved": 1135,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "private-6a452f-claude-sonnet-5-5-control-r1-917a1724",
+   "run": "private-6a452f-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122034Z",
+   "dataset": "private",
+   "task": "private-6a452f",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 164.2,
+   "setup_s": 91.1,
+   "turns": 13,
+   "cost": 0.4193,
+   "in": 26,
+   "cache_read": 705299,
+   "cache_write": 57955,
+   "out": 11687,
+   "tokens": 774967,
+   "patch_lines": 3617,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 12
+   },
+   "ctx_first": 40127,
+   "ctx_peak": 70643,
+   "ctx_turns": [
+    40127,
+    44103,
+    48150,
+    51002,
+    56408,
+    57298,
+    59409,
+    63226,
+    66943,
+    67722,
+    68497,
+    69752,
+    70643
+   ],
+   "tool_out": 10500,
+   "tool_out_by": {
+    "Bash": 10500
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-configs-sibling-env-claude-sonnet-5-5-control-r1-1e03de99",
+   "run": "iggy-configs-sibling-env-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122101Z",
+   "dataset": "public",
+   "task": "iggy-configs-sibling-env",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 78.3,
+   "setup_s": 129.2,
+   "turns": 6,
+   "cost": 0.2042,
+   "in": 10,
+   "cache_read": 181151,
+   "cache_write": 37428,
+   "out": 3639,
+   "tokens": 222228,
+   "patch_lines": 69,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Read": 1,
+    "Bash": 4
+   },
+   "ctx_first": 31184,
+   "ctx_peak": 50112,
+   "ctx_turns": [
+    31184,
+    43188,
+    45938,
+    48167,
+    50112
+   ],
+   "tool_out": 7329,
+   "tool_out_by": {
+    "Read": 4698,
+    "Bash": 2631
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "marshmallow-url-fragment-claude-sonnet-5-5-rtk-r1-c10a59ac",
+   "run": "marshmallow-url-fragment-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122331Z",
+   "dataset": "public",
+   "task": "marshmallow-url-fragment",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 21.2,
+   "setup_s": 3.9,
+   "turns": 5,
+   "cost": 0.1077,
+   "in": 10,
+   "cache_read": 129861,
+   "cache_write": 19858,
+   "out": 1526,
+   "tokens": 151255,
+   "patch_lines": 48,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 24833,
+   "ctx_peak": 32544,
+   "ctx_turns": [
+    24833,
+    29672,
+    30812,
+    31868,
+    32544
+   ],
+   "tool_out": 1979,
+   "tool_out_by": {
+    "Bash": 1979
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 1948,
+    "saved": 757,
+    "hooked": 4,
+    "rewritten": 3
+   },
+   "rtk_saved": 757,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-graphify-r1-0f6200cd",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122413Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 14.0,
+   "setup_s": 43.1,
+   "turns": 4,
+   "cost": 0.1117,
+   "in": 8,
+   "cache_read": 113494,
+   "cache_write": 22659,
+   "out": 972,
+   "tokens": 137133,
+   "patch_lines": 8,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 30983,
+   "ctx_peak": 35343,
+   "ctx_turns": [
+    30983,
+    34742,
+    35093,
+    35343
+   ],
+   "tool_out": 157,
+   "tool_out_by": {
+    "Bash": 157
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48530,
+    "edges": 124588,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 0,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-enum-none-allow-none-claude-sonnet-5-5-con-5bf73ba9",
+   "run": "marshmallow-enum-none-allow-none-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122511Z",
+   "dataset": "public",
+   "task": "marshmallow-enum-none-allow-none",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 21.5,
+   "setup_s": 1.7,
+   "turns": 6,
+   "cost": 0.114,
+   "in": 12,
+   "cache_read": 158379,
+   "cache_write": 19452,
+   "out": 2036,
+   "tokens": 179879,
+   "patch_lines": 78,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 24681,
+   "ctx_peak": 32138,
+   "ctx_turns": [
+    24681,
+    29244,
+    29722,
+    30769,
+    31289,
+    32138
+   ],
+   "tool_out": 1609,
+   "tool_out_by": {
+    "Bash": 1609
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-graphify-r1-97448dfc",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122530Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 80.4,
+   "setup_s": 76.0,
+   "turns": 11,
+   "cost": 0.2017,
+   "in": 22,
+   "cache_read": 366630,
+   "cache_write": 29249,
+   "out": 4801,
+   "tokens": 400702,
+   "patch_lines": 142,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 25185,
+   "ctx_peak": 41932,
+   "ctx_turns": [
+    25185,
+    29979,
+    32530,
+    34581,
+    36541,
+    37601,
+    38205,
+    38760,
+    39823,
+    40764,
+    41932
+   ],
+   "tool_out": 4832,
+   "tool_out_by": {
+    "Bash": 4832
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 5012,
+    "edges": 11012,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-r1-9d5f07ad",
+   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122550Z",
+   "dataset": "public",
+   "task": "iggy-rust-trait-impls",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 19.8,
+   "setup_s": 135.7,
+   "turns": 4,
+   "cost": 0.1148,
+   "in": 8,
+   "cache_read": 117255,
+   "cache_write": 23109,
+   "out": 1064,
+   "tokens": 141436,
+   "patch_lines": 12,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 34315,
+   "ctx_peak": 35874,
+   "ctx_turns": [
+    34315,
+    34644,
+    35539,
+    35874
+   ],
+   "tool_out": 452,
+   "tool_out_by": {
+    "Bash": 452
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-stats-metrics-claude-sonnet-5-5-control-r1-f461dc91",
+   "run": "iggy-stats-metrics-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122617Z",
+   "dataset": "public",
+   "task": "iggy-stats-metrics",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 140.2,
+   "setup_s": 10.9,
+   "turns": 8,
+   "cost": 0.2626,
+   "in": 16,
+   "cache_read": 328487,
+   "cache_write": 41341,
+   "out": 6436,
+   "tokens": 376280,
+   "patch_lines": 262,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "ctx_first": 24734,
+   "ctx_peak": 54025,
+   "ctx_turns": [
+    24734,
+    39557,
+    44195,
+    46697,
+    53193,
+    53594,
+    53849,
+    54025
+   ],
+   "tool_out": 11170,
+   "tool_out_by": {
+    "Bash": 11170
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "marshmallow-schema-validator-data-key-claude-sonnet-5-0e412da6",
+   "run": "marshmallow-schema-validator-data-key-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122842Z",
+   "dataset": "public",
+   "task": "marshmallow-schema-validator-data-key",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 18.5,
+   "setup_s": 5.2,
+   "turns": 4,
+   "cost": 0.1036,
+   "in": 8,
+   "cache_read": 98418,
+   "cache_write": 19156,
+   "out": 1710,
+   "tokens": 119292,
+   "patch_lines": 78,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 25218,
+   "ctx_peak": 31842,
+   "ctx_turns": [
+    25218,
+    30019,
+    30503,
+    31842
+   ],
+   "tool_out": 1376,
+   "tool_out_by": {
+    "Bash": 1376
+   },
+   "rtk": {
+    "cmds": 1,
+    "raw": 49,
+    "saved": 20,
+    "hooked": 3,
+    "rewritten": 1
+   },
+   "rtk_saved": 20,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-configs-sibling-env-claude-sonnet-5-5-serena-r1-9492fccb",
+   "run": "iggy-configs-sibling-env-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122901Z",
+   "dataset": "public",
+   "task": "iggy-configs-sibling-env",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 295.7,
+   "setup_s": 264.0,
+   "turns": 3,
+   "cost": 0.2493,
+   "in": 8,
+   "cache_read": 155533,
+   "cache_write": 3589,
+   "out": 701,
+   "tokens": 159831,
+   "patch_lines": 77,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 7,
+    "Monitor": 1
+   },
+   "ctx_first": 34891,
+   "ctx_peak": 53628,
+   "ctx_turns": [
+    34891,
+    42609,
+    45862,
+    47615,
+    49230,
+    49595,
+    50039,
+    51995,
+    53507,
+    53628
+   ],
+   "tool_out": 7450,
+   "tool_out_by": {
+    "Bash": 7375,
+    "Monitor": 75
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "iggy-git-rename-blame-claude-sonnet-5-5-serena-r1-66215254",
+   "run": "iggy-git-rename-blame-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122920Z",
+   "dataset": "public",
+   "task": "iggy-git-rename-blame",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 15.1,
+   "setup_s": 46.0,
+   "turns": 3,
+   "cost": 0.1075,
+   "in": 6,
+   "cache_read": 82546,
+   "cache_write": 22811,
+   "out": 795,
+   "tokens": 106158,
+   "patch_lines": 19,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 34564,
+   "ctx_peak": 35576,
+   "ctx_turns": [
+    34564,
+    35223,
+    35576
+   ],
+   "tool_out": 250,
+   "tool_out_by": {
+    "Bash": 250
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-bc0ba0-claude-sonnet-5-5-rtk-r1-4f9708cd",
+   "run": "private-bc0ba0-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T122926Z",
+   "dataset": "private",
+   "task": "private-bc0ba0",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 116.0,
+   "setup_s": 13.1,
+   "turns": 16,
+   "cost": 0.5342,
+   "in": 30,
+   "cache_read": 875566,
+   "cache_write": 76087,
+   "out": 14224,
+   "tokens": 965907,
+   "patch_lines": 1049,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 15
+   },
+   "ctx_first": 33928,
+   "ctx_peak": 88773,
+   "ctx_turns": [
+    33928,
+    35936,
+    43208,
+    47222,
+    51477,
+    54198,
+    56233,
+    66153,
+    70872,
+    75119,
+    77342,
+    78665,
+    84451,
+    88106,
+    88773
+   ],
+   "tool_out": 26175,
+   "tool_out_by": {
+    "Bash": 26175
+   },
+   "rtk": {
+    "cmds": 41,
+    "raw": 20490,
+    "saved": 3562,
+    "hooked": 15,
+    "rewritten": 11
+   },
+   "rtk_saved": 3562,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "private-e5ef92-claude-sonnet-5-5-rtk-r1-20261013t123046z",
+   "run": "private-e5ef92-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123046Z",
+   "dataset": "private",
+   "task": "private-e5ef92",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 64.3,
+   "setup_s": 2.7,
+   "turns": 15,
+   "cost": 0.3296,
+   "in": 24,
+   "cache_read": 572715,
+   "cache_write": 48412,
+   "out": 7860,
+   "tokens": 629011,
+   "patch_lines": 119,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 12,
+    "Write": 1,
+    "Read": 1
+   },
+   "ctx_first": 33198,
+   "ctx_peak": 61098,
+   "ctx_turns": [
+    33198,
+    38852,
+    43585,
+    48828,
+    52173,
+    54123,
+    54635,
+    57396,
+    57844,
+    59056,
+    60363,
+    61098
+   ],
+   "tool_out": 11444,
+   "tool_out_by": {
+    "Bash": 10778,
+    "Write": 34,
+    "Read": 632
+   },
+   "rtk": {
+    "cmds": 40,
+    "raw": 11380,
+    "saved": 2755,
+    "hooked": 12,
+    "rewritten": 10
+   },
+   "rtk_saved": 2755,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "docs",
+    "read-only"
+   ]
+  },
+  {
+   "trial": "iggy-git-log-csharp-claude-sonnet-5-5-control-r1-2572d8ab",
+   "run": "iggy-git-log-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123215Z",
+   "dataset": "public",
+   "task": "iggy-git-log-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 10.7,
+   "setup_s": 0.0,
+   "turns": 3,
+   "cost": 0.1026,
+   "in": 6,
+   "cache_read": 78020,
+   "cache_write": 22195,
+   "out": 602,
+   "tokens": 100823,
+   "patch_lines": 14,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30705,
+   "ctx_peak": 34879,
+   "ctx_turns": [
+    30705,
+    34637,
+    34879
+   ],
+   "tool_out": 240,
+   "tool_out_by": {
+    "Bash": 240
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-rtk-r1-ae80fef6",
+   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123219Z",
+   "dataset": "public",
+   "task": "iggy-git-pickaxe-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 13.5,
+   "setup_s": 2.4,
+   "turns": 3,
+   "cost": 0.105,
+   "in": 6,
+   "cache_read": 78203,
+   "cache_write": 22258,
+   "out": 817,
+   "tokens": 101284,
+   "patch_lines": 8,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30886,
+   "ctx_peak": 34942,
+   "ctx_turns": [
+    30886,
+    34639,
+    34942
+   ],
+   "tool_out": 144,
+   "tool_out_by": {
+    "Bash": 144
+   },
+   "rtk": {
+    "cmds": 0,
+    "raw": 0,
+    "saved": 0,
+    "hooked": 2,
+    "rewritten": 0
+   },
+   "rtk_saved": 0,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-log-csharp-claude-sonnet-5-5-rtk-r1-20261013t123239z",
+   "run": "iggy-git-log-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123239Z",
+   "dataset": "public",
+   "task": "iggy-git-log-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 11.2,
+   "setup_s": 2.9,
+   "turns": 3,
+   "cost": 0.1018,
+   "in": 6,
+   "cache_read": 78154,
+   "cache_write": 22171,
+   "out": 532,
+   "tokens": 100863,
+   "patch_lines": 14,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30791,
+   "ctx_peak": 34855,
+   "ctx_turns": [
+    30791,
+    34685,
+    34855
+   ],
+   "tool_out": 170,
+   "tool_out_by": {
+    "Bash": 170
+   },
+   "rtk": {
+    "cmds": 0,
+    "raw": 0,
+    "saved": 0,
+    "hooked": 2,
+    "rewritten": 0
+   },
+   "rtk_saved": 0,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-git-log-csharp-claude-sonnet-5-5-serena-r1-1ece6830",
+   "run": "iggy-git-log-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123254Z",
+   "dataset": "public",
+   "task": "iggy-git-log-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 13.7,
+   "setup_s": 47.3,
+   "turns": 3,
+   "cost": 0.1037,
+   "in": 6,
+   "cache_read": 82274,
+   "cache_write": 22525,
+   "out": 533,
+   "tokens": 105338,
+   "patch_lines": 22,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 34432,
+   "ctx_peak": 35290,
+   "ctx_turns": [
+    34432,
+    35083,
+    35290
+   ],
+   "tool_out": 236,
+   "tool_out_by": {
+    "Bash": 236
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-3f54af-claude-sonnet-5-5-control-r1-99575527",
+   "run": "private-3f54af-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123312Z",
+   "dataset": "private",
+   "task": "private-3f54af",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 175.2,
+   "setup_s": 19.4,
+   "turns": 14,
+   "cost": 0.4345,
+   "in": 28,
+   "cache_read": 733927,
+   "cache_write": 58431,
+   "out": 12731,
+   "tokens": 805117,
+   "patch_lines": 995,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 13
+   },
+   "ctx_first": 39726,
+   "ctx_peak": 71117,
+   "ctx_turns": [
+    39726,
+    42618,
+    46393,
+    47130,
+    48608,
+    51420,
+    54314,
+    59207,
+    62019,
+    64531,
+    67126,
+    68080,
+    70097,
+    71117
+   ],
+   "tool_out": 10954,
+   "tool_out_by": {
+    "Bash": 10954
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-rtk-r1-20261013t123417z",
+   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123417Z",
+   "dataset": "public",
+   "task": "iggy-utf8-identifier",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 145.6,
+   "setup_s": 14.9,
+   "turns": 14,
+   "cost": 0.4436,
+   "in": 22,
+   "cache_read": 646921,
+   "cache_write": 71861,
+   "out": 9137,
+   "tokens": 727941,
+   "patch_lines": 421,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 9,
+    "Read": 4
+   },
+   "ctx_first": 31178,
+   "ctx_peak": 84545,
+   "ctx_turns": [
+    31178,
+    37673,
+    42575,
+    66987,
+    69657,
+    72815,
+    73908,
+    74556,
+    82160,
+    82750,
+    84545
+   ],
+   "tool_out": 23979,
+   "tool_out_by": {
+    "Bash": 9593,
+    "Read": 14386
+   },
+   "rtk": {
+    "cmds": 7,
+    "raw": 21877,
+    "saved": 17173,
+    "hooked": 9,
+    "rewritten": 3
+   },
+   "rtk_saved": 17173,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "private-bc0ba0-claude-sonnet-5-5-control-r1-1c3bc5c8",
+   "run": "private-bc0ba0-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123753Z",
+   "dataset": "private",
+   "task": "private-bc0ba0",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 117.5,
+   "setup_s": 10.1,
+   "turns": 16,
+   "cost": 0.5404,
+   "in": 28,
+   "cache_read": 895145,
+   "cache_write": 79286,
+   "out": 13372,
+   "tokens": 987831,
+   "patch_lines": 971,
+   "template": "bench/claude:node",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 14,
+    "Write": 1
+   },
+   "ctx_first": 33707,
+   "ctx_peak": 91972,
+   "ctx_turns": [
+    33707,
+    36230,
+    44575,
+    60122,
+    66233,
+    67399,
+    72210,
+    75819,
+    79151,
+    82505,
+    86322,
+    86926,
+    91288,
+    91972
+   ],
+   "tool_out": 26524,
+   "tool_out_by": {
+    "Bash": 26477,
+    "Write": 47
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-git-log-csharp-claude-sonnet-5-5-graphify-r1-fad6a0ff",
+   "run": "iggy-git-log-csharp-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123831Z",
+   "dataset": "public",
+   "task": "iggy-git-log-csharp",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 11.6,
+   "setup_s": 39.3,
+   "turns": 3,
+   "cost": 0.1044,
+   "in": 6,
+   "cache_read": 78603,
+   "cache_write": 22594,
+   "out": 620,
+   "tokens": 101823,
+   "patch_lines": 14,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 2
+   },
+   "ctx_first": 30888,
+   "ctx_peak": 35278,
+   "ctx_turns": [
+    30888,
+    35037,
+    35278
+   ],
+   "tool_out": 236,
+   "tool_out_by": {
+    "Bash": 236
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 48530,
+    "edges": 124588,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 1,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "git-history",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-stats-metrics-claude-sonnet-5-5-rtk-r1-20261013t123938z",
+   "run": "iggy-stats-metrics-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123938Z",
+   "dataset": "public",
+   "task": "iggy-stats-metrics",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 114.1,
+   "setup_s": 15.6,
+   "turns": 9,
+   "cost": 0.2488,
+   "in": 18,
+   "cache_read": 361887,
+   "cache_write": 39715,
+   "out": 5367,
+   "tokens": 406987,
+   "patch_lines": 188,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "ctx_first": 24954,
+   "ctx_peak": 52399,
+   "ctx_turns": [
+    24954,
+    39190,
+    41018,
+    45588,
+    46820,
+    48191,
+    51360,
+    52100,
+    52399
+   ],
+   "tool_out": 10673,
+   "tool_out_by": {
+    "Bash": 10673
+   },
+   "rtk": {
+    "cmds": 10,
+    "raw": 8744,
+    "saved": 3234,
+    "hooked": 8,
+    "rewritten": 4
+   },
+   "rtk_saved": 3234,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-socket-buffer-default-claude-sonnet-5-5-control-r-d2bd4f44",
+   "run": "iggy-socket-buffer-default-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T123942Z",
+   "dataset": "public",
+   "task": "iggy-socket-buffer-default",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 118.2,
+   "setup_s": 15.3,
+   "turns": 11,
+   "cost": 0.2997,
+   "in": 22,
+   "cache_read": 474381,
+   "cache_write": 44310,
+   "out": 7497,
+   "tokens": 526210,
+   "patch_lines": 423,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 10
+   },
+   "ctx_first": 30735,
+   "ctx_peak": 56994,
+   "ctx_turns": [
+    30735,
+    38425,
+    40239,
+    43208,
+    46187,
+    48452,
+    50726,
+    51457,
+    55702,
+    56588,
+    56994
+   ],
+   "tool_out": 8169,
+   "tool_out_by": {
+    "Bash": 8169
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "toml-value-datetime-into-claude-sonnet-5-5-rtk-r1-fdd1e713",
+   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124037Z",
+   "dataset": "public",
+   "task": "toml-value-datetime-into",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 84.2,
+   "setup_s": 60.4,
+   "turns": 11,
+   "cost": 0.1863,
+   "in": 18,
+   "cache_read": 302375,
+   "cache_write": 28821,
+   "out": 4072,
+   "tokens": 335286,
+   "patch_lines": 150,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 8,
+    "Read": 2
+   },
+   "ctx_first": 25088,
+   "ctx_peak": 41504,
+   "ctx_turns": [
+    25088,
+    31032,
+    36162,
+    38269,
+    38714,
+    39575,
+    40040,
+    40830,
+    41504
+   ],
+   "tool_out": 4883,
+   "tool_out_by": {
+    "Bash": 3340,
+    "Read": 1543
+   },
+   "rtk": {
+    "cmds": 8,
+    "raw": 1896,
+    "saved": 191,
+    "hooked": 8,
+    "rewritten": 6
+   },
+   "rtk_saved": 191,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
+  },
+  {
+   "trial": "private-644b82-claude-sonnet-5-5-control-r1-87af9df3",
+   "run": "private-644b82-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124218Z",
+   "dataset": "private",
+   "task": "private-644b82",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "control",
+   "tools": [],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 111.2,
+   "setup_s": 42.3,
+   "turns": 18,
+   "cost": 0.6172,
+   "in": 32,
+   "cache_read": 1004940,
+   "cache_write": 92768,
+   "out": 14562,
+   "tokens": 1112302,
+   "patch_lines": 589,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)"
+   },
+   "tool_calls": {
+    "Bash": 17
+   },
+   "ctx_first": 29099,
+   "ctx_peak": 105456,
+   "ctx_turns": [
+    29099,
+    34342,
+    36761,
+    38127,
+    41672,
+    46662,
+    49982,
+    67745,
+    80771,
+    85689,
+    90246,
+    92162,
+    95942,
+    100801,
+    102283,
+    105456
+   ],
+   "tool_out": 28476,
+   "tool_out_by": {
+    "Bash": 28476
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-r1-e26e53d8",
+   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124247Z",
+   "dataset": "public",
+   "task": "iggy-csharp-callers",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 25.1,
+   "setup_s": 48.2,
+   "turns": 6,
+   "cost": 0.1567,
+   "in": 12,
+   "cache_read": 197297,
+   "cache_write": 27914,
+   "out": 2528,
+   "tokens": 227751,
+   "patch_lines": 45,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 5
+   },
+   "ctx_first": 34397,
+   "ctx_peak": 40679,
+   "ctx_turns": [
+    34397,
+    35406,
+    36830,
+    38161,
+    39750,
+    40679
+   ],
+   "tool_out": 2138,
+   "tool_out_by": {
+    "Bash": 2138
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "httpx-unraised-exceptions-claude-sonnet-5-5-serena-r1-d0d56246",
+   "run": "httpx-unraised-exceptions-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124334Z",
+   "dataset": "public",
+   "task": "httpx-unraised-exceptions",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 20.2,
+   "setup_s": 17.5,
+   "turns": 4,
+   "cost": 0.1275,
+   "in": 8,
+   "cache_read": 111888,
+   "cache_write": 25990,
+   "out": 1229,
+   "tokens": 139115,
+   "patch_lines": 11,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 3
+   },
+   "ctx_first": 28335,
+   "ctx_peak": 36969,
+   "ctx_turns": [
+    28335,
+    35784,
+    36798,
+    36969
+   ],
+   "tool_out": 4985,
+   "tool_out_by": {
+    "Bash": 4985
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "search",
+    "read-only",
+    "python"
+   ]
+  },
+  {
+   "trial": "iggy-socket-buffer-default-claude-sonnet-5-5-serena-r1-b0f2c1d5",
+   "run": "iggy-socket-buffer-default-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124425Z",
+   "dataset": "public",
+   "task": "iggy-socket-buffer-default",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "serena",
+   "tools": [
+    "serena"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 108.5,
+   "setup_s": 48.0,
+   "turns": 9,
+   "cost": 0.2889,
+   "in": 18,
+   "cache_read": 372295,
+   "cache_write": 43691,
+   "out": 7686,
+   "tokens": 423690,
+   "patch_lines": 447,
+   "template": "bench/claude:dotnet",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "serena": "Serena 1.7.0"
+   },
+   "tool_calls": {
+    "Bash": 8
+   },
+   "ctx_first": 34715,
+   "ctx_peak": 56456,
+   "ctx_turns": [
+    34715,
+    38501,
+    40780,
+    43576,
+    47160,
+    48862,
+    50887,
+    55067,
+    56456
+   ],
+   "tool_out": 7872,
+   "tool_out_by": {
+    "Bash": 7872
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "csharp"
+   ]
+  },
+  {
+   "trial": "remeda-groupby-proto-keys-claude-sonnet-5-5-rtk-r1-c3eeb1d0",
+   "run": "remeda-groupby-proto-keys-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124433Z",
+   "dataset": "public",
+   "task": "remeda-groupby-proto-keys",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "rtk",
+   "tools": [
+    "rtk"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 147.9,
+   "setup_s": 42.1,
+   "turns": 8,
+   "cost": 0.1543,
+   "in": 16,
+   "cache_read": 230744,
+   "cache_write": 22665,
+   "out": 4054,
+   "tokens": 257479,
+   "patch_lines": 129,
+   "template": "bench/claude:v1",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "rtk": "rtk 0.49.0"
+   },
+   "tool_calls": {
+    "Bash": 7
+   },
+   "ctx_first": 25014,
+   "ctx_peak": 35349,
+   "ctx_turns": [
+    25014,
+    29701,
+    31130,
+    31983,
+    32515,
+    33469,
+    34264,
+    35349
+   ],
+   "tool_out": 1643,
+   "tool_out_by": {
+    "Bash": 1643
+   },
+   "rtk": {
+    "cmds": 3,
+    "raw": 1315,
+    "saved": 631,
+    "hooked": 7,
+    "rewritten": 2
+   },
+   "rtk_saved": 631,
+   "graphify": {},
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "typescript"
+   ]
+  },
+  {
+   "trial": "iggy-configs-sibling-env-claude-sonnet-5-5-graphify-r1-7aaf0e42",
+   "run": "iggy-configs-sibling-env-claude-claude-sonnet-5-5-20261013t111831z",
+   "started": "20261013T124529Z",
+   "dataset": "public",
+   "task": "iggy-configs-sibling-env",
+   "agent": "claude",
+   "model": "claude-sonnet-5-5",
+   "effort": "medium",
+   "arm": "graphify",
+   "tools": [
+    "graphify"
+   ],
+   "rep": 1,
+   "status": "pass",
+   "timeout": false,
+   "wall_s": 30.9,
+   "setup_s": 157.3,
+   "turns": 5,
+   "cost": 0.1732,
+   "in": 10,
+   "cache_read": 164665,
+   "cache_write": 31586,
+   "out": 3034,
+   "tokens": 199295,
+   "patch_lines": 81,
+   "template": "bench/claude:rust",
+   "versions": {
+    "claude": "2.1.296 (Claude Code)",
+    "graphify": "graphify 0.9.71"
+   },
+   "tool_calls": {
+    "Bash": 4
+   },
+   "ctx_first": 31390,
+   "ctx_peak": 44270,
+   "ctx_turns": [
+    31390,
+    37001,
+    41036,
+    42564,
+    44270
+   ],
+   "tool_out": 3946,
+   "tool_out_by": {
+    "Bash": 3946
+   },
+   "rtk": {},
+   "rtk_saved": null,
+   "graphify": {
+    "nodes": 52247,
+    "edges": 135361,
+    "queries": {},
+    "query_tok": 0,
+    "nudges": 2,
+    "followed": 0
+   },
+   "sbx": "v0.47.0",
+   "tags": [
+    "coding",
+    "rust"
+   ]
   }
  ]
 }
