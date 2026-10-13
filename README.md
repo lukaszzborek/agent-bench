@@ -6,8 +6,10 @@ cheaper on real tasks without breaking correctness. Same task, model and effort;
 Each trial = fresh Docker Sandbox (microVM) → repo snapshot at pinned commit → optional tool setup → one headless
 agent run → artifacts copied out → grader → sandbox removed.
 
-> **Status: first version.** Harness and tasks are young; some graders may fail for reasons unrelated to the agent.
-> Check `grade.log` before trusting a fail, and treat published numbers as exploratory.
+> **Status: work in progress.** Tasks, graders and the collected metrics are still being improved, so results can
+> shift between runs and are not always comparable across harness versions. Some graders may fail for reasons
+> unrelated to the agent: check `grade.log` before trusting a fail. Most dashboard cells are still n=1, where one
+> extra agent turn moves a cell by ±30%. Treat published numbers as exploratory, not as a verdict on any tool.
 
 ## Results
 
