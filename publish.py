@@ -61,7 +61,7 @@ def row(m: dict, run: str, info: dict[str, tuple[str, list[str]]], trial_dir: Pa
         **tokens, "tokens": sum(tokens.values()),
         "patch_lines": m.get("patch_lines"), "template": m.get("template"), "versions": m.get("versions") or {},
         "tool_calls": s.get("tool_calls") or {},
-        "ctx_first": s.get("ctx_first"), "ctx_peak": s.get("ctx_peak"), "ctx_turns": s.get("ctx_turns") or [],
+        "ctx_first": s.get("ctx_first"), "ctx_peak": s.get("ctx_peak"),
         "tool_out": s.get("tool_out"), "tool_out_by": s.get("tool_out_by") or {},
         "rtk": rtk, "rtk_saved": rtk.get("saved"), "graphify": graphify,
         "sbx": (m.get("sbx_version") or "").removeprefix("sbx version: ").split(" ")[0],

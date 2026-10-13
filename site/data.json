@@ -37,14 +37,6 @@
    },
    "ctx_first": 30892,
    "ctx_peak": 39689,
-   "ctx_turns": [
-    30892,
-    35176,
-    36070,
-    37789,
-    39061,
-    39689
-   ],
    "tool_out": 1911,
    "tool_out_by": {
     "Bash": 1911
@@ -101,14 +93,6 @@
    },
    "ctx_first": 34399,
    "ctx_peak": 41938,
-   "ctx_turns": [
-    34399,
-    35408,
-    37285,
-    39678,
-    40936,
-    41938
-   ],
    "tool_out": 2854,
    "tool_out_by": {
     "Bash": 2854
@@ -159,137 +143,9 @@
    },
    "ctx_first": 34315,
    "ctx_peak": 36435,
-   "ctx_turns": [
-    34315,
-    34659,
-    35605,
-    36435
-   ],
    "tool_out": 729,
    "tool_out_by": {
     "Bash": 729
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "search",
-    "read-only",
-    "rust"
-   ]
-  },
-  {
-   "trial": "toml-value-datetime-into-claude-sonnet-5-5-serena-upfr-c951e9f2",
-   "run": "toml-value-datetime-into-claude-claude-sonnet-5-5-20261012t211946z",
-   "started": "20261012T212147Z",
-   "dataset": "public",
-   "task": "toml-value-datetime-into",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 101.2,
-   "setup_s": 114.9,
-   "turns": 10,
-   "cost": 0.2092,
-   "in": 20,
-   "cache_read": 580976,
-   "cache_write": 28753,
-   "out": 3607,
-   "tokens": 613356,
-   "patch_lines": 122,
-   "template": "bench/claude:rust",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 9
-   },
-   "ctx_first": 53755,
-   "ctx_peak": 65346,
-   "ctx_turns": [
-    53755,
-    55462,
-    58550,
-    59893,
-    60880,
-    62651,
-    63894,
-    64274,
-    65044,
-    65346
-   ],
-   "tool_out": 4488,
-   "tool_out_by": {
-    "Bash": 4488
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "coding",
-    "rust"
-   ]
-  },
-  {
-   "trial": "iggy-rust-trait-impls-claude-sonnet-5-5-serena-upfront-d775441e",
-   "run": "iggy-rust-trait-impls-claude-claude-sonnet-5-5-20261012t211946z",
-   "started": "20261012T212312Z",
-   "dataset": "public",
-   "task": "iggy-rust-trait-impls",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 22.3,
-   "setup_s": 146.2,
-   "turns": 5,
-   "cost": 0.1358,
-   "in": 10,
-   "cache_read": 280217,
-   "cache_write": 24224,
-   "out": 1089,
-   "tokens": 305540,
-   "patch_lines": 12,
-   "template": "bench/claude:rust",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 4
-   },
-   "ctx_first": 59339,
-   "ctx_peak": 62603,
-   "ctx_turns": [
-    59339,
-    59644,
-    60544,
-    62321,
-    62603
-   ],
-   "tool_out": 1302,
-   "tool_out_by": {
-    "Bash": 1302
    },
    "rtk": {},
    "rtk_saved": null,
@@ -337,17 +193,6 @@
    },
    "ctx_first": 39946,
    "ctx_peak": 71278,
-   "ctx_turns": [
-    39946,
-    50022,
-    56176,
-    57250,
-    60178,
-    63126,
-    65232,
-    70712,
-    71278
-   ],
    "tool_out": 12237,
    "tool_out_by": {
     "Bash": 12237
@@ -400,15 +245,6 @@
    },
    "ctx_first": 30603,
    "ctx_peak": 38455,
-   "ctx_turns": [
-    30603,
-    31612,
-    32868,
-    34145,
-    36303,
-    37936,
-    38455
-   ],
    "tool_out": 3205,
    "tool_out_by": {
     "Bash": 3205
@@ -456,13 +292,6 @@
    },
    "ctx_first": 30776,
    "ctx_peak": 35393,
-   "ctx_turns": [
-    30776,
-    34444,
-    34872,
-    35182,
-    35393
-   ],
    "tool_out": 163,
    "tool_out_by": {
     "Bash": 163
@@ -510,12 +339,6 @@
    },
    "ctx_first": 30587,
    "ctx_peak": 35318,
-   "ctx_turns": [
-    30587,
-    34200,
-    34979,
-    35318
-   ],
    "tool_out": 380,
    "tool_out_by": {
     "Bash": 380
@@ -566,11 +389,6 @@
    },
    "ctx_first": 34482,
    "ctx_peak": 35164,
-   "ctx_turns": [
-    34482,
-    34919,
-    35164
-   ],
    "tool_out": 130,
    "tool_out_by": {
     "Bash": 130
@@ -619,18 +437,6 @@
    },
    "ctx_first": 36576,
    "ctx_peak": 68163,
-   "ctx_turns": [
-    36576,
-    42478,
-    48534,
-    49446,
-    57336,
-    60260,
-    62797,
-    66139,
-    67990,
-    68163
-   ],
    "tool_out": 9787,
    "tool_out_by": {
     "Bash": 9709,
@@ -681,19 +487,6 @@
    },
    "ctx_first": 34715,
    "ctx_peak": 65645,
-   "ctx_turns": [
-    34715,
-    44327,
-    49701,
-    53745,
-    56150,
-    56733,
-    59218,
-    60534,
-    64641,
-    65362,
-    65645
-   ],
    "tool_out": 14174,
    "tool_out_by": {
     "Bash": 14174
@@ -744,21 +537,6 @@
    },
    "ctx_first": 31199,
    "ctx_peak": 70471,
-   "ctx_turns": [
-    31199,
-    37589,
-    41904,
-    50024,
-    54179,
-    58196,
-    61992,
-    63660,
-    65032,
-    65909,
-    69677,
-    69908,
-    70471
-   ],
    "tool_out": 16249,
    "tool_out_by": {
     "Bash": 10180,
@@ -776,187 +554,6 @@
    "sbx": "v0.47.0",
    "tags": [
     "coding",
-    "csharp"
-   ]
-  },
-  {
-   "trial": "iggy-utf8-identifier-claude-sonnet-5-5-serena-upfront-45deacad",
-   "run": "iggy-utf8-identifier-claude-claude-sonnet-5-5-20261012t211946z",
-   "started": "20261012T213416Z",
-   "dataset": "public",
-   "task": "iggy-utf8-identifier",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 107.3,
-   "setup_s": 54.6,
-   "turns": 9,
-   "cost": 0.3423,
-   "in": 16,
-   "cache_read": 590187,
-   "cache_write": 53747,
-   "out": 6823,
-   "tokens": 650773,
-   "patch_lines": 374,
-   "template": "bench/claude:dotnet",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "mcp__serena__initial_instructions": 1,
-    "Bash": 7
-   },
-   "ctx_first": 59741,
-   "ctx_peak": 92126,
-   "ctx_turns": [
-    59741,
-    73312,
-    76956,
-    82527,
-    83721,
-    87123,
-    88444,
-    92126
-   ],
-   "tool_out": 16399,
-   "tool_out_by": {
-    "Bash": 14295,
-    "mcp__serena__initial_instructions": 2104
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "coding",
-    "csharp"
-   ]
-  },
-  {
-   "trial": "iggy-git-pickaxe-csharp-claude-sonnet-5-5-serena-upfro-50b19367",
-   "run": "iggy-git-pickaxe-csharp-claude-claude-sonnet-5-5-20261012t211946z",
-   "started": "20261012T213520Z",
-   "dataset": "public",
-   "task": "iggy-git-pickaxe-csharp",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 14.4,
-   "setup_s": 50.8,
-   "turns": 3,
-   "cost": 0.1109,
-   "in": 6,
-   "cache_read": 157807,
-   "cache_write": 21796,
-   "out": 790,
-   "tokens": 180399,
-   "patch_lines": 16,
-   "template": "bench/claude:dotnet",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 2
-   },
-   "ctx_first": 59507,
-   "ctx_peak": 60175,
-   "ctx_turns": [
-    59507,
-    59927,
-    60175
-   ],
-   "tool_out": 130,
-   "tool_out_by": {
-    "Bash": 130
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "git-history",
-    "read-only",
-    "csharp"
-   ]
-  },
-  {
-   "trial": "iggy-csharp-callers-claude-sonnet-5-5-serena-upfront-r-7ebc8e4c",
-   "run": "iggy-csharp-callers-claude-claude-sonnet-5-5-20261012t211946z",
-   "started": "20261012T213654Z",
-   "dataset": "public",
-   "task": "iggy-csharp-callers",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 27.2,
-   "setup_s": 50.1,
-   "turns": 7,
-   "cost": 0.1791,
-   "in": 14,
-   "cache_read": 411347,
-   "cache_write": 27791,
-   "out": 2673,
-   "tokens": 441825,
-   "patch_lines": 45,
-   "template": "bench/claude:dotnet",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 6
-   },
-   "ctx_first": 59423,
-   "ctx_peak": 66170,
-   "ctx_turns": [
-    59423,
-    60432,
-    61690,
-    62472,
-    63664,
-    65301,
-    66170
-   ],
-   "tool_out": 2313,
-   "tool_out_by": {
-    "Bash": 2313
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "search",
-    "read-only",
     "csharp"
    ]
   },
@@ -993,17 +590,6 @@
    },
    "ctx_first": 30868,
    "ctx_peak": 62128,
-   "ctx_turns": [
-    30868,
-    43756,
-    47392,
-    53390,
-    54493,
-    57799,
-    58658,
-    61794,
-    62128
-   ],
    "tool_out": 13414,
    "tool_out_by": {
     "Bash": 13414
@@ -1053,16 +639,6 @@
    },
    "ctx_first": 25245,
    "ctx_peak": 38511,
-   "ctx_turns": [
-    25245,
-    30065,
-    32610,
-    34136,
-    36808,
-    37423,
-    38151,
-    38511
-   ],
    "tool_out": 5376,
    "tool_out_by": {
     "Bash": 5376
@@ -1115,14 +691,6 @@
    },
    "ctx_first": 28065,
    "ctx_peak": 39432,
-   "ctx_turns": [
-    28065,
-    31177,
-    34730,
-    35723,
-    38258,
-    39432
-   ],
    "tool_out": 4531,
    "tool_out_by": {
     "Bash": 4531
@@ -1172,11 +740,6 @@
    },
    "ctx_first": 30975,
    "ctx_peak": 35072,
-   "ctx_turns": [
-    30975,
-    34731,
-    35072
-   ],
    "tool_out": 144,
    "tool_out_by": {
     "Bash": 144
@@ -1233,12 +796,6 @@
    },
    "ctx_first": 33960,
    "ctx_peak": 35891,
-   "ctx_turns": [
-    33960,
-    34442,
-    35524,
-    35891
-   ],
    "tool_out": 541,
    "tool_out_by": {
     "Bash": 541
@@ -1295,17 +852,6 @@
    },
    "ctx_first": 28726,
    "ctx_peak": 37876,
-   "ctx_turns": [
-    28726,
-    30160,
-    32723,
-    34018,
-    35837,
-    36287,
-    37033,
-    37449,
-    37876
-   ],
    "tool_out": 3259,
    "tool_out_by": {
     "Bash": 3259
@@ -1357,89 +903,11 @@
    },
    "ctx_first": 40242,
    "ctx_peak": 79574,
-   "ctx_turns": [
-    40242,
-    52313,
-    58164,
-    58500,
-    63007,
-    65267,
-    68236,
-    68699,
-    70593,
-    72802,
-    76409,
-    76983,
-    78403,
-    79574
-   ],
    "tool_out": 12978,
    "tool_out_by": {
     "Bash": 9476,
     "Read": 3424,
     "Write": 78
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "coding",
-    "typescript"
-   ]
-  },
-  {
-   "trial": "private-3f54af-claude-sonnet-5-5-serena-upfr-9cd8951d",
-   "run": "private-3f54af-claude-claude-sonnet-5-5-20261012t215223z",
-   "started": "20261012T215223Z",
-   "dataset": "private",
-   "task": "private-3f54af",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 242.9,
-   "setup_s": 173.3,
-   "turns": 10,
-   "cost": 0.5918,
-   "in": 18,
-   "cache_read": 689402,
-   "cache_write": 99493,
-   "out": 12487,
-   "tokens": 801400,
-   "patch_lines": 1001,
-   "template": "bench/claude:node",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 9
-   },
-   "ctx_first": 66982,
-   "ctx_peak": 99495,
-   "ctx_turns": [
-    66982,
-    77232,
-    83810,
-    86215,
-    89541,
-    91105,
-    96536,
-    97997,
-    99495
-   ],
-   "tool_out": 11948,
-   "tool_out_by": {
-    "Bash": 11948
    },
    "rtk": {},
    "rtk_saved": null,
@@ -1486,11 +954,6 @@
    },
    "ctx_first": 25092,
    "ctx_peak": 32327,
-   "ctx_turns": [
-    25092,
-    29067,
-    32327
-   ],
    "tool_out": 513,
    "tool_out_by": {
     "Bash": 513
@@ -1546,13 +1009,6 @@
    },
    "ctx_first": 28599,
    "ctx_peak": 34600,
-   "ctx_turns": [
-    28599,
-    29277,
-    33038,
-    33968,
-    34600
-   ],
    "tool_out": 1395,
    "tool_out_by": {
     "Bash": 1395
@@ -1600,73 +1056,10 @@
    },
    "ctx_first": 28126,
    "ctx_peak": 33901,
-   "ctx_turns": [
-    28126,
-    29055,
-    32813,
-    33540,
-    33901
-   ],
    "tool_out": 799,
    "tool_out_by": {
     "Read": 262,
     "Bash": 537
-   },
-   "rtk": {},
-   "rtk_saved": null,
-   "graphify": {},
-   "sbx": "v0.47.0",
-   "tags": [
-    "coding",
-    "typescript"
-   ]
-  },
-  {
-   "trial": "remeda-range-step-claude-sonnet-5-5-serena-upfront-r1-56e92f67",
-   "run": "remeda-range-step-claude-claude-sonnet-5-5-20261012t220942z",
-   "started": "20261012T220942Z",
-   "dataset": "public",
-   "task": "remeda-range-step",
-   "agent": "claude",
-   "model": "claude-sonnet-5-5",
-   "effort": "medium",
-   "arm": "serena-upfront",
-   "tools": [
-    "serena",
-    "upfront"
-   ],
-   "rep": 1,
-   "status": "pass",
-   "timeout": false,
-   "wall_s": 47.6,
-   "setup_s": 42.2,
-   "turns": 3,
-   "cost": 0.1232,
-   "in": 6,
-   "cache_read": 146339,
-   "cache_write": 18951,
-   "out": 3279,
-   "tokens": 168575,
-   "patch_lines": 158,
-   "template": "bench/claude:v1",
-   "versions": {
-    "claude": "2.1.296 (Claude Code)",
-    "serena": "Serena 1.7.0",
-    "upfront": null
-   },
-   "tool_calls": {
-    "Bash": 2
-   },
-   "ctx_first": 53624,
-   "ctx_peak": 57330,
-   "ctx_turns": [
-    53624,
-    54342,
-    57330
-   ],
-   "tool_out": 494,
-   "tool_out_by": {
-    "Bash": 494
    },
    "rtk": {},
    "rtk_saved": null,
@@ -1710,12 +1103,6 @@
    },
    "ctx_first": 34011,
    "ctx_peak": 35445,
-   "ctx_turns": [
-    34011,
-    34684,
-    35207,
-    35445
-   ],
    "tool_out": 366,
    "tool_out_by": {
     "Bash": 366
@@ -1764,15 +1151,6 @@
    },
    "ctx_first": 25022,
    "ctx_peak": 37986,
-   "ctx_turns": [
-    25022,
-    29553,
-    32870,
-    34175,
-    35744,
-    36819,
-    37986
-   ],
    "tool_out": 3826,
    "tool_out_by": {
     "Bash": 2748,
@@ -1823,14 +1201,6 @@
    },
    "ctx_first": 28443,
    "ctx_peak": 35480,
-   "ctx_turns": [
-    28443,
-    30028,
-    32307,
-    34071,
-    34694,
-    35480
-   ],
    "tool_out": 3124,
    "tool_out_by": {
     "Bash": 3124
@@ -1880,22 +1250,6 @@
    },
    "ctx_first": 28704,
    "ctx_peak": 52045,
-   "ctx_turns": [
-    28704,
-    36840,
-    40083,
-    42021,
-    42744,
-    43054,
-    45431,
-    47143,
-    49977,
-    50343,
-    51140,
-    51344,
-    51645,
-    52045
-   ],
    "tool_out": 9275,
    "tool_out_by": {
     "Bash": 9275
@@ -1945,12 +1299,6 @@
    },
    "ctx_first": 34062,
    "ctx_peak": 35717,
-   "ctx_turns": [
-    34062,
-    34439,
-    35371,
-    35717
-   ],
    "tool_out": 446,
    "tool_out_by": {
     "Bash": 446
@@ -2007,12 +1355,6 @@
    },
    "ctx_first": 24943,
    "ctx_peak": 34293,
-   "ctx_turns": [
-    24943,
-    32088,
-    33877,
-    34293
-   ],
    "tool_out": 3077,
    "tool_out_by": {
     "Bash": 3077
@@ -2070,12 +1412,6 @@
    },
    "ctx_first": 28468,
    "ctx_peak": 32246,
-   "ctx_turns": [
-    28468,
-    29934,
-    31604,
-    32246
-   ],
    "tool_out": 1009,
    "tool_out_by": {
     "Bash": 1009
@@ -2126,11 +1462,6 @@
    },
    "ctx_first": 25001,
    "ctx_peak": 32774,
-   "ctx_turns": [
-    25001,
-    29158,
-    32774
-   ],
    "tool_out": 564,
    "tool_out_by": {
     "Read": 262,
@@ -2187,19 +1518,6 @@
    },
    "ctx_first": 39857,
    "ctx_peak": 72746,
-   "ctx_turns": [
-    39857,
-    43287,
-    48939,
-    53892,
-    57352,
-    60486,
-    63003,
-    66310,
-    70002,
-    71620,
-    72746
-   ],
    "tool_out": 12141,
    "tool_out_by": {
     "Bash": 12141
@@ -2255,13 +1573,6 @@
    },
    "ctx_first": 28474,
    "ctx_peak": 32096,
-   "ctx_turns": [
-    28474,
-    30209,
-    31222,
-    31545,
-    32096
-   ],
    "tool_out": 1458,
    "tool_out_by": {
     "Bash": 1458
@@ -2311,18 +1622,6 @@
    },
    "ctx_first": 31140,
    "ctx_peak": 55750,
-   "ctx_turns": [
-    31140,
-    38902,
-    40972,
-    43879,
-    48272,
-    49418,
-    50825,
-    54671,
-    55453,
-    55750
-   ],
    "tool_out": 7752,
    "tool_out_by": {
     "Bash": 7752
@@ -2379,13 +1678,6 @@
    },
    "ctx_first": 28497,
    "ctx_peak": 32778,
-   "ctx_turns": [
-    28497,
-    30069,
-    31032,
-    31942,
-    32778
-   ],
    "tool_out": 1440,
    "tool_out_by": {
     "Bash": 1440
@@ -2434,21 +1726,6 @@
    },
    "ctx_first": 24995,
    "ctx_peak": 51621,
-   "ctx_turns": [
-    24995,
-    36301,
-    38081,
-    40114,
-    41162,
-    42538,
-    42745,
-    44211,
-    45022,
-    47594,
-    48098,
-    49945,
-    51621
-   ],
    "tool_out": 8757,
    "tool_out_by": {
     "Bash": 8706,
@@ -2500,12 +1777,6 @@
    },
    "ctx_first": 30927,
    "ctx_peak": 35996,
-   "ctx_turns": [
-    30927,
-    34691,
-    35619,
-    35996
-   ],
    "tool_out": 459,
    "tool_out_by": {
     "Bash": 459
@@ -2561,12 +1832,6 @@
    },
    "ctx_first": 24870,
    "ctx_peak": 33102,
-   "ctx_turns": [
-    24870,
-    29006,
-    30371,
-    33102
-   ],
    "tool_out": 946,
    "tool_out_by": {
     "Read": 262,
@@ -2617,13 +1882,6 @@
    },
    "ctx_first": 24868,
    "ctx_peak": 30436,
-   "ctx_turns": [
-    24868,
-    26133,
-    28097,
-    29618,
-    30436
-   ],
    "tool_out": 2337,
    "tool_out_by": {
     "Bash": 2337
@@ -2679,20 +1937,6 @@
    },
    "ctx_first": 40044,
    "ctx_peak": 71138,
-   "ctx_turns": [
-    40044,
-    43930,
-    49531,
-    50501,
-    53476,
-    59272,
-    62694,
-    64093,
-    64782,
-    68247,
-    70256,
-    71138
-   ],
    "tool_out": 11611,
    "tool_out_by": {
     "Bash": 11611
@@ -2749,12 +1993,6 @@
    },
    "ctx_first": 30923,
    "ctx_peak": 35802,
-   "ctx_turns": [
-    30923,
-    34985,
-    35564,
-    35802
-   ],
    "tool_out": 384,
    "tool_out_by": {
     "Bash": 384
@@ -2812,11 +2050,6 @@
    },
    "ctx_first": 25208,
    "ctx_peak": 33496,
-   "ctx_turns": [
-    25208,
-    29553,
-    33496
-   ],
    "tool_out": 560,
    "tool_out_by": {
     "Read": 262,
@@ -2874,41 +2107,6 @@
    },
    "ctx_first": 33673,
    "ctx_peak": 120933,
-   "ctx_turns": [
-    33673,
-    39104,
-    50578,
-    56509,
-    59257,
-    63650,
-    68102,
-    69445,
-    71767,
-    73927,
-    76309,
-    83232,
-    85294,
-    88431,
-    89642,
-    90704,
-    92929,
-    95256,
-    99383,
-    102626,
-    103178,
-    104726,
-    106126,
-    107986,
-    111867,
-    112756,
-    112885,
-    113069,
-    113593,
-    116757,
-    118143,
-    119397,
-    120933
-   ],
    "tool_out": 30843,
    "tool_out_by": {
     "Bash": 30843
@@ -2961,25 +2159,6 @@
    },
    "ctx_first": 25270,
    "ctx_peak": 64178,
-   "ctx_turns": [
-    25270,
-    29595,
-    37755,
-    42364,
-    46996,
-    49768,
-    53380,
-    55410,
-    56182,
-    56621,
-    58368,
-    58751,
-    59921,
-    62611,
-    63543,
-    63923,
-    64178
-   ],
    "tool_out": 12003,
    "tool_out_by": {
     "Bash": 12003
@@ -3030,15 +2209,6 @@
    },
    "ctx_first": 30858,
    "ctx_peak": 49903,
-   "ctx_turns": [
-    30858,
-    35474,
-    42647,
-    43362,
-    47704,
-    49602,
-    49903
-   ],
    "tool_out": 5694,
    "tool_out_by": {
     "Bash": 2900,
@@ -3093,33 +2263,6 @@
    },
    "ctx_first": 33453,
    "ctx_peak": 110360,
-   "ctx_turns": [
-    33453,
-    39863,
-    41157,
-    53061,
-    55916,
-    58616,
-    61476,
-    62373,
-    68415,
-    74099,
-    79021,
-    79973,
-    80715,
-    81774,
-    84061,
-    86881,
-    91424,
-    93191,
-    97949,
-    100476,
-    105879,
-    106514,
-    107242,
-    109196,
-    110360
-   ],
    "tool_out": 27818,
    "tool_out_by": {
     "Bash": 27818
@@ -3169,23 +2312,6 @@
    },
    "ctx_first": 31199,
    "ctx_peak": 67662,
-   "ctx_turns": [
-    31199,
-    38635,
-    40347,
-    42761,
-    45863,
-    49567,
-    53670,
-    55142,
-    55539,
-    56607,
-    57642,
-    63557,
-    64999,
-    67098,
-    67662
-   ],
    "tool_out": 12336,
    "tool_out_by": {
     "Bash": 12336
@@ -3241,11 +2367,6 @@
    },
    "ctx_first": 30801,
    "ctx_peak": 34895,
-   "ctx_turns": [
-    30801,
-    34519,
-    34895
-   ],
    "tool_out": 84,
    "tool_out_by": {
     "Bash": 84
@@ -3299,14 +2420,6 @@
    },
    "ctx_first": 24650,
    "ctx_peak": 34367,
-   "ctx_turns": [
-    24650,
-    28510,
-    31389,
-    32995,
-    33489,
-    34367
-   ],
    "tool_out": 2924,
    "tool_out_by": {
     "Bash": 2924
@@ -3353,16 +2466,6 @@
    },
    "ctx_first": 33280,
    "ctx_peak": 59776,
-   "ctx_turns": [
-    33280,
-    34483,
-    44467,
-    45889,
-    48601,
-    51592,
-    54218,
-    59776
-   ],
    "tool_out": 11283,
    "tool_out_by": {
     "Bash": 11283
@@ -3412,20 +2515,6 @@
    },
    "ctx_first": 29088,
    "ctx_peak": 62143,
-   "ctx_turns": [
-    29088,
-    35787,
-    42131,
-    46521,
-    50928,
-    53250,
-    54474,
-    56535,
-    58421,
-    60457,
-    61817,
-    62143
-   ],
    "tool_out": 11795,
    "tool_out_by": {
     "Bash": 11795
@@ -3475,14 +2564,6 @@
    },
    "ctx_first": 30670,
    "ctx_peak": 39644,
-   "ctx_turns": [
-    30670,
-    35088,
-    36365,
-    37621,
-    39053,
-    39644
-   ],
    "tool_out": 2030,
    "tool_out_by": {
     "Bash": 2030
@@ -3536,12 +2617,6 @@
    },
    "ctx_first": 24674,
    "ctx_peak": 27637,
-   "ctx_turns": [
-    24674,
-    25350,
-    26614,
-    27637
-   ],
    "tool_out": 789,
    "tool_out_by": {
     "Bash": 789
@@ -3590,13 +2665,6 @@
    },
    "ctx_first": 24571,
    "ctx_peak": 34554,
-   "ctx_turns": [
-    24571,
-    30970,
-    33101,
-    33947,
-    34554
-   ],
    "tool_out": 2212,
    "tool_out_by": {
     "Read": 1574,
@@ -3649,13 +2717,6 @@
    },
    "ctx_first": 31382,
    "ctx_peak": 48253,
-   "ctx_turns": [
-    31382,
-    42931,
-    44652,
-    46470,
-    48253
-   ],
    "tool_out": 6493,
    "tool_out_by": {
     "Read": 4698,
@@ -3712,11 +2773,6 @@
    },
    "ctx_first": 34472,
    "ctx_peak": 35175,
-   "ctx_turns": [
-    34472,
-    34667,
-    35175
-   ],
    "tool_out": 78,
    "tool_out_by": {
     "Bash": 78
@@ -3767,16 +2823,6 @@
    },
    "ctx_first": 25132,
    "ctx_peak": 35415,
-   "ctx_turns": [
-    25132,
-    29770,
-    30940,
-    31783,
-    32783,
-    33363,
-    34407,
-    35415
-   ],
    "tool_out": 1601,
    "tool_out_by": {
     "Bash": 1601
@@ -3830,12 +2876,6 @@
    },
    "ctx_first": 24473,
    "ctx_peak": 33049,
-   "ctx_turns": [
-    24473,
-    31968,
-    32878,
-    33049
-   ],
    "tool_out": 2531,
    "tool_out_by": {
     "Bash": 2531
@@ -3886,15 +2926,6 @@
    },
    "ctx_first": 28023,
    "ctx_peak": 32687,
-   "ctx_turns": [
-    28023,
-    29493,
-    30545,
-    31781,
-    32266,
-    32480,
-    32687
-   ],
    "tool_out": 1064,
    "tool_out_by": {
     "Bash": 1064
@@ -3950,16 +2981,6 @@
    },
    "ctx_first": 33420,
    "ctx_peak": 63134,
-   "ctx_turns": [
-    33420,
-    36727,
-    42423,
-    50395,
-    51509,
-    53811,
-    59237,
-    63134
-   ],
    "tool_out": 12299,
    "tool_out_by": {
     "Bash": 12299
@@ -4016,13 +3037,6 @@
    },
    "ctx_first": 28598,
    "ctx_peak": 34467,
-   "ctx_turns": [
-    28598,
-    29527,
-    33382,
-    34041,
-    34467
-   ],
    "tool_out": 964,
    "tool_out_by": {
     "Read": 262,
@@ -4070,12 +3084,6 @@
    },
    "ctx_first": 24908,
    "ctx_peak": 31752,
-   "ctx_turns": [
-    24908,
-    29598,
-    30585,
-    31752
-   ],
    "tool_out": 1658,
    "tool_out_by": {
     "Bash": 1658
@@ -4122,11 +3130,6 @@
    },
    "ctx_first": 30666,
    "ctx_peak": 34592,
-   "ctx_turns": [
-    30666,
-    34376,
-    34592
-   ],
    "tool_out": 129,
    "tool_out_by": {
     "Bash": 129
@@ -4177,15 +3180,6 @@
    },
    "ctx_first": 28729,
    "ctx_peak": 38293,
-   "ctx_turns": [
-    28729,
-    30699,
-    33464,
-    34867,
-    36270,
-    37287,
-    38293
-   ],
    "tool_out": 3934,
    "tool_out_by": {
     "Bash": 3934
@@ -4235,19 +3229,6 @@
    },
    "ctx_first": 40244,
    "ctx_peak": 70799,
-   "ctx_turns": [
-    40244,
-    50635,
-    53956,
-    55607,
-    59742,
-    61614,
-    62898,
-    65255,
-    68342,
-    70085,
-    70799
-   ],
    "tool_out": 10991,
    "tool_out_by": {
     "Bash": 10991
@@ -4294,12 +3275,6 @@
    },
    "ctx_first": 30454,
    "ctx_peak": 35435,
-   "ctx_turns": [
-    30454,
-    34296,
-    35167,
-    35435
-   ],
    "tool_out": 463,
    "tool_out_by": {
     "Bash": 463
@@ -4347,17 +3322,6 @@
    },
    "ctx_first": 30982,
    "ctx_peak": 62770,
-   "ctx_turns": [
-    30982,
-    43764,
-    48490,
-    52400,
-    56190,
-    58180,
-    58990,
-    59767,
-    62770
-   ],
    "tool_out": 13827,
    "tool_out_by": {
     "Bash": 13827
@@ -4407,11 +3371,6 @@
    },
    "ctx_first": 34482,
    "ctx_peak": 35144,
-   "ctx_turns": [
-    34482,
-    34912,
-    35144
-   ],
    "tool_out": 129,
    "tool_out_by": {
     "Bash": 129
@@ -4461,20 +3420,6 @@
    },
    "ctx_first": 40660,
    "ctx_peak": 82336,
-   "ctx_turns": [
-    40660,
-    51456,
-    56981,
-    57416,
-    61920,
-    69330,
-    71840,
-    73233,
-    78784,
-    78970,
-    79253,
-    82336
-   ],
    "tool_out": 10554,
    "tool_out_by": {
     "Read": 2708,
@@ -4528,16 +3473,6 @@
    },
    "ctx_first": 24944,
    "ctx_peak": 37393,
-   "ctx_turns": [
-    24944,
-    29092,
-    32652,
-    33205,
-    34805,
-    35314,
-    36665,
-    37393
-   ],
    "tool_out": 3804,
    "tool_out_by": {
     "Bash": 1662,
@@ -4595,13 +3530,6 @@
    },
    "ctx_first": 24694,
    "ctx_peak": 34982,
-   "ctx_turns": [
-    24694,
-    31776,
-    33340,
-    34295,
-    34982
-   ],
    "tool_out": 3241,
    "tool_out_by": {
     "Bash": 3241
@@ -4658,20 +3586,6 @@
    },
    "ctx_first": 31275,
    "ctx_peak": 58083,
-   "ctx_turns": [
-    31275,
-    35793,
-    37888,
-    46587,
-    48121,
-    50431,
-    51917,
-    52700,
-    56633,
-    57183,
-    57631,
-    58083
-   ],
    "tool_out": 9219,
    "tool_out_by": {
     "Bash": 9219
@@ -4728,23 +3642,6 @@
    },
    "ctx_first": 25544,
    "ctx_peak": 65884,
-   "ctx_turns": [
-    25544,
-    35666,
-    39975,
-    44102,
-    47609,
-    51327,
-    52518,
-    53386,
-    55543,
-    57654,
-    59283,
-    61474,
-    64854,
-    65540,
-    65884
-   ],
    "tool_out": 13233,
    "tool_out_by": {
     "Bash": 13233
@@ -4801,22 +3698,6 @@
    },
    "ctx_first": 25448,
    "ctx_peak": 58557,
-   "ctx_turns": [
-    25448,
-    35004,
-    38803,
-    41244,
-    42579,
-    47259,
-    47611,
-    51511,
-    52403,
-    53172,
-    54881,
-    56921,
-    58162,
-    58557
-   ],
    "tool_out": 10524,
    "tool_out_by": {
     "Bash": 10524
@@ -4872,13 +3753,6 @@
    },
    "ctx_first": 25084,
    "ctx_peak": 32409,
-   "ctx_turns": [
-    25084,
-    30080,
-    31530,
-    32137,
-    32409
-   ],
    "tool_out": 1614,
    "tool_out_by": {
     "Bash": 1614
@@ -4935,14 +3809,6 @@
    },
    "ctx_first": 31011,
    "ctx_peak": 40335,
-   "ctx_turns": [
-    31011,
-    35277,
-    36612,
-    38134,
-    39633,
-    40335
-   ],
    "tool_out": 2064,
    "tool_out_by": {
     "Bash": 2064
@@ -5000,31 +3866,6 @@
    },
    "ctx_first": 32469,
    "ctx_peak": 133049,
-   "ctx_turns": [
-    32469,
-    40162,
-    41325,
-    47440,
-    53495,
-    67939,
-    76762,
-    88306,
-    92986,
-    95739,
-    97788,
-    99440,
-    106205,
-    111524,
-    113521,
-    116324,
-    120388,
-    123654,
-    126344,
-    128057,
-    130384,
-    131756,
-    133049
-   ],
    "tool_out": 39991,
    "tool_out_by": {
     "Bash": 39991
@@ -5080,13 +3921,6 @@
    },
    "ctx_first": 31020,
    "ctx_peak": 35951,
-   "ctx_turns": [
-    31020,
-    34811,
-    35215,
-    35647,
-    35951
-   ],
    "tool_out": 282,
    "tool_out_by": {
     "Bash": 282
@@ -5144,16 +3978,6 @@
    },
    "ctx_first": 28579,
    "ctx_peak": 53536,
-   "ctx_turns": [
-    28579,
-    37956,
-    41303,
-    45618,
-    47221,
-    49296,
-    53228,
-    53536
-   ],
    "tool_out": 10679,
    "tool_out_by": {
     "Bash": 10679
@@ -5203,19 +4027,6 @@
    },
    "ctx_first": 25313,
    "ctx_peak": 51508,
-   "ctx_turns": [
-    25313,
-    36619,
-    38406,
-    39214,
-    41225,
-    43046,
-    44482,
-    47282,
-    49538,
-    50762,
-    51508
-   ],
    "tool_out": 8434,
    "tool_out_by": {
     "Bash": 8434
@@ -5272,15 +4083,6 @@
    },
    "ctx_first": 25108,
    "ctx_peak": 32719,
-   "ctx_turns": [
-    25108,
-    29653,
-    30254,
-    30944,
-    31510,
-    31824,
-    32719
-   ],
    "tool_out": 1406,
    "tool_out_by": {
     "Bash": 1406
@@ -5337,15 +4139,6 @@
    },
    "ctx_first": 28568,
    "ctx_peak": 33904,
-   "ctx_turns": [
-    28568,
-    30138,
-    30530,
-    31680,
-    32507,
-    32868,
-    33904
-   ],
    "tool_out": 2219,
    "tool_out_by": {
     "Bash": 2219
@@ -5402,15 +4195,6 @@
    },
    "ctx_first": 31003,
    "ctx_peak": 44934,
-   "ctx_turns": [
-    31003,
-    35156,
-    39220,
-    41171,
-    41731,
-    44637,
-    44934
-   ],
    "tool_out": 4006,
    "tool_out_by": {
     "Bash": 4006
@@ -5463,15 +4247,6 @@
    },
    "ctx_first": 30673,
    "ctx_peak": 44753,
-   "ctx_turns": [
-    30673,
-    35128,
-    39182,
-    39774,
-    41528,
-    44496,
-    44753
-   ],
    "tool_out": 3610,
    "tool_out_by": {
     "Bash": 3610
@@ -5522,11 +4297,6 @@
    },
    "ctx_first": 24926,
    "ctx_peak": 32656,
-   "ctx_turns": [
-    24926,
-    30739,
-    32656
-   ],
    "tool_out": 1230,
    "tool_out_by": {
     "Read": 312,
@@ -5584,13 +4354,6 @@
    },
    "ctx_first": 34520,
    "ctx_peak": 45123,
-   "ctx_turns": [
-    34520,
-    35759,
-    39372,
-    40754,
-    45123
-   ],
    "tool_out": 3773,
    "tool_out_by": {
     "Bash": 3773
@@ -5640,19 +4403,6 @@
    },
    "ctx_first": 34715,
    "ctx_peak": 67057,
-   "ctx_turns": [
-    34715,
-    45542,
-    50918,
-    54911,
-    56522,
-    59755,
-    60911,
-    61451,
-    65358,
-    66507,
-    67057
-   ],
    "tool_out": 15251,
    "tool_out_by": {
     "Bash": 15251
@@ -5702,18 +4452,6 @@
    },
    "ctx_first": 28448,
    "ctx_peak": 53752,
-   "ctx_turns": [
-    28448,
-    36584,
-    40306,
-    42651,
-    43344,
-    45511,
-    47764,
-    49320,
-    52582,
-    53752
-   ],
    "tool_out": 10209,
    "tool_out_by": {
     "Bash": 10209
@@ -5769,11 +4507,6 @@
    },
    "ctx_first": 30898,
    "ctx_peak": 34979,
-   "ctx_turns": [
-    30898,
-    34659,
-    34979
-   ],
    "tool_out": 74,
    "tool_out_by": {
     "Bash": 74
@@ -5828,14 +4561,6 @@
    },
    "ctx_first": 33603,
    "ctx_peak": 41067,
-   "ctx_turns": [
-    33603,
-    34868,
-    36755,
-    39084,
-    40343,
-    41067
-   ],
    "tool_out": 2857,
    "tool_out_by": {
     "Bash": 2857
@@ -5886,12 +4611,6 @@
    },
    "ctx_first": 28722,
    "ctx_peak": 32656,
-   "ctx_turns": [
-    28722,
-    30513,
-    31474,
-    32656
-   ],
    "tool_out": 1892,
    "tool_out_by": {
     "Bash": 1892
@@ -5941,19 +4660,6 @@
    },
    "ctx_first": 25005,
    "ctx_peak": 53567,
-   "ctx_turns": [
-    25005,
-    37540,
-    40438,
-    41385,
-    43790,
-    44741,
-    46672,
-    50638,
-    53160,
-    53395,
-    53567
-   ],
    "tool_out": 9712,
    "tool_out_by": {
     "Bash": 9712
@@ -6007,15 +4713,6 @@
    },
    "ctx_first": 24767,
    "ctx_peak": 33375,
-   "ctx_turns": [
-    24767,
-    29676,
-    30714,
-    31823,
-    32478,
-    33088,
-    33375
-   ],
    "tool_out": 2068,
    "tool_out_by": {
     "Bash": 2068
@@ -6063,20 +4760,6 @@
    },
    "ctx_first": 32978,
    "ctx_peak": 71352,
-   "ctx_turns": [
-    32978,
-    40179,
-    43349,
-    45268,
-    53085,
-    58148,
-    60124,
-    63843,
-    65863,
-    69063,
-    70304,
-    71352
-   ],
    "tool_out": 18328,
    "tool_out_by": {
     "Bash": 18294,
@@ -6127,15 +4810,6 @@
    },
    "ctx_first": 28522,
    "ctx_peak": 37338,
-   "ctx_turns": [
-    28522,
-    29906,
-    31092,
-    32873,
-    35076,
-    36796,
-    37338
-   ],
    "tool_out": 2085,
    "tool_out_by": {
     "Bash": 2085
@@ -6182,11 +4856,6 @@
    },
    "ctx_first": 30492,
    "ctx_peak": 34560,
-   "ctx_turns": [
-    30492,
-    34132,
-    34560
-   ],
    "tool_out": 81,
    "tool_out_by": {
     "Bash": 81
@@ -6237,13 +4906,6 @@
    },
    "ctx_first": 28243,
    "ctx_peak": 32003,
-   "ctx_turns": [
-    28243,
-    29531,
-    30169,
-    31179,
-    32003
-   ],
    "tool_out": 1394,
    "tool_out_by": {
     "Bash": 1394
@@ -6296,21 +4958,6 @@
    },
    "ctx_first": 40127,
    "ctx_peak": 70643,
-   "ctx_turns": [
-    40127,
-    44103,
-    48150,
-    51002,
-    56408,
-    57298,
-    59409,
-    63226,
-    66943,
-    67722,
-    68497,
-    69752,
-    70643
-   ],
    "tool_out": 10500,
    "tool_out_by": {
     "Bash": 10500
@@ -6358,13 +5005,6 @@
    },
    "ctx_first": 31184,
    "ctx_peak": 50112,
-   "ctx_turns": [
-    31184,
-    43188,
-    45938,
-    48167,
-    50112
-   ],
    "tool_out": 7329,
    "tool_out_by": {
     "Read": 4698,
@@ -6415,13 +5055,6 @@
    },
    "ctx_first": 24833,
    "ctx_peak": 32544,
-   "ctx_turns": [
-    24833,
-    29672,
-    30812,
-    31868,
-    32544
-   ],
    "tool_out": 1979,
    "tool_out_by": {
     "Bash": 1979
@@ -6477,12 +5110,6 @@
    },
    "ctx_first": 30983,
    "ctx_peak": 35343,
-   "ctx_turns": [
-    30983,
-    34742,
-    35093,
-    35343
-   ],
    "tool_out": 157,
    "tool_out_by": {
     "Bash": 157
@@ -6537,14 +5164,6 @@
    },
    "ctx_first": 24681,
    "ctx_peak": 32138,
-   "ctx_turns": [
-    24681,
-    29244,
-    29722,
-    30769,
-    31289,
-    32138
-   ],
    "tool_out": 1609,
    "tool_out_by": {
     "Bash": 1609
@@ -6594,19 +5213,6 @@
    },
    "ctx_first": 25185,
    "ctx_peak": 41932,
-   "ctx_turns": [
-    25185,
-    29979,
-    32530,
-    34581,
-    36541,
-    37601,
-    38205,
-    38760,
-    39823,
-    40764,
-    41932
-   ],
    "tool_out": 4832,
    "tool_out_by": {
     "Bash": 4832
@@ -6663,12 +5269,6 @@
    },
    "ctx_first": 34315,
    "ctx_peak": 35874,
-   "ctx_turns": [
-    34315,
-    34644,
-    35539,
-    35874
-   ],
    "tool_out": 452,
    "tool_out_by": {
     "Bash": 452
@@ -6716,16 +5316,6 @@
    },
    "ctx_first": 24734,
    "ctx_peak": 54025,
-   "ctx_turns": [
-    24734,
-    39557,
-    44195,
-    46697,
-    53193,
-    53594,
-    53849,
-    54025
-   ],
    "tool_out": 11170,
    "tool_out_by": {
     "Bash": 11170
@@ -6775,12 +5365,6 @@
    },
    "ctx_first": 25218,
    "ctx_peak": 31842,
-   "ctx_turns": [
-    25218,
-    30019,
-    30503,
-    31842
-   ],
    "tool_out": 1376,
    "tool_out_by": {
     "Bash": 1376
@@ -6837,18 +5421,6 @@
    },
    "ctx_first": 34891,
    "ctx_peak": 53628,
-   "ctx_turns": [
-    34891,
-    42609,
-    45862,
-    47615,
-    49230,
-    49595,
-    50039,
-    51995,
-    53507,
-    53628
-   ],
    "tool_out": 7450,
    "tool_out_by": {
     "Bash": 7375,
@@ -6899,11 +5471,6 @@
    },
    "ctx_first": 34564,
    "ctx_peak": 35576,
-   "ctx_turns": [
-    34564,
-    35223,
-    35576
-   ],
    "tool_out": 250,
    "tool_out_by": {
     "Bash": 250
@@ -6954,23 +5521,6 @@
    },
    "ctx_first": 33928,
    "ctx_peak": 88773,
-   "ctx_turns": [
-    33928,
-    35936,
-    43208,
-    47222,
-    51477,
-    54198,
-    56233,
-    66153,
-    70872,
-    75119,
-    77342,
-    78665,
-    84451,
-    88106,
-    88773
-   ],
    "tool_out": 26175,
    "tool_out_by": {
     "Bash": 26175
@@ -7028,20 +5578,6 @@
    },
    "ctx_first": 33198,
    "ctx_peak": 61098,
-   "ctx_turns": [
-    33198,
-    38852,
-    43585,
-    48828,
-    52173,
-    54123,
-    54635,
-    57396,
-    57844,
-    59056,
-    60363,
-    61098
-   ],
    "tool_out": 11444,
    "tool_out_by": {
     "Bash": 10778,
@@ -7096,11 +5632,6 @@
    },
    "ctx_first": 30705,
    "ctx_peak": 34879,
-   "ctx_turns": [
-    30705,
-    34637,
-    34879
-   ],
    "tool_out": 240,
    "tool_out_by": {
     "Bash": 240
@@ -7151,11 +5682,6 @@
    },
    "ctx_first": 30886,
    "ctx_peak": 34942,
-   "ctx_turns": [
-    30886,
-    34639,
-    34942
-   ],
    "tool_out": 144,
    "tool_out_by": {
     "Bash": 144
@@ -7212,11 +5738,6 @@
    },
    "ctx_first": 30791,
    "ctx_peak": 34855,
-   "ctx_turns": [
-    30791,
-    34685,
-    34855
-   ],
    "tool_out": 170,
    "tool_out_by": {
     "Bash": 170
@@ -7273,11 +5794,6 @@
    },
    "ctx_first": 34432,
    "ctx_peak": 35290,
-   "ctx_turns": [
-    34432,
-    35083,
-    35290
-   ],
    "tool_out": 236,
    "tool_out_by": {
     "Bash": 236
@@ -7325,22 +5841,6 @@
    },
    "ctx_first": 39726,
    "ctx_peak": 71117,
-   "ctx_turns": [
-    39726,
-    42618,
-    46393,
-    47130,
-    48608,
-    51420,
-    54314,
-    59207,
-    62019,
-    64531,
-    67126,
-    68080,
-    70097,
-    71117
-   ],
    "tool_out": 10954,
    "tool_out_by": {
     "Bash": 10954
@@ -7391,19 +5891,6 @@
    },
    "ctx_first": 31178,
    "ctx_peak": 84545,
-   "ctx_turns": [
-    31178,
-    37673,
-    42575,
-    66987,
-    69657,
-    72815,
-    73908,
-    74556,
-    82160,
-    82750,
-    84545
-   ],
    "tool_out": 23979,
    "tool_out_by": {
     "Bash": 9593,
@@ -7458,22 +5945,6 @@
    },
    "ctx_first": 33707,
    "ctx_peak": 91972,
-   "ctx_turns": [
-    33707,
-    36230,
-    44575,
-    60122,
-    66233,
-    67399,
-    72210,
-    75819,
-    79151,
-    82505,
-    86322,
-    86926,
-    91288,
-    91972
-   ],
    "tool_out": 26524,
    "tool_out_by": {
     "Bash": 26477,
@@ -7524,11 +5995,6 @@
    },
    "ctx_first": 30888,
    "ctx_peak": 35278,
-   "ctx_turns": [
-    30888,
-    35037,
-    35278
-   ],
    "tool_out": 236,
    "tool_out_by": {
     "Bash": 236
@@ -7586,17 +6052,6 @@
    },
    "ctx_first": 24954,
    "ctx_peak": 52399,
-   "ctx_turns": [
-    24954,
-    39190,
-    41018,
-    45588,
-    46820,
-    48191,
-    51360,
-    52100,
-    52399
-   ],
    "tool_out": 10673,
    "tool_out_by": {
     "Bash": 10673
@@ -7649,19 +6104,6 @@
    },
    "ctx_first": 30735,
    "ctx_peak": 56994,
-   "ctx_turns": [
-    30735,
-    38425,
-    40239,
-    43208,
-    46187,
-    48452,
-    50726,
-    51457,
-    55702,
-    56588,
-    56994
-   ],
    "tool_out": 8169,
    "tool_out_by": {
     "Bash": 8169
@@ -7712,17 +6154,6 @@
    },
    "ctx_first": 25088,
    "ctx_peak": 41504,
-   "ctx_turns": [
-    25088,
-    31032,
-    36162,
-    38269,
-    38714,
-    39575,
-    40040,
-    40830,
-    41504
-   ],
    "tool_out": 4883,
    "tool_out_by": {
     "Bash": 3340,
@@ -7776,24 +6207,6 @@
    },
    "ctx_first": 29099,
    "ctx_peak": 105456,
-   "ctx_turns": [
-    29099,
-    34342,
-    36761,
-    38127,
-    41672,
-    46662,
-    49982,
-    67745,
-    80771,
-    85689,
-    90246,
-    92162,
-    95942,
-    100801,
-    102283,
-    105456
-   ],
    "tool_out": 28476,
    "tool_out_by": {
     "Bash": 28476
@@ -7843,14 +6256,6 @@
    },
    "ctx_first": 34397,
    "ctx_peak": 40679,
-   "ctx_turns": [
-    34397,
-    35406,
-    36830,
-    38161,
-    39750,
-    40679
-   ],
    "tool_out": 2138,
    "tool_out_by": {
     "Bash": 2138
@@ -7901,12 +6306,6 @@
    },
    "ctx_first": 28335,
    "ctx_peak": 36969,
-   "ctx_turns": [
-    28335,
-    35784,
-    36798,
-    36969
-   ],
    "tool_out": 4985,
    "tool_out_by": {
     "Bash": 4985
@@ -7957,17 +6356,6 @@
    },
    "ctx_first": 34715,
    "ctx_peak": 56456,
-   "ctx_turns": [
-    34715,
-    38501,
-    40780,
-    43576,
-    47160,
-    48862,
-    50887,
-    55067,
-    56456
-   ],
    "tool_out": 7872,
    "tool_out_by": {
     "Bash": 7872
@@ -8017,16 +6405,6 @@
    },
    "ctx_first": 25014,
    "ctx_peak": 35349,
-   "ctx_turns": [
-    25014,
-    29701,
-    31130,
-    31983,
-    32515,
-    33469,
-    34264,
-    35349
-   ],
    "tool_out": 1643,
    "tool_out_by": {
     "Bash": 1643
@@ -8082,13 +6460,6 @@
    },
    "ctx_first": 31390,
    "ctx_peak": 44270,
-   "ctx_turns": [
-    31390,
-    37001,
-    41036,
-    42564,
-    44270
-   ],
    "tool_out": 3946,
    "tool_out_by": {
     "Bash": 3946

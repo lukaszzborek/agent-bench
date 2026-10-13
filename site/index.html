@@ -43,14 +43,14 @@ body[data-compare="arms"] [data-mode="arms"], body[data-compare="models"] [data-
 .tile th, .tile td { padding: 3px 0 3px 8px; border: 0; position: static; }
 .tile td:first-child { color: var(--ink-2); padding-left: 0; }
 .swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
-.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
-.legend span { display: flex; align-items: center; gap: 6px; }
 .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .seg button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--ink-2); padding: 5px 10px; cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--wash); color: var(--ink); font-weight: 600; }
 #chart svg { display: block; width: 100%; }
 #chart text { fill: var(--ink-2); font-size: 12px; }
 #chart .tick { fill: var(--muted); font-size: 11px; }
+#chart .val { fill: var(--ink); font-size: 11px; font-variant-numeric: tabular-nums; }
+#chart .head { fill: var(--ink); font-weight: 600; }
 .scroll { overflow-x: auto; }
 /* no top padding in scroll cards: the sticky header must sit at the scroll edge, or rows show through above it */
 .card.scroll { padding-top: 0; }
@@ -65,8 +65,6 @@ dialog h3 { margin: 0; font-size: 16px; }
 dialog .close { font: inherit; font-size: 20px; line-height: 1; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; padding: 4px 8px; }
 dialog .card { margin-top: 12px; }
 dialog th.sel, dialog td.sel { background: var(--wash); }
-#d-chart svg { display: block; width: 100%; }
-#d-chart text { fill: var(--muted); font-size: 11px; }
 table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
 th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
 th:first-child, td:first-child, .txt { text-align: left; }
@@ -107,7 +105,7 @@ tbody tr:hover { background: var(--wash); }
   <h2 id="h-chart"></h2>
   <div class="card">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:8px">
-      <div class="legend" id="legend"></div>
+      <p class="note" style="margin:0">One column per arm. Log scale: half (−50%) and double (+100%) sit the same distance from 0; bars stop at ¼ and 4×. ✗ = not every trial passed.</p>
       <div class="seg" id="metric"></div>
     </div>
     <div id="chart"></div>
@@ -122,11 +120,8 @@ tbody tr:hover { background: var(--wash); }
   <div class="card scroll" style="max-height:560px"><table id="trials"></table></div>
 </main>
 <dialog id="detail">
-  <header><div><h3 id="d-title"></h3><p class="note" style="margin:2px 0 0">Every trial of this task in the current filters, side by side. Δ vs the median of the baseline.</p></div>
+  <header><div><h3 id="d-title"></h3><p class="note" style="margin:2px 0 0">Trials from the newest run of each arm (or model) on this task in the current filters, side by side. Δ vs the median of the baseline.</p></div>
     <button class="close" aria-label="Close" onclick="this.closest('dialog').close()">×</button></header>
-  <div class="card"><b>Context per request</b>
-    <p class="note" style="margin:2px 0 8px">Each request re-reads the whole context, so the area under a line ≈ the cache-read tokens it pays for. A longer line = more turns, a higher line = more context per turn.</p>
-    <div class="legend" id="d-legend"></div><div id="d-chart"></div></div>
   <div class="card scroll"><table id="d-table"></table></div>
 </dialog>
 <div id="tip"></div>
@@ -267,45 +262,53 @@ function drawTiles({ series, base, tasks, cell, delta }) {
 
 function drawChart({ series, base, tasks, cell, delta }) {
   const m = state.metric, treat = series.filter(a => a !== base);
-  const bars = tasks.map(t => ({ t, items: treat.map(a => ({ a, d: delta(t, a, m) })).filter(x => x.d != null) }))
-    .filter(g => g.items.length);
-  const shown = treat.filter(a => bars.some(g => g.items.some(x => x.a === a)));
-  $("legend").innerHTML = shown.map(a => `<span><span class="swatch" style="background:${color[a]}"></span>${esc(short(a))}</span>`).join("");
-  if (!bars.length) { $("chart").innerHTML = `<p class="empty">Needs the baseline and at least one other ${state.compare === "models" ? "model" : "arm"} on the same task.</p>`; return; }
+  const rows = tasks.filter(t => treat.some(a => delta(t, a, m) != null));
+  const shown = treat.filter(a => rows.some(t => delta(t, a, m) != null));
+  if (!rows.length) { $("chart").innerHTML = `<p class="empty">Needs the baseline and at least one other ${state.compare === "models" ? "model" : "arm"} on the same task.</p>`; return; }
 
   const W = $("chart").clientWidth, narrow = W < 560;
   if (!W) return;  // not laid out yet; the resize handler redraws
-  const labelW = narrow ? 0 : Math.min(260, W * 0.3), barH = 12, gap = 2, groupGap = narrow ? 30 : 14, top = 22;
-  const raw = Math.max(...bars.flatMap(g => g.items.map(x => Math.abs(x.d))));
-  const step = raw <= 1 ? 0.1 : 0.5, maxAbs = Math.max(step, Math.ceil(raw / step) * step);
-  const x0 = labelW + 20, x1 = W - 20, mid = (x0 + x1) / 2, sx = d => mid + d / maxAbs * (x1 - x0) / 2;
-  let y = top, out = [];
-  const ticks = [-1, -0.5, 0, 0.5, 1].map(f => f * maxAbs);
-  for (const d of ticks) {
-    out.push(`<line x1="${sx(d)}" x2="${sx(d)}" y1="${top - 4}" y2="__H__" stroke="var(${d ? "--grid" : "--axis"})" stroke-width="1"/>`);
-    out.push(`<text class="tick" x="${sx(d)}" y="12" text-anchor="middle">${d ? fmtPct(d) : "0"}</text>`);
-  }
-  for (const g of bars) {
-    const h = g.items.length * (barH + gap) - gap;
-    if (narrow) { out.push(`<text x="${x0}" y="${y + 4}">${esc(g.t)}</text>`); y += 10; }
-    else out.push(`<text x="${labelW}" y="${y + h / 2 + 4}" text-anchor="end">${esc(g.t)}</text>`);
-    for (const { a, d } of g.items) {
-      const xa = Math.min(sx(0), sx(d)), w = Math.max(1, Math.abs(sx(d) - sx(0)));
-      const r = Math.min(4, w / 2);
+  // log of the ratio: on a linear axis −50% looks half as big as +100%, though both are a factor of 2
+  const lr = d => Math.log2(Math.max(1 / 16, 1 + d));
+  const raw = Math.max(...rows.flatMap(t => shown.map(a => Math.abs(lr(delta(t, a, m) ?? 0)))));
+  const maxL = Math.min(2, Math.max(1, raw));
+  const labelW = narrow ? 0 : Math.min(270, W * 0.24), rowH = narrow ? 34 : 24, barH = 12, top = 40;
+  const x0 = narrow ? 0 : labelW + 16, gapP = narrow ? 8 : 24, k = shown.length;
+  const pw = (W - x0 - 4 - gapP * (k - 1)) / k, pad = Math.min(38, pw / 5);
+  // grid drawn under everything: on narrow screens task names sit on top of the panels
+  const H = top + rows.length * rowH + 4, grid = [], out = [];
+  rows.forEach((t, i) => {
+    const y = top + i * rowH;
+    if (i % 2) grid.push(`<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="var(--wash)"/>`);
+    out.push(narrow ? `<text x="2" y="${y + 12}" stroke="var(--surface)" stroke-width="3" paint-order="stroke">${esc(t)}</text>` : `<text x="${labelW}" y="${y + rowH / 2 + 4}" text-anchor="end">${esc(t)}</text>`);
+  });
+  shown.forEach((a, j) => {
+    const px = x0 + j * (pw + gapP), mid = px + pw / 2, half = pw / 2 - pad;
+    const sx = l => mid + Math.max(-maxL, Math.min(maxL, l)) / maxL * half;
+    out.push(`<text class="head" x="${mid}" y="11" text-anchor="middle"><tspan fill="${color[a]}">■</tspan> ${esc(short(a))}</text>`);
+    for (const t of [-0.75, -0.5, 0, 1, 3].filter(t => Math.abs(lr(t)) <= maxL + 1e-9)) {
+      grid.push(`<line x1="${sx(lr(t))}" x2="${sx(lr(t))}" y1="${top - 4}" y2="${H}" stroke="var(${t ? "--grid" : "--axis"})"/>`);
+      out.push(`<text class="tick" x="${sx(lr(t))}" y="${top - 8}" text-anchor="middle">${t ? fmtPct(t) : "0"}</text>`);
+    }
+    rows.forEach((t, i) => {
+      const d = delta(t, a, m), y = top + i * rowH + (narrow ? 17 : (rowH - barH) / 2);
+      if (d == null) { out.push(`<text class="tick" x="${mid}" y="${y + barH - 2}" text-anchor="middle">·</text>`); return; }
+      const end = sx(lr(d)), xa = Math.min(mid, end), w = Math.max(1, Math.abs(end - mid)), r = Math.min(4, w / 2);
       // flat edge on the zero line, rounded data end
       const path = d >= 0
         ? `M${xa},${y}h${w - r}a${r},${r} 0 0 1 ${r},${r}v${barH - 2 * r}a${r},${r} 0 0 1 -${r},${r}h-${w - r}z`
         : `M${xa + w},${y}h-${w - r}a${r},${r} 0 0 0 -${r},${r}v${barH - 2 * r}a${r},${r} 0 0 0 ${r},${r}h${w - r}z`;
-      const c = cell(g.t, a), ref = cell(g.t, base);
-      const tip = `<b>${esc(g.t)}</b>${esc(short(a))}: ${METRICS[m].fmt(c[m])} vs ${esc(short(base))} ${METRICS[m].fmt(ref[m])}<br>Δ ${fmtPct(d)} · pass ${c.pass}/${c.n} vs ${ref.pass}/${ref.n}`;
+      const c = cell(t, a), ref = cell(t, base), failed = c.pass < c.n;
+      // a long bar leaves no room past its end: its label moves to the other side of zero
+      const flip = w > half * 0.6, right = d >= 0 !== flip;
+      const lx = flip ? mid + (right ? 4 : -4) : end + (right ? 4 : -4);
+      const tip = `<b>${esc(t)}</b>${esc(short(a))}: ${METRICS[m].fmt(c[m])} vs ${esc(short(base))} ${METRICS[m].fmt(ref[m])}<br>Δ ${fmtPct(d)} · pass ${c.pass}/${c.n} vs ${ref.pass}/${ref.n}`;
       out.push(`<path d="${path}" fill="${color[a]}"/>`);
-      out.push(`<rect x="${x0}" y="${y - 1}" width="${x1 - x0}" height="${barH + 2}" fill="transparent" data-tip="${esc(tip)}"/>`);
-      y += barH + gap;
-    }
-    y += groupGap - gap;
-  }
-  const H = y + 4;
-  $("chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Per-task ${METRICS[m].label} change vs ${esc(short(base))}">${out.join("").replaceAll("__H__", H - 6)}</svg>`;
+      out.push(`<text class="val" x="${lx}" y="${y + barH - 2}" text-anchor="${right ? "start" : "end"}">${fmtPct(d)}${failed ? ' <tspan fill="var(--bad)">✗</tspan>' : ""}</text>`);
+      out.push(`<rect x="${px}" y="${top + i * rowH}" width="${pw}" height="${rowH}" fill="transparent" data-tip="${esc(tip)}"/>`);
+    });
+  });
+  $("chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Per-task ${METRICS[m].label} change vs ${esc(short(base))}">${grid.join("")}${out.join("")}</svg>`;
 }
 
 function drawMatrix({ series, base, tasks, cell, delta }) {
@@ -379,15 +382,16 @@ const DETAIL = [["status"], ["cost", "cost"], ["tokens", "tokens"], ["turns", "t
 function openDetail(task, sel) {
   const v = current(), byModel = state.compare === "models";
   const key = byModel ? modelKey : r => r.arm;
-  const trials = v.rows.filter(r => r.task === task)
+  // older runs of the same arm come from other days and setups: side by side they read as noise
+  const latest = {};
+  for (const r of v.rows) if (r.task === task && (r.started || "") > (latest[key(r)]?.started || "")) latest[key(r)] = r;
+  if (sel) latest[key(sel)] = sel;
+  const trials = v.rows.filter(r => r.task === task && r.run === latest[key(r)].run)
     .sort((a, b) => (key(a) !== v.base) - (key(b) !== v.base) || key(a).localeCompare(key(b)) || (a.rep ?? 0) - (b.rep ?? 0) || (a.started || "").localeCompare(b.started || ""));
   if (!trials.length) return;
   const baseRows = trials.filter(r => key(r) === v.base && valid(r));
   const col = r => key(r) === v.base ? "var(--ink-2)" : color[key(r)] ?? "var(--muted)";
-  const name = r => `${short(key(r))} · r${r.rep ?? "?"}`;
-  // the same arm and rep from two runs would get the same name: the start time tells them apart
-  const clash = count(trials.map(name));
-  const label = r => clash[name(r)] > 1 ? `${name(r)} · ${(r.started || "").replace(/^\d{4}(\d\d)(\d\d)T(\d\d)(\d\d).*/, "$1-$2 $3:$4")}` : name(r);
+  const label = r => `${short(key(r))} · r${r.rep ?? "?"}`;
   $("d-title").textContent = `${task} · ${byModel ? `arm ${state.arm}` : short(state.model)}`;
 
   const fmt = (f, r) => {
@@ -412,17 +416,7 @@ function openDetail(task, sel) {
   const cls = r => r === sel ? "sel" : "";
   $("d-table").innerHTML = `<thead><tr><th></th>${trials.map(r => `<th class="${cls(r)}"><span style="color:${col(r)}">●</span> ${esc(label(r))}</th>`).join("")}</tr></thead>
     <tbody>${DETAIL.map(([f, l]) => `<tr><td class="txt">${esc(l ?? f.replace(/_/g, " "))}</td>${trials.map(r => `<td class="${cls(r)}">${fmt(f, r)}</td>`).join("")}</tr>`).join("")}</tbody>`;
-
-  const lines = trials.filter(r => r.ctx_turns?.length);
-  $("d-legend").innerHTML = lines.map(r => `<span><span class="swatch" style="background:${col(r)}"></span>${esc(label(r))}</span>`).join("");
-  if (!$("detail").open) $("detail").showModal();  // before measuring: a closed dialog has no width
-  const W = Math.max(320, $("d-chart").clientWidth || 1100), H = 220, L = 44, B = 20, T = 8;
-  const n = Math.max(2, ...lines.map(r => r.ctx_turns.length)), top = Math.max(1, ...lines.flatMap(r => r.ctx_turns));
-  const x = i => L + i / (n - 1) * (W - L - 8), y = c => T + (1 - c / top) * (H - T - B);
-  const ticks = [0, .25, .5, .75, 1].map(f => `<line x1="${L}" x2="${W - 8}" y1="${y(top * f)}" y2="${y(top * f)}" stroke="var(--grid)"/><text x="${L - 6}" y="${y(top * f) + 4}" text-anchor="end">${fmtInt(top * f)}</text>`).join("");
-  const xt = [...new Set([0, Math.round((n - 1) / 2), n - 1])].map(i => `<text x="${x(i)}" y="${H - 4}" text-anchor="middle">${i + 1}</text>`).join("");
-  const paths = lines.map(r => `<polyline fill="none" stroke="${col(r)}" stroke-width="${r === sel ? 3 : 1.5}" stroke-linejoin="round" points="${r.ctx_turns.map((c, i) => `${x(i)},${y(c)}`).join(" ")}"/>`).join("");
-  $("d-chart").innerHTML = lines.length ? `<svg viewBox="0 0 ${W} ${H}" height="${H}">${ticks}${xt}${paths}</svg>` : '<p class="empty">No per-request data for these trials.</p>';
+  if (!$("detail").open) $("detail").showModal();
 }
 // a click on the backdrop targets the dialog itself, but so does one on its padding: tell them apart by position
 $("detail").onclick = e => {
