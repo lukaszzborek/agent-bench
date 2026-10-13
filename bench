@@ -2,7 +2,7 @@
 """bench — sandboxed agent benchmark CLI.
 
   bench list                                   tasks with dataset, agent, model, arms
-  bench run <task>... [--arm A] [--model [AGENT:]MODEL] [--effort E] [--reps N] [--jobs N] [--keep]
+  bench run <task>... [--arm A] [--exclude-arm A] [--exclude-task T] [--model [AGENT:]MODEL] [--effort E] [--reps N] [--jobs N] [--keep]
   bench report [path...]                       default: everything in results/
   bench publish [path...]                      merge results into site/data.json (GitHub Pages dashboard)
   bench build [claude|codex ...] [--tag T] [--deps "dotnet node"]
@@ -14,6 +14,7 @@ import os
 import random
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,11 +47,12 @@ def model_variants(task: dict, models: list[str] | None, effort: str | None) -> 
 def cmd_run(a):
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     plan, run_dirs = [], []
-    tasks = [v for ref in a.task for t in load_tasks(ref) for v in model_variants(t, a.model, a.effort)]
+    tasks = [v for ref in a.task for t in load_tasks(ref) if t["id"] not in (a.exclude_task or [])
+             for v in model_variants(t, a.model, a.effort)]
     for task in tasks:
         # resolved here, serially, so parallel trials never race on the same clone
         task["repo_path"] = resolve_repo(task["repo"], task["commit"])
-        arms = [arm for arm in a.arm or task["arms"] if arm in task["arms"]]
+        arms = [arm for arm in a.arm or task["arms"] if arm in task["arms"] and arm not in (a.exclude_arm or [])]
         for arm in set(a.arm or []) - set(task["arms"]):
             print(f"skip {task['id']}: no arm {arm!r} (has {', '.join(task['arms'])})", file=sys.stderr)
         tag = a.template_tag or os.environ.get("TAG") or task.get("template_tag", "v1")
@@ -63,9 +65,15 @@ def cmd_run(a):
 
     with ThreadPoolExecutor(a.jobs) as pool:
         futures = [pool.submit(run_trial, *trial) for trial in plan]
+        start, failed = time.monotonic(), 0
         try:
-            for f in as_completed(futures):
-                f.result()
+            for done, f in enumerate(as_completed(futures), 1):
+                meta = f.result()
+                failed += bool(meta.get("error") or meta.get("grade_exit"))
+                elapsed = time.monotonic() - start
+                eta = elapsed / done * (len(plan) - done)
+                print(f"== {done}/{len(plan)} done, {failed} failed, {len(plan) - done} left, "
+                      f"elapsed {elapsed / 60:.0f} min, eta {eta / 60:.0f} min")
         except KeyboardInterrupt:
             # running sbx children get the SIGINT too, so their trials fail and clean up on their own
             pool.shutdown(cancel_futures=True)
@@ -95,6 +103,8 @@ def main():
     p = sub.add_parser("run", help="run arms x reps for one or more tasks, shuffled, one sandbox per trial")
     p.add_argument("task", nargs="+", help="dataset or task name from tasks/, or path to a yaml file")
     p.add_argument("--arm", action="append", help="key from the task's arms: block, repeatable (default: all arms)")
+    p.add_argument("--exclude-arm", action="append", metavar="ARM", help="arm to skip, repeatable")
+    p.add_argument("--exclude-task", action="append", metavar="TASK", help="task id to skip, repeatable")
     p.add_argument("--reps", type=int, default=1, help="trials per arm, each in its own sandbox")
     p.add_argument("--jobs", type=int, default=1, help="sandboxes running at once; >1 skews wall_s, keep 1 when timing matters")
     p.add_argument("--keep", action="store_true", help="do not remove the sandboxes afterwards")

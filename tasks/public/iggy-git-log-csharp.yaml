@@ -2,8 +2,9 @@
 # the question is scoped to commits after #3800 so the shallow boundary (which looks like it adds every file)
 # is never part of the answer.
 id: iggy-git-log-csharp
+tags: [git-history, read-only, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet   # Serena's C# language server needs the .NET SDK
 env:

@@ -5,8 +5,9 @@
 # were computed with the upstream fix and fail on the pin. Negative inputs are left out on purpose (Math.round
 # half-up-toward-+inf semantics make "expected" debatable).
 id: remeda-round-precision
+tags: [coding, typescript]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/remeda/remeda.git

@@ -4,8 +4,9 @@
 # Hidden test = upstream countBy/groupBy cases plus data-last and other Object.prototype member names. groupBy avoids a
 # `constructor` key on purpose: vitest's toStrictEqual compares `.constructor`, which would be the (distinct) arrays.
 id: remeda-groupby-proto-keys
+tags: [coding, typescript]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/remeda/remeda.git

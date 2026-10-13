@@ -6,8 +6,9 @@
 # deselects it. This snapshot's .gitignore lacks `.venv`, hence the .git/info/exclude line in setup
 # (keeps the venv out of patch.diff).
 id: marshmallow-schema-validator-data-key
+tags: [coding, python]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/marshmallow-code/marshmallow.git

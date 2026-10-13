@@ -10,8 +10,9 @@
 # workspace's build scripts, ~3 GB target/); the first semantic query (find_implementations) then takes ~70 s and
 # rust-analyzer grows to 3.7-5.6 GB RSS on 2 CPUs, hence memory 6g and timeout 15 for every arm.
 id: iggy-rust-trait-impls
+tags: [search, read-only, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: rust
 repo: https://github.com/apache/iggy.git

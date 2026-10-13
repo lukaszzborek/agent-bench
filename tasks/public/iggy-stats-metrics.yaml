@@ -4,8 +4,9 @@
 # Only foreign/csharp is touched; no cargo build. Test projects multi-target net8.0;net10.0 and the image has
 # SDK 10 only, hence -f net10.0 everywhere.
 id: iggy-stats-metrics
+tags: [coding, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git

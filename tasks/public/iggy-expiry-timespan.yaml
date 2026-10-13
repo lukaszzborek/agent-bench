@@ -6,8 +6,9 @@
 # -f net10.0 everywhere. Upstream left Benchmarks/Program.cs on the old signature, so the grade builds the
 # integration and BDD test projects but not Benchmarks.
 id: iggy-expiry-timespan
+tags: [coding, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git

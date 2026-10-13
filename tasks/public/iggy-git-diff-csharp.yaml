@@ -2,8 +2,9 @@
 # Asked as "exists / no longer exists" because git's rename detection pairs the 3 removed files with unrelated
 # new ones at 50-70% similarity, which would make an A/D/R answer ambiguous.
 id: iggy-git-diff-csharp
+tags: [git-history, read-only, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet   # Serena's C# language server needs the .NET SDK
 env:

@@ -3,8 +3,9 @@
 # Pinned before the Claude Code harness (.claude/ hooks, 2026-04-20) landed upstream, so no project hooks run.
 # Hidden test = upstream range.test.ts minus the `test.fails` lodash-parity cases and the `-0` start case.
 id: remeda-range-step
+tags: [coding, typescript]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/remeda/remeda.git

@@ -5,8 +5,9 @@
 # and table.rs, without changing how datetimes reach non-TOML targets (serde_json gets a string). The grader skips the
 # existing test that pins the old error (deserialize_datetime_from_value_issue_440, in both toml and toml_edit suites).
 id: toml-value-datetime-into
+tags: [coding, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: rust
 repo: https://github.com/toml-rs/toml.git

@@ -6,8 +6,9 @@
 # it. Level 2 spans both partial files of TcpMessageStream (SyncGroupAssignmentAsync lives in TcpMessageStream.Vsr.cs);
 # test-project callers (UserContractsTests, TopicContractsTests) are excluded by the prompt.
 id: iggy-csharp-callers
+tags: [search, read-only, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet   # Serena's C# language server needs the .NET SDK
 env:

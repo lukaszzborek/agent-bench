@@ -11,14 +11,20 @@ from pathlib import Path
 
 import yaml
 
+from run_trial import graphify_stats, rtk_stats, summarize
+
 HERE = Path(__file__).resolve().parent
 
 
-def task_datasets() -> dict[str, str]:
-    """task id -> dataset, for results written before meta.json recorded the dataset."""
+def task_info() -> dict[str, tuple[str, list[str]]]:
+    """task id -> (dataset, tags) from the task files as they are now, so retagging also applies to old trials
+    and results written before meta.json recorded the dataset still get one."""
     tasks = HERE / "tasks"
-    return {yaml.safe_load(p.read_text())["id"]: p.parent.name if p.parent != tasks else "-"
-            for p in tasks.rglob("*.yaml")}
+    info = {}
+    for p in tasks.rglob("*.yaml"):
+        t = yaml.safe_load(p.read_text())
+        info[t["id"]] = (p.parent.name if p.parent != tasks else "-", t.get("tags") or [])
+    return info
 
 
 def usage(agent: str, u: dict) -> dict:
@@ -31,12 +37,19 @@ def usage(agent: str, u: dict) -> dict:
             "cache_write": u.get("cache_creation_input_tokens") or 0, "out": u.get("output_tokens") or 0}
 
 
-def row(m: dict, run: str, datasets: dict[str, str]) -> dict:
-    t, s = m["task"], m.get("summary") or {}
-    dataset = t.get("dataset") or datasets.get(t["id"], "private")
-    task = t["id"]
-    if dataset != "public":
-        task = f"{dataset}-{hashlib.sha1(t['id'].encode()).hexdigest()[:6]}"
+def published_name(task_id: str, dataset: str) -> str:
+    return task_id if dataset == "public" else f"{dataset}-{hashlib.sha1(task_id.encode()).hexdigest()[:6]}"
+
+
+def row(m: dict, run: str, info: dict[str, tuple[str, list[str]]], trial_dir: Path) -> dict:
+    t = m["task"]
+    # re-derived from the raw logs when they are still around, so trials recorded before a stat existed get it too
+    jsonl = trial_dir / "agent.jsonl"
+    s = summarize(t["agent"], jsonl) if jsonl.exists() else m.get("summary") or {}
+    rtk = rtk_stats(trial_dir / "rtk-data") or m.get("rtk") or {}
+    graphify = graphify_stats(trial_dir, (m.get("tool_logs") or {}).get("graphify")) or m.get("graphify") or {}
+    dataset = t.get("dataset") or info.get(t["id"], ("private",))[0]
+    task = published_name(t["id"], dataset)
     tokens = usage(t["agent"], s.get("usage") or {})
     status = "error" if m.get("error") else "pass" if m.get("grade_exit") == 0 else "fail"
     return {
@@ -48,21 +61,28 @@ def row(m: dict, run: str, datasets: dict[str, str]) -> dict:
         **tokens, "tokens": sum(tokens.values()),
         "patch_lines": m.get("patch_lines"), "template": m.get("template"), "versions": m.get("versions") or {},
         "tool_calls": s.get("tool_calls") or {},
+        "ctx_first": s.get("ctx_first"), "ctx_peak": s.get("ctx_peak"), "ctx_turns": s.get("ctx_turns") or [],
+        "tool_out": s.get("tool_out"), "tool_out_by": s.get("tool_out_by") or {},
+        "rtk": rtk, "rtk_saved": rtk.get("saved"), "graphify": graphify,
         "sbx": (m.get("sbx_version") or "").removeprefix("sbx version: ").split(" ")[0],
     }
 
 
 def publish(roots: list[Path], out: Path):
     """Merge every meta.json under `roots` (results/ or run dirs) into `out`."""
-    datasets = task_datasets()
+    info = task_info()
     data = json.loads(out.read_text()) if out.exists() else {"trials": []}
     rows = {r["trial"]: r for r in data["trials"]}
     added = 0
     for root in roots:
         for p in (*root.glob("*/meta.json"), *root.glob("*/*/meta.json")):
-            r = row(json.loads(p.read_text()), p.parent.parent.name, datasets)
+            r = row(json.loads(p.read_text()), p.parent.parent.name, info, p.parent)
             added += r["trial"] not in rows
             rows[r["trial"]] = r
+    # every row, not just the merged ones: trials whose logs are gone still follow the current tags
+    tags = {published_name(i, d): t for i, (d, t) in info.items()}
+    for r in rows.values():
+        r["tags"] = tags.get(r["task"], [])
     data = {"updated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "trials": sorted(rows.values(), key=lambda r: (r["started"] or "", r["trial"]))}
     out.parent.mkdir(exist_ok=True)

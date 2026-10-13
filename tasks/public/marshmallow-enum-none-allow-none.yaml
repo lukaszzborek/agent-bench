@@ -3,8 +3,9 @@
 # None-valued member still rejects None. Small feature: Enum.__init__ in src/marshmallow/fields.py.
 # Hidden test extends the upstream test (explicit allow_none wins, by-name enums unchanged).
 id: marshmallow-enum-none-allow-none
+tags: [coding, python]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/marshmallow-code/marshmallow.git

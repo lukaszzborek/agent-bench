@@ -4,8 +4,9 @@
 # The hidden test runs the same checks against both crates (toml_edit's serde suite has autotests = false, so the
 # grader adds a module to tests/serde/main.rs).
 id: toml-integer-keys
+tags: [coding, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: rust
 repo: https://github.com/toml-rs/toml.git

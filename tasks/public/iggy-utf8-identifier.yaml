@@ -1,8 +1,9 @@
 # Source: iggy session c14e29a9 (2026-09-04). Pin = commit before upstream fix 7b78014c9. Only foreign/csharp is touched;
 # no cargo build. Test projects multi-target net8.0;net10.0 and the image has SDK 10 only, hence -f net10.0 everywhere.
 id: iggy-utf8-identifier
+tags: [coding, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git

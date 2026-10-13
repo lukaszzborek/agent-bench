@@ -5,8 +5,9 @@
 # Both agree. Traps: NetworkError and TimeoutException are base classes but are mapped (so raised); HTTPError appears
 # only as a type annotation, RequestError only in an `except` in _main.py and a re-raise in request_context.
 id: httpx-unraised-exceptions
+tags: [search, read-only, python]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/encode/httpx.git

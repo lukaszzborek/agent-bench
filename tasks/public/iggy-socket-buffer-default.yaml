@@ -5,8 +5,9 @@
 # -f net10.0 everywhere. The grade adds a socket-level check (dummy TcpListener, reflection to the client's
 # Socket) on top of the upstream config tests, so hard-coding another fixed default does not pass.
 id: iggy-socket-buffer-default
+tags: [coding, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git

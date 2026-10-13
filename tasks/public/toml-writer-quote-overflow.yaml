@@ -3,8 +3,9 @@
 # Small bug fix: one function in crates/toml_writer/src/string.rs. The existing `many_quotes` test pins the panic with
 # #[should_panic], so the grader skips it; the hidden test checks every encoding of long quote runs round-trips.
 id: toml-writer-quote-overflow
+tags: [coding, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: rust
 repo: https://github.com/toml-rs/toml.git

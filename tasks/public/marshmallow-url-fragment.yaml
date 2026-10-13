@@ -2,8 +2,9 @@
 # path" (#3016). Pin = its parent 3207be31, so validate.URL still rejects `https://example.com#frag`.
 # Small bug fix: one regex in src/marshmallow/validate.py. Hidden test mirrors the upstream test additions.
 id: marshmallow-url-fragment
+tags: [coding, python]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: v1
 repo: https://github.com/marshmallow-code/marshmallow.git

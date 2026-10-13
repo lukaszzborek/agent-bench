@@ -7,6 +7,8 @@ import hashlib
 import json
 import os
 import re
+import shutil
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -97,8 +99,13 @@ def install_tools(name: str, agent: str, tools: list[str], work: str, env: dict)
 
 
 def summarize(agent: str, jsonl: Path) -> dict:
-    """Pull final usage and per-tool call counts from the agent's own structured output."""
+    """Pull final usage, per-tool call counts and context stats from the agent's own structured output.
+
+    Cost is roughly requests x context size, so these say why an arm cost more: ctx_first is the fixed prompt +
+    tool-definition overhead, ctx_peak how far the context grew, tool_out how much tool output (~tokens, chars/4)
+    was fed back."""
     last, calls, seen = None, {}, set()
+    ctx, names, tool_out = {}, {}, {}
     for line in jsonl.read_text(errors="replace").splitlines():
         try:
             ev = json.loads(line)
@@ -106,10 +113,22 @@ def summarize(agent: str, jsonl: Path) -> dict:
             continue
         # tells "the tool did not help" apart from "the agent never called it"
         if agent == "claude" and ev.get("type") == "assistant":
-            for b in (ev.get("message") or {}).get("content") or []:
+            msg = ev.get("message") or {}
+            # one request streams as several events with the same message id, each repeating its usage
+            if msg.get("id") and not ev.get("parent_tool_use_id"):
+                u = msg.get("usage") or {}
+                ctx[msg["id"]] = sum(u.get(k) or 0 for k in ("input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
+            for b in msg.get("content") or []:
                 if b.get("type") == "tool_use" and b.get("id") not in seen:
                     seen.add(b.get("id"))
+                    names[b["id"]] = b["name"]
                     calls[b["name"]] = calls.get(b["name"], 0) + 1
+        elif agent == "claude" and ev.get("type") == "user":
+            for b in (ev.get("message") or {}).get("content") or []:
+                if isinstance(b, dict) and b.get("type") == "tool_result":
+                    c = b.get("content")
+                    name = names.get(b.get("tool_use_id"), "?")
+                    tool_out[name] = tool_out.get(name, 0) + len(c if isinstance(c, str) else json.dumps(c)) // 4
         elif agent == "codex" and ev.get("type") == "item.completed":
             it = ev.get("item") or {}
             name = f"mcp__{it.get('server')}__{it.get('tool')}" if it.get("type") == "mcp_tool_call" else it.get("type")
@@ -122,7 +141,70 @@ def summarize(agent: str, jsonl: Path) -> dict:
             last = {"usage": ev["usage"], "thread_id": ev.get("thread_id")}
         elif agent == "codex" and ev.get("type") == "thread.started":
             last = {**(last or {}), "thread_id": ev.get("thread_id")}
-    return {**last, "tool_calls": calls} if last else {}
+    if not last:
+        return {}
+    if ctx:
+        sizes = list(ctx.values())
+        last |= {"ctx_first": sizes[0], "ctx_peak": max(sizes), "ctx_turns": sizes,
+                 "tool_out": sum(tool_out.values()), "tool_out_by": tool_out}
+    return {**last, "tool_calls": calls}
+
+
+def rtk_stats(data: Path) -> dict:
+    """What rtk did in a trial, from its own history db (copied out as rtk-data/).
+
+    `rewritten` counts commands the hook routed through rtk; `saved` is rtk's own estimate of tokens it cut."""
+    if not (data / "history.db").exists():
+        return {}
+    with tempfile.TemporaryDirectory() as tmp:
+        # copy with the -wal file and open the copy: committed rows may still sit in the WAL, and opening the
+        # original would checkpoint into the archived results
+        shutil.copytree(data, f"{tmp}/rtk")
+        db = sqlite3.connect(f"{tmp}/rtk/history.db")
+        try:
+            cmds, raw, saved = db.execute(
+                "select count(*), coalesce(sum(input_tokens), 0), coalesce(sum(saved_tokens), 0) from commands").fetchone()
+            hooks, rewritten = db.execute(
+                "select count(*), count(rewritten_cmd) from hook_decisions").fetchone()
+        finally:
+            db.close()
+    return {"cmds": cmds, "raw": raw, "saved": saved, "hooked": hooks, "rewritten": rewritten}
+
+
+def graphify_stats(trial_dir: Path, setup_log: str | None) -> dict:
+    """What graphify offered and what the agent took: graph size from the setup log, queries from graphify's own
+    query log (graphify-queries.jsonl), and its PreToolUse hook nudges ("run graphify query first") from the session
+    transcript, with how many of them the agent's next tool call actually followed."""
+    if not setup_log:
+        return {}
+    g = re.search(r"Rebuilt: (\d+) nodes, (\d+) edges", setup_log)
+    log = trial_dir / "graphify-queries.jsonl"
+    queries = [json.loads(line) for line in log.read_text().splitlines() if line.strip()] if log.exists() else []
+    kinds = {}
+    for q in queries:
+        kinds[q.get("kind")] = kinds.get(q.get("kind"), 0) + 1
+    nudges = followed = 0
+    pending = False
+    for f in (trial_dir / "claude-projects").rglob("*.jsonl"):
+        if "subagents" in f.parts:
+            continue
+        for line in f.read_text(errors="replace").splitlines():
+            try:
+                ev = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            a = ev.get("attachment")
+            if isinstance(a, dict) and a.get("type") == "hook_additional_context" and "graphify" in json.dumps(a.get("content")):
+                nudges += 1
+                pending = True
+            elif ev.get("type") == "assistant":
+                for b in (ev.get("message") or {}).get("content") or []:
+                    if b.get("type") == "tool_use":
+                        if pending:
+                            followed += bool(re.search(r"\bgraphify\s+(query|path|explain)", json.dumps(b.get("input"))))
+                        pending = False
+    return {"nodes": g and int(g.group(1)), "edges": g and int(g.group(2)), "queries": kinds,
+            "query_tok": sum(q.get("result_chars") or 0 for q in queries) // 4, "nudges": nudges, "followed": followed}
 
 
 def session_tags(meta: dict) -> list[str]:
@@ -206,11 +288,14 @@ def run_trial(task: dict, arm: str, rep: int, run_dir: Path, template_tag: str, 
 
     jsonl = out / "agent.jsonl"
     meta["summary"] = summarize(agent, jsonl) if jsonl.exists() else {}
+    meta["rtk"] = rtk_stats(out / "rtk-data")
+    meta["graphify"] = graphify_stats(out, (meta.get("tool_logs") or {}).get("graphify"))
     meta["tags"] = session_tags(meta)
     (out / "meta.json").write_text(json.dumps(meta, indent=2, default=str))
     s = meta["summary"]
     print(f"[{trial}] done exit={meta.get('agent_exit')} grade={meta.get('grade_exit')} wall={meta.get('wall_s')}s "
           f"cost={s.get('total_cost_usd')} turns={s.get('num_turns')} -> {out}")
+    return meta
 
 
 def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta: dict, keep: bool):

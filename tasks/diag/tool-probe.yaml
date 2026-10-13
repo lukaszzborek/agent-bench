@@ -3,6 +3,7 @@
 # C# tasks, so Serena starts exactly as it does there. Run it, read grade.log, archive the result (do not publish).
 #   ./bench run tool-probe --arm control --arm serena --arm serena-upfront --model claude-sonnet-5-5
 id: tool-probe
+tags: [diag]   # report only: groups and filters results, never shown to the agent
 agent: claude
 model: claude-sonnet-5-5
 effort: low

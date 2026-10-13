@@ -40,6 +40,7 @@ Per-repo warmup (`dotnet restore`, `npm ci`) belongs in the task's `setup:` key,
 | `hidden` | optional dir (relative to the task yaml) laid over the repo after the agent exits, right before `grade`; same relative paths as in the repo. For grading tests too long to inline in `grade`; overwrites the agent's versions of those files |
 | `grade` | shell command run inside the sandbox after the agent exits; exit 0 = pass |
 | `timeout_min`, `cpus`, `memory` | limits |
+| `tags` | report only, never shown to the agent: kind (`coding`, `search`, `git-history`, `docs`, `read-only`) and language; dashboard filter. Read from the yaml at publish time, so retagging applies to old trials |
 
 ## Datasets
 
@@ -75,8 +76,10 @@ them in training.
 ./bench run example iggy-utf8-identifier --reps 3  # several tasks, one shuffled plan
 ./bench run example --reps 6 --jobs 3              # 3 sandboxes at once
 ./bench run public --arm control --arm serena      # only these arms (default: every arm of the task)
+./bench run public --exclude-arm serena-upfront    # every arm except these
+./bench run private --exclude-task lukabot-sf131-tool-scope   # every task except these
 ./bench run public --model claude-opus-5-5         # same tasks, other model (task's agent)
-./bench run public --model claude-sonnet-5 --model codex:gpt-5.3-codex --effort high   # one plan per model
+./bench run public --model claude-sonnet-5-5 --model codex:gpt-5.3-codex --effort high   # one plan per model
 ./bench report                                     # table + per-arm medians over everything in results/
 ./bench report results/<run>                       # one run only (several paths allowed)
 ```

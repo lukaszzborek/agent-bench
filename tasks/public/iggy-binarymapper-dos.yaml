@@ -3,8 +3,9 @@
 # The existing test class is itself named `BinaryMapper`, so the grade test lives in its own namespace and
 # uses the global:: name of the mapper.
 id: iggy-binarymapper-dos
+tags: [coding, csharp]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git

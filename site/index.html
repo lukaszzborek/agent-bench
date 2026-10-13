@@ -55,7 +55,18 @@ body[data-compare="arms"] [data-mode="arms"], body[data-compare="models"] [data-
 /* no top padding in scroll cards: the sticky header must sit at the scroll edge, or rows show through above it */
 .card.scroll { padding-top: 0; }
 .card.scroll th { padding-top: 14px; }
-.wrap { white-space: normal; min-width: 110px; max-width: 170px; }
+.clip { max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+tr.pick { cursor: pointer; }
+dialog { width: min(1200px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 20px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--page); color: var(--ink); }
+dialog::backdrop { background: rgba(0,0,0,.45); }
+dialog header { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+dialog h3 { margin: 0; font-size: 16px; }
+dialog .close { font: inherit; font-size: 20px; line-height: 1; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; padding: 4px 8px; }
+dialog .card { margin-top: 12px; }
+dialog th.sel, dialog td.sel { background: var(--wash); }
+#d-chart svg { display: block; width: 100%; }
+#d-chart text { fill: var(--muted); font-size: 11px; }
 table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
 th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
 th:first-child, td:first-child, .txt { text-align: left; }
@@ -66,6 +77,7 @@ tbody tr:hover { background: var(--wash); }
 .up { color: var(--bad); } .down { color: var(--good); }
 .st-pass { color: var(--good); } .st-fail { color: var(--bad); } .st-error { color: var(--muted); }
 .dim { color: var(--muted); }
+.tags { color: var(--muted); font-size: 11px; margin-left: 6px; }
 #tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--border);
   border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.15); display: none; z-index: 10; max-width: 280px; }
 #tip b { display: block; margin-bottom: 2px; }
@@ -80,6 +92,7 @@ tbody tr:hover { background: var(--wash); }
   <div class="filters">
     <div class="field">Compare <div class="seg" id="compare"><button data-k="arms">Arms</button><button data-k="models">Models</button></div></div>
     <label>Dataset <select id="f-dataset"></select></label>
+    <label>Tag <select id="f-tag"></select></label>
     <label data-mode="arms">Agent · model · effort <select id="f-model"></select></label>
     <label data-mode="models">Arm <select id="f-arm"></select></label>
     <label data-mode="models">Baseline model <select id="f-base"></select></label>
@@ -101,13 +114,21 @@ tbody tr:hover { background: var(--wash); }
   </div>
 
   <h2>Task matrix</h2>
-  <p class="note">pass k/n · median of the selected metric · Δ vs the baseline.</p>
+  <p class="note">pass k/n · median of the selected metric · Δ vs the baseline. Hover a cell for what drives it: cost ≈ turns × context, so more turns, a bigger start context (tool definitions) or more tool output all add up. Click a row to compare its trials side by side.</p>
   <div class="card scroll"><table id="matrix"></table></div>
 
   <h2>Trials</h2>
   <p class="note">Error = infrastructure failure before grading. Error and zero-token trials (agent never ran) are excluded from n, pass rate and medians.</p>
   <div class="card scroll" style="max-height:560px"><table id="trials"></table></div>
 </main>
+<dialog id="detail">
+  <header><div><h3 id="d-title"></h3><p class="note" style="margin:2px 0 0">Every trial of this task in the current filters, side by side. Δ vs the median of the baseline.</p></div>
+    <button class="close" aria-label="Close" onclick="this.closest('dialog').close()">×</button></header>
+  <div class="card"><b>Context per request</b>
+    <p class="note" style="margin:2px 0 8px">Each request re-reads the whole context, so the area under a line ≈ the cache-read tokens it pays for. A longer line = more turns, a higher line = more context per turn.</p>
+    <div class="legend" id="d-legend"></div><div id="d-chart"></div></div>
+  <div class="card scroll"><table id="d-table"></table></div>
+</dialog>
 <div id="tip"></div>
 <script>
 const METRICS = {
@@ -115,9 +136,14 @@ const METRICS = {
   cost: { label: "Cost", fmt: v => v == null ? "—" : "$" + v.toFixed(3) },
   turns: { label: "Turns", fmt: v => v == null ? "—" : Math.round(v) },
   wall_s: { label: "Wall", fmt: v => v == null ? "—" : Math.round(v) + "s" },
+  tool_out: { label: "Tool output", fmt: v => fmtInt(v) },
+  ctx_peak: { label: "Peak context", fmt: v => fmtInt(v) },
 };
+// medians shown only in the matrix tooltip, to tell why a cell costs more than the baseline
+const WHY = [["turns", "turns"], ["ctx_first", "start context"], ["ctx_peak", "peak context"], ["tool_out", "tool output ~tok"],
+  ["cache_write", "cache write"], ["cache_read", "cache read"], ["out", "output"], ["rtk_saved", "rtk saved"]];
 // compare "arms": one model, arms vs control. compare "models": one arm, models vs a baseline model.
-const state = { compare: "", dataset: "", model: "", arm: "", base: "", day: "", passed: false, metric: "tokens", sort: "started", desc: true };
+const state = { compare: "", dataset: "", tag: "", model: "", arm: "", base: "", day: "", passed: false, metric: "tokens", sort: "started", desc: true };
 let all = [], color = {};
 
 const $ = id => document.getElementById(id);
@@ -157,6 +183,8 @@ async function init() {
   // open on whatever this data set can actually compare
   state.compare = Object.keys(arms).length > 1 ? "arms" : "models";
   fillSelect("f-dataset", [["", "all datasets"], ...Object.keys(count(all.map(r => r.dataset))).sort().map(d => [d, d])], "dataset");
+  const tagTasks = count([...new Set(all.flatMap(r => (r.tags || []).map(t => t + "\u0000" + r.task)))].map(k => k.split("\u0000")[0]));
+  fillSelect("f-tag", [["", "all tags"], ...Object.keys(tagTasks).sort().map(t => [t, `${t} (${tagTasks[t]} task${tagTasks[t] > 1 ? "s" : ""})`])], "tag");
   fillSelect("f-model", Object.keys(models).sort().map(m => [m, `${short(m)} (${models[m]})`]), "model");
   fillSelect("f-arm", Object.keys(arms).sort().map(a => [a, `${a} (${arms[a]})`]), "arm");
   fillSelect("f-base", Object.keys(models).sort().map(m => [m, short(m)]), "base");
@@ -181,6 +209,7 @@ function current() {
   const byModel = state.compare === "models";
   const key = byModel ? modelKey : r => r.arm, base = byModel ? state.base : "control";
   const rows = all.filter(r => (!state.dataset || r.dataset === state.dataset)
+    && (!state.tag || (r.tags || []).includes(state.tag))
     && (byModel ? r.arm === state.arm : modelKey(r) === state.model)
     && (!state.day || (r.started || "").startsWith(state.day)));
   const series = [...new Set(rows.map(key))].sort((a, b) => (a !== base) - (b !== base) || a.localeCompare(b));
@@ -193,7 +222,7 @@ function current() {
     const used = done.filter(r => !state.passed || r.status === "pass");
     // k = trials behind the medians; with "Passed only" a cell can have a pass rate but no medians
     const c = { n: done.length, pass: done.filter(r => r.status === "pass").length, err: trials.length - done.length, k: used.length };
-    for (const m in METRICS) c[m] = median(used.map(r => r[m]));
+    for (const m of new Set([...Object.keys(METRICS), ...WHY.map(w => w[0])])) c[m] = median(used.map(r => r[m]));
     cells[t + "\u0000" + a] = c;
   }
   const cell = (t, a) => cells[t + "\u0000" + a];
@@ -283,17 +312,21 @@ function drawMatrix({ series, base, tasks, cell, delta }) {
   const m = state.metric;
   if (!tasks.length) { $("matrix").innerHTML = ""; return; }
   const head = `<thead><tr><th>task</th>${series.map(a => `<th>${esc(short(a))}</th>`).join("")}</tr></thead>`;
-  const body = tasks.map(t => `<tr><td>${esc(t)}</td>${series.map(a => {
+  const tagsOf = t => (all.find(r => r.task === t)?.tags || []).join(" · ");
+  const body = tasks.map(t => `<tr class="pick" data-task="${esc(t)}"><td>${esc(t)} <span class="tags">${esc(tagsOf(t))}</span></td>${series.map(a => {
     const c = cell(t, a);
     if (!c) return '<td class="dim">—</td>';
     const err = c.err ? ` <span class="dim" title="errored or zero-token trials, not counted">excl ${c.err}</span>` : "";
     const d = a === base ? "" : ` · ${deltaHtml(delta(t, a, m))}`;
-    return `<td><span class="${c.n && c.pass === c.n ? "st-pass" : c.pass ? "" : "st-fail"}">${c.pass}/${c.n}</span>${err} · ${METRICS[m].fmt(c[m])}${d}</td>`;
+    const why = WHY.filter(([f]) => c[f] != null).map(([f, l]) =>
+      `${l}: ${f === "turns" ? Math.round(c[f]) : fmtInt(c[f])}${a === base ? "" : ` ${deltaHtml(delta(t, a, f))}`}`).join("<br>");
+    return `<td data-tip="${esc(`<b>${esc(t)} · ${esc(short(a))}</b>${why}`)}"><span class="${c.n && c.pass === c.n ? "st-pass" : c.pass ? "" : "st-fail"}">${c.pass}/${c.n}</span>${err} · ${METRICS[m].fmt(c[m])}${d}</td>`;
   }).join("")}</tr>`).join("");
   $("matrix").innerHTML = head + `<tbody>${body}</tbody>`;
+  $("matrix").querySelector("tbody").onclick = e => { const tr = e.target.closest("tr[data-task]"); if (tr) openDetail(tr.dataset.task); };
 }
 
-const TXT = ["task", "model", "arm", "status", "tool_calls", "versions"];
+const TXT = ["task", "model", "arm", "status", "tool_calls"];
 // mcp__<server>__<tool> collapses to the server, so an arm's tool shows as one number next to Bash/Read/...
 function toolCalls(calls) {
   const by = {};
@@ -303,9 +336,11 @@ function toolCalls(calls) {
   return txt ? `<span title="${esc(all)}">${esc(txt)}</span>` : '<span class="dim">—</span>';
 }
 function drawTrials({ rows }) {
+  // the filter already pins the model (arms mode) or the arm (models mode): that column would repeat one value
+  const fixed = state.compare === "models" ? "arm" : "model";
   const cols = [["started", "started"], ["task", "task"], ["model", "model"], ["arm", "arm"], ["rep", "rep"], ["status", "status"],
-    ["cost", "cost"], ["tokens", "tokens"], ["out", "output"], ["turns", "turns"], ["wall_s", "wall"], ["patch_lines", "patch"],
-    ["tool_calls", "tool calls"], ["versions", "versions"]];
+    ["cost", "cost"], ["tokens", "tokens"], ["out", "output"], ["turns", "turns"], ["ctx_peak", "peak ctx"], ["tool_out", "tool out"],
+    ["rtk_saved", "rtk saved"], ["wall_s", "wall"], ["patch_lines", "patch"], ["tool_calls", "tool calls"]].filter(([c]) => c !== fixed);
   const k = state.sort, dir = state.desc ? -1 : 1;
   const sorted = [...rows].sort((a, b) => (a[k] ?? -Infinity) > (b[k] ?? -Infinity) ? dir : (a[k] ?? -Infinity) < (b[k] ?? -Infinity) ? -dir : 0);
   const icon = { pass: "✓", fail: "✗", error: "!" };
@@ -313,15 +348,21 @@ function drawTrials({ rows }) {
     // the token split goes in a tooltip: four more numeric columns pushed the table past the page width
     : c === "tokens" ? `<span title="input ${fmtInt(r.in)} · cache read ${fmtInt(r.cache_read)} · cache write ${fmtInt(r.cache_write)} · output ${fmtInt(r.out)}">${fmtInt(r.tokens)}</span>`
     : c === "out" ? fmtInt(r.out)
+    : c === "ctx_peak" ? `<span title="start ${fmtInt(r.ctx_first)} (prompt + tool definitions)">${fmtInt(r.ctx_peak)}</span>`
+    : c === "tool_out" ? `<span title="${esc(Object.entries(r.tool_out_by || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${fmtInt(v)}`).join("\n"))}">${fmtInt(r.tool_out)}</span>`
+    : c === "rtk_saved" ? (r.rtk?.cmds == null ? '<span class="dim">—</span>'
+      : `<span title="${r.rtk.rewritten}/${r.rtk.hooked} commands rewritten · ${r.rtk.cmds} ran through rtk · raw output ${fmtInt(r.rtk.raw)}">${fmtInt(r.rtk.saved)}</span>`)
     : c === "status" ? `<span class="st-${valid(r) ? r.status : "error"}">${icon[r.status]} ${r.status}${r.timeout ? " (timeout)" : ""}${r.status !== "error" && !valid(r) ? " (no tokens)" : ""}</span>`
     : c === "tool_calls" ? toolCalls(r.tool_calls)
     : c === "model" ? esc(`${r.model.replace(/^claude-/, "")} · ${r.effort}`)
-    : c === "versions" ? `<span title="${esc(Object.values(r.versions || {}).filter(Boolean).join("\n"))}">${esc(Object.entries(r.versions || {}).filter(([, v]) => v)
-        .map(([k, v]) => `${k} ${v.match(/\d+(\.\d+)+/)?.[0] ?? v}`).join(" · ") || "—")}</span>`
     : c === "started" ? esc((r.started || "").replace(/^(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d).*/, "$1-$2-$3 $4:$5"))
     : esc(r[c] ?? "—");
   $("trials").innerHTML = `<thead><tr>${cols.map(([c, l]) => `<th class="sort${TXT.includes(c) ? " txt" : ""}" data-k="${c}">${l}${c === k ? (state.desc ? " ↓" : " ↑") : ""}</th>`).join("")}</tr></thead>
-    <tbody>${sorted.map(r => `<tr title="${esc(r.trial)}">${cols.map(([c]) => `<td class="${TXT.includes(c) ? "txt" : ""}${["tool_calls", "versions"].includes(c) ? " wrap" : ""}">${fmt(c, r)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+    <tbody>${sorted.map((r, i) => `<tr class="pick" data-i="${i}" title="${esc(r.trial)} · click to compare">${cols.map(([c]) => `<td class="${TXT.includes(c) ? "txt" : ""}${["tool_calls", "task"].includes(c) ? " clip" : ""}">${fmt(c, r)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  $("trials").querySelector("tbody").onclick = e => {
+    const tr = e.target.closest("tr[data-i]");
+    if (tr) openDetail(sorted[tr.dataset.i].task, sorted[tr.dataset.i]);
+  };
   $("trials").querySelector("thead").onclick = e => {
     const c = e.target.closest("th")?.dataset.k;
     if (!c) return;
@@ -330,6 +371,64 @@ function drawTrials({ rows }) {
     drawTrials(current());
   };
 }
+
+const DETAIL = [["status"], ["cost", "cost"], ["tokens", "tokens"], ["turns", "turns"], ["ctx_first", "start context"],
+  ["ctx_peak", "peak context"], ["tool_out", "tool output ~tok"], ["in", "input"], ["cache_write", "cache write"],
+  ["cache_read", "cache read"], ["out", "output"], ["rtk_saved", "rtk saved"], ["wall_s", "wall"],
+  ["patch_lines", "patch lines"], ["tool_calls"], ["tool_out_by"], ["rtk"], ["graphify"], ["versions"], ["started"]];
+function openDetail(task, sel) {
+  const v = current(), byModel = state.compare === "models";
+  const key = byModel ? modelKey : r => r.arm;
+  const trials = v.rows.filter(r => r.task === task)
+    .sort((a, b) => (key(a) !== v.base) - (key(b) !== v.base) || key(a).localeCompare(key(b)) || (a.rep ?? 0) - (b.rep ?? 0) || (a.started || "").localeCompare(b.started || ""));
+  if (!trials.length) return;
+  const baseRows = trials.filter(r => key(r) === v.base && valid(r));
+  const col = r => key(r) === v.base ? "var(--ink-2)" : color[key(r)] ?? "var(--muted)";
+  const name = r => `${short(key(r))} · r${r.rep ?? "?"}`;
+  // the same arm and rep from two runs would get the same name: the start time tells them apart
+  const clash = count(trials.map(name));
+  const label = r => clash[name(r)] > 1 ? `${name(r)} · ${(r.started || "").replace(/^\d{4}(\d\d)(\d\d)T(\d\d)(\d\d).*/, "$1-$2 $3:$4")}` : name(r);
+  $("d-title").textContent = `${task} · ${byModel ? `arm ${state.arm}` : short(state.model)}`;
+
+  const fmt = (f, r) => {
+    const x = r[f];
+    if (f === "status") return `<span class="st-${valid(r) ? r.status : "error"}">${r.status}${r.timeout ? " (timeout)" : ""}</span>`;
+    if (f === "tool_calls") return toolCalls(x);
+    if (f === "tool_out_by") return esc(Object.entries(x || {}).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k.split("__")[1] ?? k} ${fmtInt(n)}`).join(" · ") || "—");
+    if (f === "rtk") return x?.cmds == null ? '<span class="dim">—</span>' : esc(`${x.rewritten}/${x.hooked} rewritten · ${x.cmds} ran · raw ${fmtInt(x.raw)}`);
+    if (f === "graphify") {
+      if (x?.nudges == null) return '<span class="dim">—</span>';
+      const q = Object.values(x.queries || {}).reduce((a, b) => a + b, 0);
+      const t = `graph ${fmtInt(x.nodes)} nodes · ${q} ${q === 1 ? "query" : "queries"}${q ? ` (${fmtInt(x.query_tok)} tok)` : ""} · nudged ${x.nudges}×, followed ${x.followed}`;
+      return `<span title="${esc(Object.entries(x.queries || {}).map(([k, n]) => `${k} ${n}`).join("\n") || "no queries")}">${esc(t)}</span>`;
+    }
+    if (f === "versions") return esc(Object.entries(x || {}).filter(([, s]) => s).map(([k, s]) => `${k} ${s.match(/\d+(\.\d+)+/)?.[0] ?? s}`).join(" · ") || "—");
+    if (f === "started") return esc((x || "").replace(/^(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d).*/, "$1-$2-$3 $4:$5"));
+    if (x == null) return '<span class="dim">—</span>';
+    const val = f === "cost" ? METRICS.cost.fmt(x) : f === "wall_s" ? Math.round(x) + "s" : ["turns", "patch_lines"].includes(f) ? x : fmtInt(x);
+    const b = median(baseRows.map(r => r[f]));
+    return key(r) === v.base || !b ? val : `${val} ${deltaHtml((x - b) / b)}`;
+  };
+  const cls = r => r === sel ? "sel" : "";
+  $("d-table").innerHTML = `<thead><tr><th></th>${trials.map(r => `<th class="${cls(r)}"><span style="color:${col(r)}">●</span> ${esc(label(r))}</th>`).join("")}</tr></thead>
+    <tbody>${DETAIL.map(([f, l]) => `<tr><td class="txt">${esc(l ?? f.replace(/_/g, " "))}</td>${trials.map(r => `<td class="${cls(r)}">${fmt(f, r)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+
+  const lines = trials.filter(r => r.ctx_turns?.length);
+  $("d-legend").innerHTML = lines.map(r => `<span><span class="swatch" style="background:${col(r)}"></span>${esc(label(r))}</span>`).join("");
+  if (!$("detail").open) $("detail").showModal();  // before measuring: a closed dialog has no width
+  const W = Math.max(320, $("d-chart").clientWidth || 1100), H = 220, L = 44, B = 20, T = 8;
+  const n = Math.max(2, ...lines.map(r => r.ctx_turns.length)), top = Math.max(1, ...lines.flatMap(r => r.ctx_turns));
+  const x = i => L + i / (n - 1) * (W - L - 8), y = c => T + (1 - c / top) * (H - T - B);
+  const ticks = [0, .25, .5, .75, 1].map(f => `<line x1="${L}" x2="${W - 8}" y1="${y(top * f)}" y2="${y(top * f)}" stroke="var(--grid)"/><text x="${L - 6}" y="${y(top * f) + 4}" text-anchor="end">${fmtInt(top * f)}</text>`).join("");
+  const xt = [...new Set([0, Math.round((n - 1) / 2), n - 1])].map(i => `<text x="${x(i)}" y="${H - 4}" text-anchor="middle">${i + 1}</text>`).join("");
+  const paths = lines.map(r => `<polyline fill="none" stroke="${col(r)}" stroke-width="${r === sel ? 3 : 1.5}" stroke-linejoin="round" points="${r.ctx_turns.map((c, i) => `${x(i)},${y(c)}`).join(" ")}"/>`).join("");
+  $("d-chart").innerHTML = lines.length ? `<svg viewBox="0 0 ${W} ${H}" height="${H}">${ticks}${xt}${paths}</svg>` : '<p class="empty">No per-request data for these trials.</p>';
+}
+// a click on the backdrop targets the dialog itself, but so does one on its padding: tell them apart by position
+$("detail").onclick = e => {
+  const b = $("detail").getBoundingClientRect();
+  if (e.target === $("detail") && (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom)) $("detail").close();
+};
 
 document.addEventListener("pointermove", e => {
   const t = e.target.closest?.("[data-tip]"), tip = $("tip");

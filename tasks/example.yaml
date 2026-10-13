@@ -1,7 +1,7 @@
 # One benchmark task. Repo snapshot is taken at `commit` with all later history stripped.
 id: example-readme-count
 agent: claude              # claude | codex
-model: claude-sonnet-5     # pinned; codex e.g. gpt-5.3-codex
+model: claude-sonnet-5-5     # pinned; codex e.g. gpt-5.3-codex
 effort: medium             # claude: low|medium|high ; codex: minimal|low|medium|high|xhigh
 template_tag: v1           # bench/<agent>:<tag> built by build-templates.sh (override: --template-tag / TAG)
 repo: https://github.com/apache/iggy.git   # git URL (cloned once into ~/.cache/bench/repos), or local path

@@ -9,8 +9,9 @@
 # the process environment, hence --test-threads=1 (the rest of the suite too: the un-ignored .env test does the same).
 # The pin has iggy's own CLAUDE.md/AGENTS.md and .claude/skills (no hooks), like the other iggy tasks.
 id: iggy-configs-sibling-env
+tags: [coding, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: medium
 template_tag: rust
 repo: https://github.com/apache/iggy.git
