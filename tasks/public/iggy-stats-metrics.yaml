@@ -24,8 +24,7 @@ prompt: |
 
   `GetStatsAsync` over TCP is broken against the current server. With a server that has cache metrics for more
   than one partition, `BinaryMapper.MapStats` (`Iggy_SDK/Mappers/BinaryMapper.cs`) throws
-  `ArgumentException: An item with the same key has already been added`, and with a single partition the
-  returned `CacheMetrics` entry does not match what the server reports. The response also lacks metrics the
+  `ArgumentException: An item with the same key has already been added`. The response also lacks metrics the
   server sends and the other SDKs expose: the thread count of the server process and the free and total disk
   space of the data directory. The authoritative wire format is `StatsResponse` in
   `core/binary_protocol/src/responses/system/get_stats.rs`.
@@ -38,6 +37,8 @@ prompt: |
 grade: |
   set -e
   cd foreign/csharp
+  # the prompt requires it; before the grade test is written, which is not formatted to the repo's rules
+  dotnet format Iggy_SDK.sln --verify-no-changes --no-restore
   mkdir -p Iggy_SDK_Tests/BenchGrade
   cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
   using System.Buffers.Binary;
@@ -107,6 +108,9 @@ grade: |
   }
   EOT
   timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "http-serialization: FreeDiskSpace and TotalDiskSpace carry the same JSON converter or attribute as the other byte-size properties of StatsResponse"
 timeout_min: 30
 cpus: 2
 memory: 6g

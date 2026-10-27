@@ -37,7 +37,8 @@ prompt: |
   Converting through a `Value`/`Table` must give the same result as `toml::from_str` for `Datetime` targets (plain,
   in struct fields, `Option<Datetime>`, `Vec<Datetime>`, all four datetime kinds). Converting a `Value` datetime into
   other types must keep working as today: e.g. `value.try_into::<serde_json::Value>()` still yields a JSON string, and
-  `try_into::<String>()` still yields the formatted datetime.
+  `try_into::<String>()` still yields the formatted datetime. A `Value::String` must still not deserialize into
+  `Datetime`.
 
   The conversion lives in `crates/toml/src/value.rs` and `crates/toml/src/table.rs` (the `Deserializer` impls for
   `Value` and `Table`). Add tests; the existing `deserialize_datetime_from_value_issue_440` tests (in
@@ -118,6 +119,10 @@ grade: |
   }
   EOT
   cargo test --no-fail-fast --all-features -p toml -p toml_edit -- --skip deserialize_datetime_from_value_issue_440
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py.
+# The grader skips the issue_440 tests, so only the judge sees how they were changed.
+judge:
+  - "issue-440: both deserialize_datetime_from_value_issue_440 tests now assert the new behaviour; neither is deleted or ignored"
 timeout_min: 30
 cpus: 2
 memory: 6g

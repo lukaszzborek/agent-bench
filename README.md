@@ -40,8 +40,8 @@ sbx secret set openai --oauth                    # Codex via ChatGPT plan
 
 | path | what |
 |---|---|
-| `bench` | CLI: `list`, `run`, `report`, `publish`, `build` |
-| `run_trial.py`, `report.py`, `publish.py` | trial lifecycle, report, dashboard export |
+| `bench` | CLI: `list`, `run`, `report`, `publish`, `judge`, `build` |
+| `run_trial.py`, `report.py`, `publish.py`, `judge.py` | trial lifecycle, report, dashboard export, LLM-as-judge |
 | `arms.yaml` | shared arms (arm name → tools) |
 | `tasks/` | `public/` (22 tasks on public repos), `private/` (git-ignored), `example.yaml` |
 | `templates/` | sandbox image `Dockerfile` + toolchain scripts in `deps/` |

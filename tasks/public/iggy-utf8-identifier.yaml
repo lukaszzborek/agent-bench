@@ -7,7 +7,7 @@ model: claude-sonnet-5-5
 effort: medium
 template_tag: dotnet
 repo: https://github.com/apache/iggy.git
-commit: be2265c9e
+commit: be2265c9ea132887a0b3414d43e431ed66d51cfd
 env:
   # Keep restores of this historical snapshot independent of new vulnerability advisories.
   NuGetAudit: "false"
@@ -35,13 +35,20 @@ prompt: |
 grade: |
   set -e
   cd foreign/csharp
+  # the prompt requires it; before the grade test is written, which is not formatted to the repo's rules
+  dotnet format Iggy_SDK.sln --verify-no-changes --no-restore
   cat > Iggy_SDK_Tests/UtilityTests/BenchGradeTests.cs <<'EOT'
   using System;
   using Apache.Iggy;
+  using Apache.Iggy.Headers;
+  using Apache.Iggy.Kinds;
   using Xunit;
   namespace Apache.Iggy.Tests.UtilityTests;
   public class BenchGradeTests
   {
+      // 'ä' is 2 UTF-8 bytes: 200 chars pass a char-count guard but are 400 bytes on the wire
+      private static readonly string TooLong = new('ä', 200);
+
       [Fact]
       public void StringIdentifier_UsesUtf8ByteLength()
       {
@@ -49,11 +56,24 @@ grade: |
           Assert.Equal(9, id.Length);
           Assert.Equal(9, id.Value.Length);
           Assert.Equal(5, Identifier.String("café").Length);
-          Assert.Throws<ArgumentException>(() => Identifier.String(new string('ä', 200)));
+          Assert.ThrowsAny<ArgumentException>(() => Identifier.String(TooLong));
+      }
+
+      [Fact]
+      public void PartitioningAndHeaders_UseUtf8ByteLength()
+      {
+          Assert.Equal(9, Partitioning.EntityIdString("日本語").Length);
+          Assert.ThrowsAny<ArgumentException>(() => Partitioning.EntityIdString(TooLong));
+          Assert.ThrowsAny<ArgumentException>(() => HeaderKey.FromString(TooLong));
+          Assert.ThrowsAny<ArgumentException>(() => HeaderValue.FromString(TooLong));
       }
   }
   EOT
   dotnet test --project Iggy_SDK_Tests -f net10.0
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py.
+# TcpContracts signatures are not pinned by the prompt, so the grader cannot call them.
+judge:
+  - "tcp-contracts: every Encoding.UTF8.GetBytes / length-prefix pair in TcpContracts.cs writes the UTF-8 byte count, not string.Length"
 timeout_min: 40
 cpus: 2
 memory: 6g

@@ -131,6 +131,10 @@ grade: |
   } > crates/toml_edit/tests/serde/bench_grade.rs
   echo 'mod bench_grade;' >> crates/toml_edit/tests/serde/main.rs
   cargo test --no-fail-fast --all-features -p toml -p toml_edit
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "both-crates: tests are added in both toml and toml_edit"
+  - "invalid-keys: tests cover an out-of-range or non-integer key producing an error"
 timeout_min: 30
 cpus: 2
 memory: 6g

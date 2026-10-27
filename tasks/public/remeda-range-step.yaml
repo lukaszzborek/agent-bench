@@ -32,7 +32,8 @@ prompt: |
   (`range(0.5, 5)` => `[0.5, 1.5, 2.5, 3.5, 4.5]`).
 
   Update the JSDoc and add tests. From `packages/remeda`: `npx vitest run --project runtime`,
-  `npx vitest run --project types`, and `npm run check` (tsc). Do not create a branch, push, or open a PR.
+  `npx vitest run --project types`, and `npx tsc -p tsconfig.json` to typecheck source and tests (`npm run check`
+  skips the tests). Do not create a branch, push, or open a PR.
 grade: |
   set -e
   cd packages/remeda
@@ -127,6 +128,10 @@ grade: |
   # Runtime tests scoped to range: the full suite has real-timer funnel/debounce tests that flake on 2 cpus.
   npx vitest run --project runtime src/range
   npx vitest run --project types
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "jsdoc: the range JSDoc documents the options object with step, including the RangeError for a step of 0"
+  - "type-tests: a type-level test (*.test-d.ts or expectTypeOf) covers the new options-object overloads"
 timeout_min: 20
 cpus: 2
 memory: 4g

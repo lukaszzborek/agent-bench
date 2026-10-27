@@ -39,6 +39,7 @@ Per-repo warmup (`dotnet restore`, `npm ci`) belongs in the task's `setup:` key,
 | `setup` | optional shell run in repo dir after snapshot, before tools/agent (e.g. `dotnet restore`, `npm ci`). Identical for every arm, excluded from agent wall time; non-zero exit aborts trial, log in `setup.log` |
 | `hidden` | optional dir (relative to the task yaml) laid over the repo after the agent exits, right before `grade`; same relative paths as in the repo. For grading tests too long to inline in `grade`; overwrites the agent's versions of those files |
 | `grade` | shell command run inside the sandbox after the agent exits; exit 0 = pass |
+| `judge` | optional list of `name: yes/no question` checks for `bench judge`, never shown to the agent. Added after the default checks (tests added, no weakened tests, scope, completeness) for `coding` tasks; other tasks get only their own. For what the grader cannot see: docs, requested tests, call sites the hidden test does not reach |
 | `timeout_min`, `cpus`, `memory` | limits |
 | `tags` | report only, never shown to the agent: kind (`coding`, `search`, `git-history`, `docs`, `read-only`) and language; dashboard filter. Read from the yaml at publish time, so retagging applies to old trials |
 
@@ -82,7 +83,15 @@ them in training.
 ./bench run public --model claude-sonnet-5-5 --model codex:gpt-5.3-codex --effort high   # one plan per model
 ./bench report                                     # table + per-arm medians over everything in results/
 ./bench report results/<run>                       # one run only (several paths allowed)
+./bench judge results/<run>                        # LLM-as-judge checks per trial + per-arm check pass rate
 ```
+
+`bench judge` runs on the host through the `claude` CLI (your login, no API key), after the trials, so old results
+can be judged again with new checks (`--force`). The judge (default `claude-opus-5-5`, a different model than the
+agents') sees the prompt, `patch.diff` and the grader outcome, never the arm. Each check is a yes/no answer, and
+each trial is asked `--votes` times (default 3) with a majority per check: in the first trial run, single 1-5
+scores moved by a full point between identical calls. About $0.12-0.25 per trial at 3 votes. Read-only tasks are
+skipped; their grader is exact.
 
 `--jobs` > 1 shares host CPU and API rate limits between trials, so `wall_s` is no longer comparable with
 serial runs. Tokens and cost stay valid. Keep `--jobs 1` when timing matters.
@@ -100,6 +109,7 @@ infra failures are left out of `n`, the pass rate and the medians, and only coun
 
 - `agent.jsonl` — claude `stream-json` / codex `exec --json`; final usage + cost parsed into `meta.json`
 - `claude-projects/` or `codex-sessions/` — native session history; ai-sessions indexes it directly with a source `{"name": "bench", "path": ".../results", "claude": "**/claude-projects", "codex": "**/codex-sessions", "meta": "meta.json"}` in its config, tagging each session from `tags` in `meta.json` (`compare` tab groups them by arm)
+- `judge.json` — `bench judge` result: each check with its majority verdict, yes votes and one evidence sentence
 - `patch.diff`, `grade.log`, `prompt.md`, `rtk-gain.txt` + `rtk-data/` (rtk arm), `claude-settings.json` (proves which hooks were active)
 - `meta.json` — task, arm, tools, tool setup logs, `setup_s` (install time, separate from `wall_s`), source sha, template, sbx version, `versions` (`--version` of the agent CLI and every installed tool, as run), exit codes, summary
 

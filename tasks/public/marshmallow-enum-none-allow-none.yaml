@@ -85,6 +85,9 @@ grade: |
           field.deserialize(None)
   EOT
   .venv/bin/python -m pytest -q -p no:cacheprovider tests
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "docstring: the Enum docstring documents that allow_none defaults to True when by_value is set and a member's value is None"
 timeout_min: 20
 cpus: 2
 memory: 4g

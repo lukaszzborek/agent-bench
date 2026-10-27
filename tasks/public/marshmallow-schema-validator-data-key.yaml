@@ -125,6 +125,9 @@ grade: |
   EOT
   .venv/bin/python -m pytest -q -p no:cacheprovider tests \
     --deselect tests/test_utils.py::test_from_timestamp_with_overflow_value
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "many: the added tests cover a many=True load"
 timeout_min: 20
 cpus: 2
 memory: 4g

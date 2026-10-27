@@ -5,7 +5,7 @@
 # both paths agree on 3773 / 3836; `git blame` on the declaration line and `git show 0270b76` (pub(crate) -> pub)
 # agree on 4023.
 id: iggy-git-rename-blame
-tags: [git-history, read-only, csharp]   # report only: groups and filters results, never shown to the agent
+tags: [git-history, read-only, rust]   # report only: groups and filters results, never shown to the agent
 agent: claude
 model: claude-sonnet-5-5
 effort: medium

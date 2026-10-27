@@ -83,6 +83,9 @@ grade: |
   npx tsc -p tsconfig.tests.json
   # Scoped to the touched modules: the full suite has real-timer funnel/debounce tests that flake on 2 cpus.
   npx vitest run src/round src/floor src/ceil
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py
+judge:
+  - "all-three: regression tests cover round, floor and ceil, and the data-last form"
 timeout_min: 20
 cpus: 2
 memory: 4g

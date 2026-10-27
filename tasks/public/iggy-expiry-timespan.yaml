@@ -50,6 +50,8 @@ prompt: |
 grade: |
   set -e
   cd foreign/csharp
+  # the prompt requires it; before the grade test is written, which is not formatted to the repo's rules
+  dotnet format Iggy_SDK.sln --verify-no-changes --no-restore
   mkdir -p Iggy_SDK_Tests/BenchGrade
   cat > Iggy_SDK_Tests/BenchGrade/BenchGradeTests.cs <<'EOT'
   using System;
@@ -208,6 +210,11 @@ grade: |
   dotnet build Iggy_SDK.Tests.Integration -f net10.0 --nologo -v q
   dotnet build Iggy_SDK.Tests.BDD --nologo -v q
   timeout 900 dotnet test --project Iggy_SDK_Tests -f net10.0
+# LLM-judge checks (`bench judge`), never shown to the agent; added after the default checks in judge.py.
+# The grader has no TCP fake, so the TCP send path is judged here.
+judge:
+  - "tcp: the TCP contracts encode CreateTopic, UpdateTopic and CreatePersonalAccessToken expiry as microseconds via DurationHelpers.ToDuration, not ticks or milliseconds"
+  - "docs: the XML docs of the changed parameters and properties describe the TimeSpan meaning (null or Zero = server default, MaxValue = never expire)"
 timeout_min: 40
 cpus: 2
 memory: 6g

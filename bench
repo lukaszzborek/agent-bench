@@ -5,6 +5,7 @@
   bench run <task>... [--arm A] [--exclude-arm A] [--exclude-task T] [--model [AGENT:]MODEL] [--effort E] [--reps N] [--jobs N] [--keep]
   bench report [path...]                       default: everything in results/
   bench publish [path...]                      merge results into site/data.json (GitHub Pages dashboard)
+  bench judge [path...] [--model M] [--votes N] [--force]   LLM-as-judge checks on patches, writes judge.json
   bench build [claude|codex ...] [--tag T] [--deps "dotnet node"]
 
 <task> = dataset (subdir of tasks/), task file name without .yaml, or a path to a yaml file.
@@ -19,6 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
+import judge
 from publish import publish
 from report import report
 from run_trial import HERE, load_tasks, resolve_repo, run_trial, slug
@@ -89,6 +91,10 @@ def cmd_publish(a):
     publish([Path(p) for p in a.path] or [HERE / "results"], HERE / "site" / "data.json")
 
 
+def cmd_judge(a):
+    judge.run([Path(p) for p in a.path] or [HERE / "results"], a.model, a.votes, a.force)
+
+
 def cmd_build(a):
     env = {**os.environ, **({"TAG": a.tag} if a.tag else {}), **({"DEPS": a.deps} if a.deps else {})}
     sys.exit(subprocess.run([str(HERE / "build-templates.sh"), *a.agent], env=env).returncode)
@@ -123,6 +129,14 @@ def main():
     p = sub.add_parser("publish", help="merge results into site/data.json for the GitHub Pages dashboard")
     p.add_argument("path", nargs="*", help="results dir or run dir(s) (default: results/)")
     p.set_defaults(fn=cmd_publish)
+
+    p = sub.add_parser("judge", help="LLM-as-judge yes/no checks on each trial's patch (host claude CLI)")
+    p.add_argument("path", nargs="*", help="results dir, run dir(s) or trial dir(s) (default: results/)")
+    # a different model than the agents', so the judge does not grade its own style
+    p.add_argument("--model", default="claude-opus-5-5")
+    p.add_argument("--votes", type=int, default=3, help="judge calls per trial, majority per check")
+    p.add_argument("--force", action="store_true", help="judge again even if judge.json exists")
+    p.set_defaults(fn=cmd_judge)
 
     p = sub.add_parser("build", help="build sandbox templates (wraps build-templates.sh)")
     p.add_argument("agent", nargs="*", choices=["claude", "codex"], help="default: both")
