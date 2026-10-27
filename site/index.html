@@ -217,6 +217,9 @@ function current() {
     const used = done.filter(r => !state.passed || r.status === "pass");
     // k = trials behind the medians; with "Passed only" a cell can have a pass rate but no medians
     const c = { n: done.length, pass: done.filter(r => r.status === "pass").length, err: trials.length - done.length, k: used.length };
+    // trials whose installed tools leave a trace, and those where the agent used every one of them
+    const traced = done.filter(r => Object.keys(r.use || {}).length);
+    c.traced = traced.length; c.adopted = traced.filter(r => Object.values(r.use).every(x => x > 0)).length;
     for (const m of new Set([...Object.keys(METRICS), ...WHY.map(w => w[0])])) c[m] = median(used.map(r => r[m]));
     cells[t + "\u0000" + a] = c;
   }
@@ -243,6 +246,8 @@ function drawTiles({ series, base, tasks, cell, delta }) {
   $("tiles").innerHTML = series.map(a => {
     const own = tasks.filter(t => cell(t, a)?.n);
     const n = own.reduce((s, t) => s + cell(t, a).n, 0), pass = own.reduce((s, t) => s + cell(t, a).pass, 0);
+    const traced = own.reduce((s, t) => s + cell(t, a).traced, 0), adopted = own.reduce((s, t) => s + cell(t, a).adopted, 0);
+    const use = traced ? `<div class="${adopted ? "dim" : "st-fail"}" style="font-size:12px" title="trials where the agent called the arm's tool at least once; an unused tool measures only its overhead">tool used in ${adopted}/${traced} trials</div>` : "";
     const paired = own.filter(t => cell(t, a).k && cell(t, base)?.k);
     const sum = (s, m) => { const v = paired.reduce((acc, t) => acc + (cell(t, s)[m] ?? NaN), 0); return isNaN(v) ? null : v; };
     const isBase = a === base;
@@ -256,7 +261,7 @@ function drawTiles({ series, base, tasks, cell, delta }) {
     return `<div class="card tile"><div class="arm">${sw}${esc(short(a))}${isBase ? ' <span class="dim" style="font-weight:400">baseline</span>' : ""}</div>
       <div class="big">${n ? Math.round(100 * pass / n) + "%" : "—"} <span class="dim" style="font-size:14px;font-weight:400">pass ${pass}/${n}</span></div>
       <div class="dim" style="font-size:12px">${own.length} tasks${isBase ? "" : `, ${paired.length} paired with baseline`}</div>
-      <table>${rows}</table></div>`;
+      ${use}<table>${rows}</table></div>`;
   }).join("");
 }
 
@@ -322,8 +327,10 @@ function drawMatrix({ series, base, tasks, cell, delta }) {
     const err = c.err ? ` <span class="dim" title="errored or zero-token trials, not counted">excl ${c.err}</span>` : "";
     const d = a === base ? "" : ` · ${deltaHtml(delta(t, a, m))}`;
     const why = WHY.filter(([f]) => c[f] != null).map(([f, l]) =>
-      `${l}: ${f === "turns" ? Math.round(c[f]) : fmtInt(c[f])}${a === base ? "" : ` ${deltaHtml(delta(t, a, f))}`}`).join("<br>");
-    return `<td data-tip="${esc(`<b>${esc(t)} · ${esc(short(a))}</b>${why}`)}"><span class="${c.n && c.pass === c.n ? "st-pass" : c.pass ? "" : "st-fail"}">${c.pass}/${c.n}</span>${err} · ${METRICS[m].fmt(c[m])}${d}</td>`;
+      `${l}: ${f === "turns" ? Math.round(c[f]) : fmtInt(c[f])}${a === base ? "" : ` ${deltaHtml(delta(t, a, f))}`}`).join("<br>")
+      + (c.traced ? `<br>tool used in ${c.adopted}/${c.traced} trials` : "");
+    const unused = c.traced && !c.adopted ? ' <span class="dim" title="the agent never called this arm\'s tool">unused</span>' : "";
+    return `<td data-tip="${esc(`<b>${esc(t)} · ${esc(short(a))}</b>${why}`)}"><span class="${c.n && c.pass === c.n ? "st-pass" : c.pass ? "" : "st-fail"}">${c.pass}/${c.n}</span>${err} · ${METRICS[m].fmt(c[m])}${d}${unused}</td>`;
   }).join("")}</tr>`).join("");
   $("matrix").innerHTML = head + `<tbody>${body}</tbody>`;
   $("matrix").querySelector("tbody").onclick = e => { const tr = e.target.closest("tr[data-task]"); if (tr) openDetail(tr.dataset.task); };

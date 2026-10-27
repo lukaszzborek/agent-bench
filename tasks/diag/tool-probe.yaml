@@ -26,7 +26,7 @@ grade: |
   # the arm comes from the trial's OTEL_RESOURCE_ATTRIBUTES (arm=<name>); serena arms must expose Serena's tools
   case ",$OTEL_RESOURCE_ATTRIBUTES," in
     *,arm=serena-upfront,*) grep -q '^mcp__serena__' TOOLS.txt ;;  # full schemas: listed as normal tools
-    *,arm=serena,*) grep -q 'mcp__serena__' TOOLS.txt ;;            # deferred is fine
+    *,arm=serena,*|*,arm=rtk-serena,*) grep -q 'mcp__serena__' TOOLS.txt ;;   # deferred is fine
     *) ! grep -q 'mcp__serena__' TOOLS.txt ;;
   esac
 timeout_min: 5

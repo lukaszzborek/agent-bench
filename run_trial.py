@@ -58,9 +58,16 @@ def make_snapshot(repo: str, commit: str, dest: Path, history: int = 0) -> str:
         tar = subprocess.Popen(["git", "-C", repo, "archive", sha], stdout=subprocess.PIPE)
         subprocess.run(["tar", "-x", "-C", str(dest)], stdin=tar.stdout, check=True)
         tar.wait()
-        cmds = [init, ["git", "add", "-A"], ["git", "commit", "-q", "-m", f"task base (source {sha[:12]})"]]
+        # -f: the archive holds only tracked files, and the host's global gitignore (not present in the sandbox)
+        # must not drop one from the base, or it shows up as a new file in every patch
+        cmds = [init, ["git", "add", "-A", "-f"], ["git", "commit", "-q", "-m", f"task base (source {sha[:12]})"]]
     for c in (*cmds, ["git", "tag", "bench-base"]):
         subprocess.run(c, cwd=dest, env=env, check=True, stdout=subprocess.DEVNULL)
+    # Reqnroll writes a telemetry id into the repo whenever a .NET build or language server loads a BDD project
+    # (mostly Serena's), which would inflate patch_lines for that arm and show the agent an untracked file
+    (dest / ".git" / "info").mkdir(exist_ok=True)
+    with (dest / ".git" / "info" / "exclude").open("a") as f:
+        f.write("**/Reqnroll/userid\n")
     return sha
 
 
@@ -135,8 +142,17 @@ def summarize(agent: str, jsonl: Path) -> dict:
             if name not in (None, "agent_message", "reasoning"):
                 calls[name] = calls.get(name, 0) + 1
         if agent == "claude" and ev.get("type") == "result":
+            prev = last
             last = {k: ev.get(k) for k in ("session_id", "num_turns", "duration_ms", "duration_api_ms",
                                             "total_cost_usd", "usage", "modelUsage", "is_error", "subtype")}
+            # a background task (Monitor, run_in_background) wakes the agent after its first result, and each
+            # result's usage, turns and duration cover only its own segment, while cost and modelUsage are cumulative
+            if prev:
+                last["usage"] = {**(last["usage"] or {})}
+                for k in ("input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens", "output_tokens"):
+                    last["usage"][k] = (last["usage"].get(k) or 0) + ((prev.get("usage") or {}).get(k) or 0)
+                for k in ("num_turns", "duration_ms"):
+                    last[k] = (last.get(k) or 0) + (prev.get(k) or 0)
         elif agent == "codex" and isinstance(ev.get("usage"), dict):
             last = {"usage": ev["usage"], "thread_id": ev.get("thread_id")}
         elif agent == "codex" and ev.get("type") == "thread.started":
@@ -205,6 +221,22 @@ def graphify_stats(trial_dir: Path, setup_log: str | None) -> dict:
                         pending = False
     return {"nodes": g and int(g.group(1)), "edges": g and int(g.group(2)), "queries": kinds,
             "query_tok": sum(q.get("result_chars") or 0 for q in queries) // 4, "nudges": nudges, "followed": followed}
+
+
+def treatment_use(tools: list[str], calls: dict, rtk: dict, graphify: dict) -> dict[str, int]:
+    """How often the agent actually used each installed tool that leaves a trace. An arm whose tools were never
+    used measures only their overhead (prompt, tool definitions, indexing), not whether they help.
+    Tools without a per-use trace (upfront) are left out."""
+    use = {}
+    if "rtk" in tools:
+        use["rtk"] = rtk.get("rewritten") or 0
+    if "serena" in tools:
+        # initial_instructions only reads Serena's manual; it does no work on the code
+        use["serena"] = sum(n for k, n in calls.items()
+                            if k.startswith("mcp__serena__") and k != "mcp__serena__initial_instructions")
+    if "graphify" in tools:
+        use["graphify"] = sum((graphify.get("queries") or {}).values())
+    return use
 
 
 def session_tags(meta: dict) -> list[str]:
@@ -378,7 +410,10 @@ def run_in_sandbox(task: dict, arm: str, trial: str, out: Path, work: str, meta:
                 sbx_exec(trial, "cp", "-rT", "/tmp/bench-hidden", work)
             if task.get("grade"):
                 print(f"[{trial}] grade")
-                g = sbx_exec(trial, "bash", "-lc", task["grade"], workdir=work, check=False, timeout=600)
+                # xtrace, interleaved with output, names the check that failed: a silent `grep -q` otherwise
+                # leaves grade.log empty
+                g = sbx_exec(trial, "bash", "-lc", "exec 2>&1; set -x\n" + task["grade"], workdir=work, check=False,
+                             timeout=600)
                 meta["grade_exit"] = g.returncode
                 (out / "grade.log").write_text(g.stdout + g.stderr)
         finally:

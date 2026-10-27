@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from run_trial import graphify_stats, rtk_stats, summarize
+from run_trial import graphify_stats, rtk_stats, summarize, treatment_use
 
 HERE = Path(__file__).resolve().parent
 
@@ -64,6 +64,7 @@ def row(m: dict, run: str, info: dict[str, tuple[str, list[str]]], trial_dir: Pa
         "ctx_first": s.get("ctx_first"), "ctx_peak": s.get("ctx_peak"),
         "tool_out": s.get("tool_out"), "tool_out_by": s.get("tool_out_by") or {},
         "rtk": rtk, "rtk_saved": rtk.get("saved"), "graphify": graphify,
+        "use": treatment_use(m.get("tools") or [], s.get("tool_calls") or {}, rtk, graphify),
         "sbx": (m.get("sbx_version") or "").removeprefix("sbx version: ").split(" ")[0],
     }
 
